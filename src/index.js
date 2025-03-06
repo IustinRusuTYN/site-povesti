@@ -1,9 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from 'react-dom/client';  // Corect, folosește ReactDOM.createRoot
+import './index.css';  // Fișierele de stil
+import App from './App';  // Importă corect componenta App
+import reportWebVitals from './reportWebVitals';  // Performanța aplicației
+import './styles/tailwind.css';  // Stilurile Tailwind CSS
 
+// Inițializează aplicația și o montează pe elementul cu id-ul "root"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -11,7 +13,5 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// Măsurarea performanței aplicației (opțional)
 reportWebVitals();
