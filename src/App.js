@@ -1,11 +1,8 @@
-import './App.css'; // Păstrează stilurile pentru componenta ta
+import React from "react";
+import Home from "./pages/home";
 
 function App() {
-  return (
-    <div className="bg-blue-500 text-white p-6">
-      <h1 className="text-xl font-bold">Hello, Tailwind!</h1>
-    </div>
-  );
+  return <Home />;
 }
 
-export default App;  // Exportă componenta App
+export default App;
