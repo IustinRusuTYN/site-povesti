@@ -1,15 +1,19 @@
 import React from "react";
 
-const StoryCard = ({ title, excerpt }) => {
+export default function StoryCard({ title, excerpt, image }) {
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-      <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
-      <p className="text-gray-600 mt-2">{excerpt}</p>
-      <button className="mt-4 text-blue-500 hover:underline">
-        Citește mai mult
-      </button>
+    <div className="bg-white min-h-[300px] rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow duration-300 h-full flex flex-col justify-between">
+      {image && (
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-36 object-cover rounded-md mb-3 flex-shrink-0"
+        />
+      )}
+      <h2 className="text-lg font-semibold mb-1">{title}</h2>
+      <p className="text-sm text-gray-600 line-clamp-3 overflow-hidden flex-grow">
+        {excerpt}
+      </p>
     </div>
   );
-};
-
-export default StoryCard;
+}
