@@ -10,7 +10,13 @@ import { useNavigate } from "react-router-dom";
 import StoryCard from "../components/storycard";
 import Header from "../components/header";
 import girlReading from "../assets/images/girl-reading.png"; // imaginea ta
-import poveste1 from "../assets/images/card1.png";
+import story1 from "../assets/images/story1.png";
+import story2 from "../assets/images/story2.png";
+import story3 from "../assets/images/story3.png";
+import story4 from "../assets/images/story4.png";
+import story5 from "../assets/images/story5.png";
+import story6 from "../assets/images/story6.png";
+import story7 from "../assets/images/story7.png";
 import Footer from "../components/footer";
 
 export default function Home() {
@@ -20,46 +26,51 @@ export default function Home() {
   const stories = [
     {
       id: 1,
-      title: "Povestea celor trei frați",
-      excerpt: "O aventură fascinantă despre curaj și frăție...",
-      image: poveste1,
+      title: "Sub Luna Albastră",
+      excerpt:
+        " O tânără descoperă un portal spre o lume ascunsă care apare doar într-o noapte cu lună albastră.",
+      image: story1,
     },
     {
       id: 2,
       title: "Fata din pădurea fermecată",
-      excerpt:
-        "O poveste magică despre o fată care descoperă un secret bla bla wfwdfjo wefiwehf wefhwfih wefhwifhew weifhwifbh weefhweihfwihew weifhweifhqidh qifqqwief qifhqifhinqeqi fqif qwfiqnfiq fqwfiqif qiwfi fibfif qif qwif wqif qwi ",
-      image: poveste1,
+      excerpt: "O poveste magică despre o fată care descoperă un secret . ",
+      image: story2,
     },
     {
       id: 3,
-      title: "Noua poveste",
-      excerpt: "Descrierea poveștii noi...",
-      image: poveste1,
+      title: "Magicianul din Cețuri",
+      excerpt:
+        "Un bătrân misterios salvează un sat uitat cu o magie uitată de timp.",
+      image: story3,
     },
     {
       id: 4,
-      title: "Noua poveste",
-      excerpt: "Descrierea poveștii noi...",
-      image: poveste1,
+      title: "Planeta Umbrelor",
+      excerpt:
+        "Un astronaut naufragiază pe o planetă unde umbra are voință proprie.",
+      image: story4,
     },
     {
       id: 5,
-      title: "Noua poveste",
-      excerpt: "Descrierea poveștii noi...",
-      image: poveste1,
+      title: "Trandafirul Fermecat",
+      excerpt:
+        "O poveste romantică despre un trandafir ce prinde viață și schimbă destinul unei prințese.",
+      image: story5,
     },
     {
       id: 6,
-      title: "Noua poveste",
-      excerpt: "Descrierea poveștii noi...",
-      image: poveste1,
+      title: "Regina din Nord",
+      excerpt:
+        "O prințesă devine regină într-o lume înghețată unde zăpada vorbește și ghețarii ascund secrete.",
+      image: story6,
     },
     {
       id: 7,
-      title: "Noua poveste",
-      excerpt: "Descrierea poveștii noi...",
-      image: poveste1,
+      title: "Mintea Artificială",
+      excerpt:
+        "Într-un viitor apropiat, o inteligență artificială se îndrăgostește de creatorul său.",
+      image: story7,
     },
   ];
 
@@ -92,9 +103,11 @@ export default function Home() {
         </div>
       </section>
       {/* ✅ Featured Stories */}
-      <section className="px-4 py-10 bg-gray-100 max-w-screen-lg mx-auto">
-        <h3 className="text-2xl font-bold text-center text-gray-800 mb-8">
-          Featured Stories
+      <section className="px-4 py-10 bg-slate-100 max-w-screen-lg mx-auto">
+        <h3 className="text-2xl md:text-4xl font-bold text-center text-blue-700 hover:underline mb-8 transition-all duration-200">
+          <a href="/allstories" className="block w-fit mx-auto">
+            Featured Stories
+          </a>
         </h3>
 
         <Swiper

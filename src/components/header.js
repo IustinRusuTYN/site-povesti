@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import logo from "../assets/logo/bnk.svg";
 import { ThemeContext } from "../context/ThemeContext";
 import { Moon, Sun } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,14 +31,14 @@ export default function Header() {
 
           {/* Meniu desktop */}
           <nav className="hidden md:flex space-x-6 items-center">
-            <a
-              href="https://cartigratis.com/"
+            <Link
+              to="/allstories"
               className={`hover:text-blue-600 ${
                 darkMode ? "text-gray-300" : "text-gray-700"
               }`}
             >
-              All Books
-            </a>
+              All Stories
+            </Link>
             <a
               href="https://cartigratis.com/"
               className={`hover:text-blue-600 ${
@@ -157,12 +158,9 @@ export default function Header() {
             darkMode ? "bg-gray-900 text-white border-gray-700" : "bg-white"
           }`}
         >
-          <a
-            href="https://cartigratis.com/"
-            className="block hover:text-blue-600"
-          >
-            All Books
-          </a>
+          <Link to="/allstories" className="block hover:text-blue-600">
+            All Stories
+          </Link>
           <a
             href="https://cartigratis.com/"
             className="block hover:text-blue-600"
