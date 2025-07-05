@@ -5,6 +5,10 @@ import AllStories from "./pages/allstories";
 import Story from "./pages/story";
 import { ThemeProvider } from "./context/ThemeContext";
 
+console.log("Home =", Home);
+console.log("AllStories =", AllStories);
+console.log("Story =", Story);
+
 export default function App() {
   return (
     <ThemeProvider>

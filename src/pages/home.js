@@ -1,78 +1,22 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { Link, useNavigate } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import { useNavigate } from "react-router-dom";
 import StoryCard from "../components/storycard";
 import Header from "../components/header";
 import girlReading from "../assets/images/girl-reading.png"; // imaginea ta
-import story1 from "../assets/images/story1.png";
-import story2 from "../assets/images/story2.png";
-import story3 from "../assets/images/story3.png";
-import story4 from "../assets/images/story4.png";
-import story5 from "../assets/images/story5.png";
-import story6 from "../assets/images/story6.png";
-import story7 from "../assets/images/story7.png";
+
+import stories from "../data/stories";
 import Footer from "../components/footer";
 
 export default function Home() {
   // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
-
-  const stories = [
-    {
-      id: 1,
-      title: "Sub Luna Albastră",
-      excerpt:
-        " O tânără descoperă un portal spre o lume ascunsă care apare doar într-o noapte cu lună albastră.",
-      image: story1,
-    },
-    {
-      id: 2,
-      title: "Fata din pădurea fermecată",
-      excerpt: "O poveste magică despre o fată care descoperă un secret . ",
-      image: story2,
-    },
-    {
-      id: 3,
-      title: "Magicianul din Cețuri",
-      excerpt:
-        "Un bătrân misterios salvează un sat uitat cu o magie uitată de timp.",
-      image: story3,
-    },
-    {
-      id: 4,
-      title: "Planeta Umbrelor",
-      excerpt:
-        "Un astronaut naufragiază pe o planetă unde umbra are voință proprie.",
-      image: story4,
-    },
-    {
-      id: 5,
-      title: "Trandafirul Fermecat",
-      excerpt:
-        "O poveste romantică despre un trandafir ce prinde viață și schimbă destinul unei prințese.",
-      image: story5,
-    },
-    {
-      id: 6,
-      title: "Regina din Nord",
-      excerpt:
-        "O prințesă devine regină într-o lume înghețată unde zăpada vorbește și ghețarii ascund secrete.",
-      image: story6,
-    },
-    {
-      id: 7,
-      title: "Mintea Artificială",
-      excerpt:
-        "Într-un viitor apropiat, o inteligență artificială se îndrăgostește de creatorul său.",
-      image: story7,
-    },
-  ];
 
   return (
     <div>
@@ -105,11 +49,10 @@ export default function Home() {
       {/* ✅ Featured Stories */}
       <section className="px-4 py-10 bg-slate-100 max-w-screen-lg mx-auto">
         <h3 className="text-2xl md:text-4xl font-bold text-center text-blue-700 hover:underline mb-8 transition-all duration-200">
-          <a href="/allstories" className="block w-fit mx-auto">
+          <Link to="/allstories" className="block w-fit mx-auto">
             Featured Stories
-          </a>
+          </Link>
         </h3>
-
         <Swiper
           modules={[Autoplay, Pagination, Navigation]}
           breakpoints={{

@@ -41,6 +41,8 @@ export default function Header() {
             </Link>
             <a
               href="https://cartigratis.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className={`hover:text-blue-600 ${
                 darkMode ? "text-gray-300" : "text-gray-700"
               }`}
