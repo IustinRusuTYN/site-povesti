@@ -1,23 +1,27 @@
-import { createContext, useState, useEffect } from "react";
+// src/context/ThemeContext.js
+import React, { createContext, useState, useEffect } from "react";
 
+// ✅ Creăm contextul
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
+  // Încearcă să citim tema din localStorage, default la light
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark"); // <-- aplică pe <html>
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
+    const savedTheme = localStorage.getItem("darkMode");
+    if (savedTheme !== null) {
+      setDarkMode(savedTheme === "true");
     }
-  }, [darkMode]);
+  }, []);
 
-  const toggleTheme = () => setDarkMode(!darkMode);
+  // Toggle dark/light mode
+  const toggleTheme = () => {
+    setDarkMode((prev) => {
+      localStorage.setItem("darkMode", !prev);
+      return !prev;
+    });
+  };
 
   return (
     <ThemeContext.Provider value={{ darkMode, toggleTheme }}>

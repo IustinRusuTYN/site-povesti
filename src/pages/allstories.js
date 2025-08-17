@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import stories from "../data/stories";
 import StoryCard from "../components/storycard";
-import Header from "../components/header";
-import Footer from "../components/footer";
+import PageLayout from "../components/pagelayout";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function AllStories() {
+  const { darkMode } = useContext(ThemeContext);
+
   return (
-    <div>
-      <Header />
+    <PageLayout>
       <section className="max-w-7xl mx-auto px-4 py-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-10">
+        <h1
+          className={`text-3xl md:text-4xl font-bold text-center mb-10 ${
+            darkMode ? "text-gray-100" : "text-gray-800"
+          }`}
+        >
           Toate poveștile
         </h1>
 
@@ -24,8 +29,6 @@ export default function AllStories() {
           ))}
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </PageLayout>
   );
 }
