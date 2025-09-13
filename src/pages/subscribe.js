@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import PageLayout from "../components/pagelayout";
-import { ThemeContext } from "../context/ThemeContext";
+import { ThemeContext } from "../context/themecontext";
 import Button from "../components/buttons/Button";
 
 export default function Subscribe() {

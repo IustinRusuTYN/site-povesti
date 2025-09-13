@@ -5,7 +5,7 @@ import "./index.css"; // Fișierele de stil
 import App from "./App"; // Importă corect componenta App
 import reportWebVitals from "./reportWebVitals"; // Performanța aplicației
 import "./styles/tailwind.css"; // Stilurile Tailwind CSS
-import { ThemeProvider } from "./context/ThemeContext";
+import { ThemeProvider } from "./context/themecontext";
 
 // Inițializează aplicația și o montează pe elementul cu id-ul "root"
 const root = ReactDOM.createRoot(document.getElementById("root"));

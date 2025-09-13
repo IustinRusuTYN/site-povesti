@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import Header from "./header";
 import Footer from "./footer";
-import { ThemeContext } from "../context/ThemeContext";
+import { ThemeContext } from "../context/themecontext";
 
 export default function PageLayout({ children }) {
   const { darkMode } = useContext(ThemeContext);

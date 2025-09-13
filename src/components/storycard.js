@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ThemeContext } from "../context/ThemeContext";
+import { ThemeContext } from "../context/themecontext";
 
 export default function StoryCard({ title, excerpt, image }) {
   const { darkMode } = useContext(ThemeContext);

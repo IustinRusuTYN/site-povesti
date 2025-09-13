@@ -6,16 +6,22 @@ import Story from "./pages/story";
 import About from "./pages/about";
 import Subscribe from "./pages/subscribe";
 import Upcoming from "./pages/upcoming";
+import { ThemeProvider } from "./context/themecontext";
+import { SearchProvider } from "./context/searchcontext";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/story/:id" element={<Story />} />
-      <Route path="/allstories" element={<AllStories />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/subscribe" element={<Subscribe />} />
-      <Route path="/upcoming" element={<Upcoming />} />
-    </Routes>
+    <ThemeProvider>
+      <SearchProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/story/:id" element={<Story />} />
+          <Route path="/allstories" element={<AllStories />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/subscribe" element={<Subscribe />} />
+          <Route path="/upcoming" element={<Upcoming />} />
+        </Routes>
+      </SearchProvider>
+    </ThemeProvider>
   );
 }

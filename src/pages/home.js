@@ -13,7 +13,7 @@ import girlReading from "../assets/images/girl-reading.png";
 import Button from "../components/buttons/Button";
 
 import stories from "../data/stories";
-import { ThemeContext } from "../context/ThemeContext";
+import { ThemeContext } from "../context/themecontext";
 
 export default function Home() {
   const navigate = useNavigate();

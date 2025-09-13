@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import PageLayout from "../components/pagelayout";
-import { ThemeContext } from "../context/ThemeContext";
+import { ThemeContext } from "../context/themecontext";
 
 export default function About() {
   const { darkMode } = useContext(ThemeContext);
