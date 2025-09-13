@@ -41,7 +41,9 @@ export default function Home() {
           <p className="text-lg md:text-xl mb-6 max-w-xl">
             Explore a collection of romance, sci-fi and more.
           </p>
-          <Button variant="secondary">Browse Storyes</Button>
+          <Button variant="secondary" onClick={() => navigate("/allstories")}>
+            Browse Storyes
+          </Button>
         </div>
       </section>
 
@@ -102,7 +104,9 @@ export default function Home() {
           Enjoy uninterrupted reading by upgrading to our premium, ad-free
           experience.
         </p>
-        <Button variant="primary">Subscribe Now</Button>
+        <Button variant="primary" onClick={() => navigate("/subscribe")}>
+          Subscribe Now
+        </Button>
       </section>
     </PageLayout>
   );
