@@ -6,16 +6,19 @@ import App from "./App"; // Importă corect componenta App
 import reportWebVitals from "./reportWebVitals"; // Performanța aplicației
 import "./styles/tailwind.css"; // Stilurile Tailwind CSS
 import { ThemeProvider } from "./context/themecontext";
+import { AuthProvider } from "./context/authcontext";
 
 // Inițializează aplicația și o montează pe elementul cu id-ul "root"
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

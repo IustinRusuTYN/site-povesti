@@ -1,5 +1,5 @@
-// src/pages/Story.js
-import React, { useContext, useState } from "react";
+// src/pages/story.js
+import React, { useContext, useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import stories from "../data/stories";
 import PageLayout from "../components/pagelayout";
@@ -12,6 +12,18 @@ export default function Story() {
   const navigate = useNavigate();
 
   const story = stories.find((s) => s.id === parseInt(id));
+
+  // Salvează povestea curentă în recentStories în localStorage
+  useEffect(() => {
+    if (!story) return;
+
+    const saved = JSON.parse(localStorage.getItem("recentStories")) || [];
+    const updated = [story, ...saved.filter((s) => s.id !== story.id)].slice(
+      0,
+      6
+    );
+    localStorage.setItem("recentStories", JSON.stringify(updated));
+  }, [story]);
 
   // State pentru paginare conținut
   const [page, setPage] = useState(0);
@@ -43,7 +55,6 @@ export default function Story() {
     const newVotes = votes + 1;
     setRating(totalRating / newVotes);
     setVotes(newVotes);
-    // Optional: salvează rating-ul în backend sau localStorage
   };
 
   // Calcul paginare
@@ -124,11 +135,11 @@ export default function Story() {
               <span
                 className={`${
                   darkMode ? "text-gray-100" : "text-gray-800"
-                } font-semibold`}
+                } font-medium text-sm`}
               >
                 Rating mediu:
               </span>
-              <span className="text-yellow-400">
+              <span className="text-yellow-400 text-sm">
                 {votes > 0 ? rating.toFixed(1) : "N/A"}★
               </span>
             </div>
