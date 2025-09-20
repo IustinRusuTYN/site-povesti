@@ -15,7 +15,7 @@ const navLinks = ["/allstories", "/about", "/upcoming", "/subscribe"];
 export default function Header() {
   const { darkMode, toggleTheme } = useContext(ThemeContext);
   const { query, setQuery } = useContext(SearchContext);
-  const { user, login, logout, signup } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [language, setLanguage] = useState("ro");
@@ -27,20 +27,20 @@ export default function Header() {
   const navigate = useNavigate();
   const emailRef = useRef(null);
 
-  // recent searches din localStorage
+  // --- Recent searches din localStorage ---
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("recentSearches")) || [];
     setRecentSearches(saved);
   }, []);
 
-  // autofocus pe email când se deschide modalul
+  // --- Autofocus pe email când se deschide modalul ---
   useEffect(() => {
     if (showModal && emailRef.current) {
       setTimeout(() => emailRef.current.focus(), 50);
     }
   }, [showModal]);
 
-  // Închide modal la Esc
+  // --- Închide modal la Esc ---
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") setShowModal(null);
@@ -54,7 +54,7 @@ export default function Header() {
     const value = e.target.value;
     setQuery(value);
 
-    if (value.trim() === "") {
+    if (!value.trim()) {
       setSuggestions(
         isFocused ? recentSearches.map((s) => ({ title: s })) : []
       );
@@ -76,7 +76,6 @@ export default function Header() {
     ].slice(0, 5);
     setRecentSearches(updatedHistory);
     localStorage.setItem("recentSearches", JSON.stringify(updatedHistory));
-
     setQuery(title);
     navigate("/allstories");
     setSuggestions([]);
@@ -173,11 +172,11 @@ export default function Header() {
               logout();
               navigate("/");
             }}
-            className={`${
+            className={
               isMobile
                 ? "block mt-2 w-full px-3 py-1 rounded-md bg-red-600 text-white hover:bg-red-700"
                 : "px-3 py-1 rounded-md bg-red-600 text-white hover:bg-red-700"
-            } transition`}
+            }
           >
             Logout
           </button>
@@ -311,42 +310,27 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Auth modals */}
-      {showModal === "signin" && (
+      {/* Modals */}
+      {showModal && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           onClick={() => setShowModal(null)}
         >
           <div
-            onClick={(e) => e.stopPropagation()}
-            className={`w-full max-w-md mx-4 p-6 rounded-lg shadow-lg ${
+            className={`relative z-10 w-full max-w-md p-6 rounded-lg shadow-lg ${
               darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
             }`}
-          >
-            <SignInForm
-              onSubmit={(data) => {
-                login(data.email, data.password);
-                setShowModal(null);
-              }}
-              darkMode={darkMode}
-              emailRef={emailRef}
-            />
-          </div>
-        </div>
-      )}
-
-      {showModal === "signup" && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={() => setShowModal(null)}
-        >
-          <div
             onClick={(e) => e.stopPropagation()}
-            className={`w-full max-w-md mx-4 p-6 rounded-lg shadow-lg ${
-              darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-            }`}
           >
-            <SignUpForm />
+            {showModal === "signin" && (
+              <SignInForm
+                onClose={() => setShowModal(null)}
+                emailRef={emailRef}
+              />
+            )}
+            {showModal === "signup" && (
+              <SignUpForm onClose={() => setShowModal(null)} />
+            )}
           </div>
         </div>
       )}

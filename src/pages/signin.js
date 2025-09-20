@@ -1,11 +1,18 @@
-// src/pages/signin.js
 import React from "react";
+import AuthHeader from "../components/authheader";
+import Footer from "../components/footer"; // dacă ai deja footer
 import SignInForm from "../components/signinform";
 
-export default function SignIn() {
+export default function SignInPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <SignInForm />
+    <div className="flex flex-col min-h-screen">
+      <AuthHeader />
+
+      <main className="flex-grow flex items-center justify-center px-4">
+        <SignInForm />
+      </main>
+
+      <Footer />
     </div>
   );
 }

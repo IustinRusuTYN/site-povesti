@@ -1,26 +1,28 @@
 // src/components/signupform.js
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/authcontext";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 
-export default function SignupForm({ onSubmit }) {
+export default function SignupForm({ onClose }) {
   const { signup, loading } = useContext(AuthContext);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [securityAnswer, setSecurityAnswer] = useState("");
   const [useSecurity, setUseSecurity] = useState(true);
+  const [securityAnswer, setSecurityAnswer] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
-
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  useEffect(() => generateQuestion(), []);
+  useEffect(() => generateCaptcha(), []);
 
-  const generateQuestion = () => {
+  const generateCaptcha = () => {
     setNum1(Math.floor(Math.random() * 10) + 1);
     setNum2(Math.floor(Math.random() * 10) + 1);
   };
@@ -60,7 +62,7 @@ export default function SignupForm({ onSubmit }) {
     }
     if (useSecurity && parseInt(securityAnswer) !== num1 + num2) {
       setError("Răspunsul la întrebarea de securitate este greșit!");
-      generateQuestion();
+      generateCaptcha();
       return;
     }
 
@@ -72,16 +74,24 @@ export default function SignupForm({ onSubmit }) {
       setPassword("");
       setConfirmPassword("");
       setSecurityAnswer("");
-      generateQuestion();
-      if (onSubmit) onSubmit({ name, email }); // trimite către Header pentru închiderea modalului
+      generateCaptcha();
+      if (onClose) onClose(); // Închide modalul
     } catch (err) {
       setError(err.message || "Eroare la înregistrare!");
-      generateQuestion();
+      generateCaptcha();
     }
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 rounded-lg shadow-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="w-full max-w-md mx-auto p-6 rounded-lg shadow-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
+      {/* X Close */}
+      <button
+        className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-bold text-xl"
+        onClick={onClose}
+      >
+        ×
+      </button>
+
       <h2 className="text-2xl font-bold mb-4 text-center">Creează cont</h2>
 
       {error && <p className="text-red-500 mb-3">{error}</p>}
@@ -161,18 +171,21 @@ export default function SignupForm({ onSubmit }) {
           {loading ? "Se înregistrează..." : "Înregistrează-te"}
         </button>
 
+        {/* Social Login */}
         <div className="mt-4 flex flex-col gap-2">
           <button
             type="button"
-            className="w-full py-2 bg-red-500 hover:bg-red-600 rounded-md text-white transition"
+            className="w-full py-2 flex items-center justify-center gap-2 border border-gray-300 rounded-md hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700 transition"
           >
-            Google
+            <FcGoogle size={20} />
+            Înregistrează-te cu Google
           </button>
           <button
             type="button"
-            className="w-full py-2 bg-blue-800 hover:bg-blue-900 rounded-md text-white transition"
+            className="w-full py-2 flex items-center justify-center gap-2 border border-gray-300 rounded-md bg-blue-800 text-white hover:bg-blue-900 dark:border-gray-600 transition"
           >
-            Facebook
+            <FaFacebook size={20} />
+            Înregistrează-te cu Facebook
           </button>
         </div>
       </form>

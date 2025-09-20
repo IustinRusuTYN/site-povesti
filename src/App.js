@@ -8,6 +8,7 @@ import Subscribe from "./pages/subscribe";
 import Upcoming from "./pages/upcoming";
 import SignIn from "./pages/signin";
 import SignUp from "./pages/signup";
+import ScrollToTop from "./components/scrolltotop";
 import Profile from "./pages/profile"; // 👈 import adăugat
 import { ThemeProvider } from "./context/themecontext";
 import { SearchProvider } from "./context/searchcontext";
@@ -19,6 +20,7 @@ export default function App() {
     <AuthProvider>
       <ThemeProvider>
         <SearchProvider>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/story/:id" element={<Story />} />

@@ -1,45 +1,35 @@
 // src/components/signinform.js
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/authcontext";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 
-export default function SignInForm() {
+export default function SignInForm({ onClose, emailRef }) {
   const { login, loading } = useContext(AuthContext);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [securityAnswer, setSecurityAnswer] = useState("");
-  const [rememberMe, setRememberMe] = useState(true);
   const [useSecurity, setUseSecurity] = useState(false);
-
+  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
 
-  useEffect(() => {
-    generateCaptcha();
-  }, []);
+  useEffect(() => generateCaptcha(), []);
 
   const generateCaptcha = () => {
     setNum1(Math.floor(Math.random() * 10) + 1);
     setNum2(Math.floor(Math.random() * 10) + 1);
   };
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
     if (!email || !password || (useSecurity && !securityAnswer)) {
       setError("Completează toate câmpurile!");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setError("Email invalid!");
       return;
     }
 
@@ -51,33 +41,40 @@ export default function SignInForm() {
 
     try {
       await login({ email, password, rememberMe });
-      setSuccess("Login reușit!");
-      setEmail("");
-      setPassword("");
-      setSecurityAnswer("");
+      onClose();
     } catch (err) {
-      // Extraează mesaj de la backend dacă există
-      const msg =
-        err?.message || err?.response?.data?.message || "Datele sunt invalide!";
-      setError(msg);
+      setError(err.message || "Datele sunt invalide!");
       generateCaptcha();
     }
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 rounded-lg shadow-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      <h2 className="text-2xl font-bold mb-4 text-center">Autentificare</h2>
+    <div className="w-full max-w-md mx-auto p-8 rounded-xl shadow-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
+      {/* X Close Button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white text-xl font-bold transition"
+      >
+        ×
+      </button>
 
-      {error && <p className="text-red-500 mb-3">{error}</p>}
-      {success && <p className="text-green-500 mb-3">{success}</p>}
+      <h2 className="text-3xl font-bold mb-4 text-center">Bine ai venit!</h2>
+      <p className="text-center text-gray-500 dark:text-gray-400 mb-6">
+        Autentifică-te pentru a continua
+      </p>
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      {error && (
+        <p className="text-red-500 text-center mb-4 font-medium">{error}</p>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="email"
           placeholder="Email"
+          ref={emailRef}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           required
         />
         <input
@@ -85,7 +82,7 @@ export default function SignInForm() {
           placeholder="Parolă"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           required
         />
 
@@ -98,56 +95,54 @@ export default function SignInForm() {
               type="number"
               value={securityAnswer}
               onChange={(e) => setSecurityAnswer(e.target.value)}
-              placeholder="Răspuns"
               className="w-20 px-3 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
         )}
 
-        <div className="flex items-center mt-2">
-          <input
-            type="checkbox"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-            className="mr-2"
-          />
-          <label className="text-gray-700 dark:text-gray-300 text-sm">
-            Păstrează-mă autentificat
+        <div className="flex items-center justify-between">
+          <label className="flex items-center space-x-2 text-sm">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+              className="accent-blue-500"
+            />
+            <span>Păstrează-mă autentificat</span>
           </label>
+          <button
+            type="button"
+            className="text-sm text-blue-500 hover:underline"
+          >
+            Ai uitat parola?
+          </button>
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 mt-2 rounded-md text-white transition ${
-            loading
-              ? "bg-blue-300 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
-          }`}
+          className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition"
         >
           {loading ? "Se conectează..." : "Conectează-te"}
         </button>
-
-        {/* Login social - placeholder pentru viitor */}
-        <div className="mt-4 flex flex-col gap-2">
-          <button className="w-full py-2 bg-red-500 hover:bg-red-600 rounded-md text-white transition">
-            Google (în curând)
-          </button>
-          <button className="w-full py-2 bg-blue-800 hover:bg-blue-900 rounded-md text-white transition">
-            Facebook (în curând)
-          </button>
-        </div>
       </form>
 
-      <div className="mt-3 flex items-center text-sm text-gray-600 dark:text-gray-300">
-        <input
-          type="checkbox"
-          checked={useSecurity}
-          onChange={() => setUseSecurity(!useSecurity)}
-          className="mr-2"
-        />
-        Folosește întrebarea de securitate (captcha)
+      {/* Divider */}
+      <div className="flex items-center my-4">
+        <hr className="flex-1 border-gray-300 dark:border-gray-600" />
+        <span className="mx-3 text-gray-400">sau</span>
+        <hr className="flex-1 border-gray-300 dark:border-gray-600" />
+      </div>
+
+      {/* Social Login */}
+      <div className="flex flex-col gap-3">
+        <button className="flex items-center justify-center gap-2 py-3 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+          <FcGoogle size={20} /> Continuă cu Google
+        </button>
+        <button className="flex items-center justify-center gap-2 py-3 rounded-lg border border-blue-700 bg-blue-600 text-white hover:bg-blue-700 dark:hover:bg-blue-500 transition">
+          <FaFacebook size={18} /> Continuă cu Facebook
+        </button>
       </div>
     </div>
   );

@@ -1,11 +1,18 @@
-// src/pages/signup.js
 import React from "react";
+import AuthHeader from "../components/authheader";
+import Footer from "../components/footer"; // dacă ai deja footer
 import SignUpForm from "../components/signupform";
 
-export default function SignUp() {
+export default function SignUpPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <SignUpForm />
+    <div className="flex flex-col min-h-screen">
+      <AuthHeader />
+
+      <main className="flex-grow flex items-center justify-center px-4">
+        <SignUpForm />
+      </main>
+
+      <Footer />
     </div>
   );
 }
