@@ -1,5 +1,5 @@
-// src/pages/AboutUs.js
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
 
@@ -7,105 +7,114 @@ function InfoCard({ title, icon, children }) {
   return (
     <div
       tabIndex={0}
-      className="p-8 rounded-3xl shadow-lg transition-transform transform bg-white dark:bg-gray-800 hover:-translate-y-2 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="group p-10 rounded-3xl shadow-xl bg-white dark:bg-gray-800 transition-all duration-500 transform hover:-translate-y-3 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 animate-fadeInUp"
     >
-      <h2 className="text-2xl font-bold mb-3 flex items-center gap-2 text-gray-900 dark:text-gray-100">
+      <h2 className="text-3xl font-extrabold mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
         {icon} {title}
       </h2>
-      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+      <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
         {children}
       </p>
     </div>
   );
 }
 
-function TimelineItem({ year, title, description }) {
+function RoadmapItem({ year, title, description }) {
   return (
-    <div className="relative pl-10 mb-12">
-      <span className="absolute left-0 top-2 h-4 w-4 rounded-full bg-blue-600 dark:bg-blue-400 ring-4 ring-white dark:ring-gray-900"></span>
-      <p className="font-semibold text-blue-600 dark:text-blue-400">{year}</p>
-      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mt-1">
+    <div className="relative pl-10 mb-16 animate-slideInLeft">
+      <span className="absolute left-0 top-2 h-5 w-5 rounded-full bg-blue-600 dark:bg-blue-400 ring-4 ring-white dark:ring-gray-900 animate-pulse"></span>
+      <p className="font-bold text-blue-600 dark:text-blue-400 text-lg">
+        {year}
+      </p>
+      <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mt-2">
         {title}
       </h3>
-      <p className="text-gray-700 dark:text-gray-300 mt-1">{description}</p>
+      <p className="text-lg text-gray-700 dark:text-gray-300 mt-2 leading-relaxed">
+        {description}
+      </p>
     </div>
   );
 }
 
 export default function AboutUs() {
   const { darkMode } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
   return (
     <PageLayout>
       {/* Hero Section */}
-      <section className="relative py-24 px-6 bg-gradient-to-r from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 text-center">
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
-          About Us
+      <section className="relative py-28 px-6 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 text-center">
+        <h1 className="text-6xl md:text-7xl font-extrabold mb-8 text-gray-900 dark:text-gray-100 leading-tight animate-fadeInDown">
+          Every Story Shapes a World 🌌
         </h1>
-        <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
-          Welcome to{" "}
-          <span className="font-semibold text-blue-600 dark:text-blue-400">
+        <p className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto animate-fadeInUp">
+          At{" "}
+          <span className="font-bold text-blue-600 dark:text-blue-400">
             StoryTeller
           </span>
-          , where every story comes alive. Discover our journey, our vision, and
-          how we make storytelling accessible for everyone.
+          , we believe that words carry magic. Stories are not just tales — they
+          are sparks of inspiration, bridges between cultures, and voices that
+          connect hearts across the globe.
         </p>
       </section>
 
       {/* Info Cards */}
-      <section className="py-20 px-6 max-w-5xl mx-auto grid gap-10 md:grid-cols-2">
-        <InfoCard title="Our Vision" icon="🌍">
-          We believe in the power of storytelling to connect people across
-          cultures, generations, and experiences. Every story is a bridge to
-          imagination.
+      <section className="py-24 px-6 max-w-6xl mx-auto grid gap-12 md:grid-cols-2">
+        <InfoCard title="Our Vision" icon="✨">
+          To light up imaginations and inspire change through the art of
+          storytelling. We dream of a world where every voice finds a listener
+          and every story leaves a trace of hope.
         </InfoCard>
-        <InfoCard title="What We Do" icon="📚">
-          We gather and share a diverse range of stories — from classic fairy
-          tales to original narratives — to make reading fun and accessible for
-          everyone.
+        <InfoCard title="Our Mission" icon="🚀">
+          To bring together readers and storytellers, creating a vibrant space
+          where stories spark curiosity, inspire creativity, and nurture a
+          global community of dreamers.
         </InfoCard>
       </section>
 
-      {/* Timeline Section */}
-      <section className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
+      {/* Roadmap Section */}
+      <section className="py-24 px-6 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
-            Our Journey
+          <h2 className="text-5xl font-extrabold text-center mb-16 text-gray-900 dark:text-gray-100 animate-fadeInUp">
+            Our Roadmap to the Future 🚀
           </h2>
-          <TimelineItem
-            year="2018"
-            title="Founded"
-            description="StoryTeller was founded with the dream of connecting people through stories."
+          <RoadmapItem
+            year="2024"
+            title="Launch & Foundation"
+            description="We open the doors to StoryTeller — a new home for stories, where readers and writers meet to inspire and be inspired."
           />
-          <TimelineItem
-            year="2019"
-            title="First Collection"
-            description="Released our first curated collection of short stories for all ages."
+          <RoadmapItem
+            year="2025"
+            title="Community Growth"
+            description="We aim to grow a vibrant global community of storytellers, offering interactive features, live readings, and collaborations."
           />
-          <TimelineItem
-            year="2021"
-            title="Platform Launch"
-            description="Launched our online platform, making stories accessible anytime, anywhere."
+          <RoadmapItem
+            year="2026"
+            title="Mobile Experience"
+            description="Bringing the magic of stories everywhere with our dedicated mobile app — making storytelling a part of daily life."
           />
-          <TimelineItem
-            year="2023"
-            title="Global Community"
-            description="Built a worldwide community of storytellers and readers."
+          <RoadmapItem
+            year="2027"
+            title="Global Impact"
+            description="Our vision is to empower millions of voices across the world, turning StoryTeller into the go-to platform for creativity and inspiration."
           />
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 px-6 text-center">
-        <h2 className="text-4xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-          Join Our Story
+      <section className="py-24 px-6 text-center">
+        <h2 className="text-5xl font-bold mb-8 text-gray-900 dark:text-gray-100 animate-fadeInDown">
+          Be Part of the Story ✨
         </h2>
-        <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-          Become a part of our storytelling community. Share your stories or
-          enjoy tales from around the world.
+        <p className="text-xl text-gray-700 dark:text-gray-300 mb-10 max-w-3xl mx-auto animate-fadeInUp">
+          Stories are stronger when shared. Join us in building a world filled
+          with imagination, courage, and inspiration — one story at a time.
         </p>
-        <button className="px-8 py-4 bg-blue-600 dark:bg-blue-500 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-500">
-          Join Us
+        <button
+          onClick={() => navigate("/subscribe")}
+          className="px-12 py-5 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-blue-400 text-white font-semibold text-lg rounded-full shadow-lg hover:scale-105 hover:shadow-2xl transform transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-500 animate-bounce"
+        >
+          Go to Subscribe
         </button>
       </section>
     </PageLayout>
