@@ -102,7 +102,7 @@ const PlanCard = ({ plan, billing, darkMode, onSubscribe }) => (
     >
       {plan.recommended ? "Go Premium" : "Alege Basic"}
     </Button>
-    <p className="mt-4 text-xs text-gray-600 dark:text-gray-400">
+    <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
       Poți anula oricând • Plăți securizate • Refund 30 zile
     </p>
   </article>

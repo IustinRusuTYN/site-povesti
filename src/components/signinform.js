@@ -1,6 +1,5 @@
 // src/components/signinform.js
-import React, { useState, useEffect } from "react";
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/authcontext";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
@@ -53,6 +52,7 @@ export default function SignInForm({ onClose, emailRef }) {
       {/* X Close Button */}
       <button
         onClick={onClose}
+        aria-label="Închide formularul"
         className="absolute top-4 right-4 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white text-xl font-bold transition"
       >
         ×
@@ -68,15 +68,28 @@ export default function SignInForm({ onClose, emailRef }) {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          ref={emailRef}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-          required
-        />
+        {/* Email cu sugestii */}
+        <label className="block">
+          <input
+            type="email"
+            placeholder="Email"
+            ref={emailRef}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            list="email-suggestions"
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            required
+          />
+          <datalist id="email-suggestions">
+            <option value="andrei@example.com" />
+            <option value="maria@example.com" />
+            <option value="ioana@example.com" />
+            <option value="alex@example.com" />
+            <option value="cristina@example.com" />
+          </datalist>
+        </label>
+
+        {/* Parolă */}
         <input
           type="password"
           placeholder="Parolă"
@@ -86,6 +99,7 @@ export default function SignInForm({ onClose, emailRef }) {
           required
         />
 
+        {/* Security Question (optional) */}
         {useSecurity && (
           <div className="flex items-center space-x-3">
             <span className="font-semibold">
@@ -93,6 +107,7 @@ export default function SignInForm({ onClose, emailRef }) {
             </span>
             <input
               type="number"
+              placeholder="Răspuns"
               value={securityAnswer}
               onChange={(e) => setSecurityAnswer(e.target.value)}
               className="w-20 px-3 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -101,6 +116,7 @@ export default function SignInForm({ onClose, emailRef }) {
           </div>
         )}
 
+        {/* Remember Me + Forgot password */}
         <div className="flex items-center justify-between">
           <label className="flex items-center space-x-2 text-sm">
             <input

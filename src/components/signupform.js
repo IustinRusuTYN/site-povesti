@@ -1,4 +1,4 @@
-// src/components/signupform.js
+// src/components/SignupForm.js
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/authcontext";
 import { FcGoogle } from "react-icons/fc";
@@ -11,7 +11,6 @@ export default function SignupForm({ onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [useSecurity, setUseSecurity] = useState(true);
   const [securityAnswer, setSecurityAnswer] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
   const [num1, setNum1] = useState(0);
@@ -36,13 +35,7 @@ export default function SignupForm({ onClose }) {
     setError("");
     setSuccess("");
 
-    if (
-      !name ||
-      !email ||
-      !password ||
-      !confirmPassword ||
-      (useSecurity && !securityAnswer)
-    ) {
+    if (!name || !email || !password || !confirmPassword || !securityAnswer) {
       setError("Completează toate câmpurile!");
       return;
     }
@@ -60,7 +53,7 @@ export default function SignupForm({ onClose }) {
       setError("Parolele nu coincid!");
       return;
     }
-    if (useSecurity && parseInt(securityAnswer) !== num1 + num2) {
+    if (parseInt(securityAnswer) !== num1 + num2) {
       setError("Răspunsul la întrebarea de securitate este greșit!");
       generateCaptcha();
       return;
@@ -75,7 +68,7 @@ export default function SignupForm({ onClose }) {
       setConfirmPassword("");
       setSecurityAnswer("");
       generateCaptcha();
-      if (onClose) onClose(); // Închide modalul
+      if (onClose) onClose();
     } catch (err) {
       setError(err.message || "Eroare la înregistrare!");
       generateCaptcha();
@@ -84,69 +77,100 @@ export default function SignupForm({ onClose }) {
 
   return (
     <div className="w-full max-w-md mx-auto p-6 rounded-lg shadow-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
-      {/* X Close */}
+      {/* Close Button */}
       <button
         className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-bold text-xl"
         onClick={onClose}
+        aria-label="Închide formularul"
       >
         ×
       </button>
 
       <h2 className="text-2xl font-bold mb-4 text-center">Creează cont</h2>
 
-      {error && <p className="text-red-500 mb-3">{error}</p>}
-      {success && <p className="text-green-500 mb-3">{success}</p>}
+      {error && <p className="text-red-500 font-medium mb-3">{error}</p>}
+      {success && <p className="text-green-500 font-medium mb-3">{success}</p>}
 
       <form className="space-y-4" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nume"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Parolă"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirmă parola"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
-          required
-        />
+        {/* Name with suggestions */}
+        <label className="block">
+          <input
+            type="text"
+            placeholder="Nume"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            list="name-suggestions"
+            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
+            required
+          />
+          <datalist id="name-suggestions">
+            <option value="Andrei" />
+            <option value="Maria" />
+            <option value="Ioana" />
+            <option value="Alex" />
+            <option value="Cristina" />
+          </datalist>
+        </label>
 
-        {useSecurity && (
-          <div className="flex items-center space-x-3">
-            <span className="font-semibold">
-              {num1} + {num2} = ?
-            </span>
-            <input
-              type="number"
-              placeholder="Răspuns"
-              value={securityAnswer}
-              onChange={(e) => setSecurityAnswer(e.target.value)}
-              className="w-20 px-3 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-        )}
+        {/* Email with suggestions */}
+        <label className="block">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            list="email-suggestions"
+            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
+            required
+          />
+          <datalist id="email-suggestions">
+            <option value="andrei@example.com" />
+            <option value="maria@example.com" />
+            <option value="ioana@example.com" />
+            <option value="alex@example.com" />
+            <option value="cristina@example.com" />
+          </datalist>
+        </label>
 
+        {/* Passwords */}
+        <label className="block">
+          <input
+            type="password"
+            placeholder="Parolă"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
+            required
+          />
+        </label>
+
+        <label className="block">
+          <input
+            type="password"
+            placeholder="Confirmă parola"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
+            required
+          />
+        </label>
+
+        {/* Security Question */}
+        <div className="flex items-center space-x-3">
+          <span className="font-semibold">
+            {num1} + {num2} = ?
+          </span>
+          <input
+            type="number"
+            placeholder="Răspuns"
+            value={securityAnswer}
+            onChange={(e) => setSecurityAnswer(e.target.value)}
+            className="w-24 px-3 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        {/* Remember Me */}
         <div className="flex items-center mt-2">
           <input
             type="checkbox"
@@ -162,7 +186,7 @@ export default function SignupForm({ onClose }) {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 mt-2 rounded-md text-white transition ${
+          className={`w-full py-2 mt-2 rounded-md text-white font-semibold transition ${
             loading
               ? "bg-blue-300 cursor-not-allowed"
               : "bg-blue-600 hover:bg-blue-700"
@@ -189,16 +213,6 @@ export default function SignupForm({ onClose }) {
           </button>
         </div>
       </form>
-
-      <div className="mt-3 flex items-center text-sm text-gray-600 dark:text-gray-300">
-        <input
-          type="checkbox"
-          checked={useSecurity}
-          onChange={() => setUseSecurity(!useSecurity)}
-          className="mr-2"
-        />
-        Folosește întrebarea de securitate (captcha)
-      </div>
     </div>
   );
 }
