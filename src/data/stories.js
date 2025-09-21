@@ -46,12 +46,14 @@ const stories = [
   },
   {
     id: 2,
+    category: "Sci-Fi",
     title: "Fata din pădurea fermecată",
     excerpt: "O poveste magică despre o fată care descoperă un secret.",
     image: story2,
   },
   {
     id: 3,
+    category: "Horror",
     title: "Magicianul din Cețuri",
     excerpt:
       "Un bătrân misterios salvează un sat uitat cu o magie uitată de timp.",
@@ -59,6 +61,7 @@ const stories = [
   },
   {
     id: 4,
+    category: "Romance",
     title: "Planeta Umbrelor",
     excerpt:
       "Un astronaut naufragiază pe o planetă unde umbra are voință proprie.",
@@ -66,6 +69,7 @@ const stories = [
   },
   {
     id: 5,
+    category: "Romance",
     title: "Trandafirul Fermecat",
     excerpt:
       "O poveste romantică despre un trandafir ce prinde viață și schimbă destinul unei prințese.",
@@ -73,6 +77,7 @@ const stories = [
   },
   {
     id: 6,
+    ategory: "Adventure",
     title: "Regina din Nord",
     excerpt:
       "O prințesă devine regină într-o lume înghețată unde zăpada vorbește și ghețarii ascund secrete.",
@@ -80,6 +85,7 @@ const stories = [
   },
   {
     id: 7,
+    ategory: "Adventure",
     title: "Mintea Artificială",
     excerpt:
       "Într-un viitor apropiat, o inteligență artificială se îndrăgostește de creatorul său.",

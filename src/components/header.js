@@ -1,6 +1,6 @@
 // src/components/header.js
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/logo/bnk.svg";
 import stories from "../data/stories";
 import { ThemeContext } from "../context/themecontext";
@@ -16,6 +16,15 @@ export default function Header() {
   const { darkMode, toggleTheme } = useContext(ThemeContext);
   const { query, setQuery } = useContext(SearchContext);
   const { user, logout } = useContext(AuthContext);
+
+  const location = useLocation(); // pentru reset search
+
+  // Reset search dacă nu suntem pe /allstories
+  useEffect(() => {
+    if (location.pathname !== "/allstories" && query) {
+      setQuery("");
+    }
+  }, [location.pathname]);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [language, setLanguage] = useState("ro");
