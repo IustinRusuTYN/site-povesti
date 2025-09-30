@@ -1,6 +1,6 @@
 // components/PageLayout.js
 import React, { useContext } from "react";
-import Header from "./header";
+import Header from "./header/header";
 import Footer from "./footer";
 import { ThemeContext } from "../context/themecontext";
 

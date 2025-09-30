@@ -1,12 +1,14 @@
-// src/pages/AllStories.js
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import StoryCard from "../components/storycard";
 import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
 import { SearchContext } from "../context/searchcontext";
 import api from "../utils/api";
 import storiesData from "../data/stories"; // fallback local
+
+import CategoryFilter from "../components/allstories/categoryfilter";
+import StoryList from "../components/allstories/storylist";
+import LoadingError from "../components/allstories/loadingerror";
 
 export default function AllStories() {
   const { darkMode } = useContext(ThemeContext);
@@ -65,12 +67,6 @@ export default function AllStories() {
     navigate(`/story/${id}`);
   };
 
-  const getAverageRating = (ratings) => {
-    if (!ratings || ratings.length === 0) return "N/A";
-    const sum = ratings.reduce((a, b) => a + b, 0);
-    return (sum / ratings.length).toFixed(1);
-  };
-
   return (
     <PageLayout>
       <section className="max-w-7xl mx-auto px-4 py-10">
@@ -83,65 +79,29 @@ export default function AllStories() {
         </h1>
 
         {/* Filtrare categorii */}
-        <div className="flex justify-center mb-8">
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className={`px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-              darkMode
-                ? "bg-gray-700 border-gray-600 text-gray-100"
-                : "bg-white border-gray-300 text-gray-900"
-            }`}
-          >
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat === "all" ? "Toate" : cat}
-              </option>
-            ))}
-          </select>
-        </div>
+        <CategoryFilter
+          categories={categories}
+          categoryFilter={categoryFilter}
+          setCategoryFilter={setCategoryFilter}
+          darkMode={darkMode}
+        />
 
         {/* Loading / Error / Stories */}
-        {loading ? (
-          <p className="text-center">Se încarcă poveștile...</p>
-        ) : filteredStories.length === 0 ? (
+        <LoadingError loading={loading} error={error} />
+        {!loading && filteredStories.length > 0 && (
+          <StoryList
+            stories={filteredStories}
+            onStoryClick={handleStoryClick}
+            darkMode={darkMode}
+          />
+        )}
+        {!loading && filteredStories.length === 0 && (
           <p className="text-center text-gray-500">
             Nicio poveste găsită...
             {error && (
               <span className="block text-sm text-gray-400">{error}</span>
             )}
           </p>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {filteredStories.map((story) => (
-              <div
-                key={story.id}
-                className="cursor-pointer transition transform hover:scale-105 flex flex-col"
-                onClick={() => handleStoryClick(story.id)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) =>
-                  e.key === "Enter" && handleStoryClick(story.id)
-                }
-                aria-label={`Poveste: ${
-                  story.title
-                }, Rating: ${getAverageRating(story.ratings)} stele`}
-              >
-                <StoryCard
-                  title={story.title}
-                  excerpt={story.excerpt}
-                  image={story.image}
-                />
-                <p
-                  className={`mt-2 text-sm font-medium text-center ${
-                    darkMode ? "text-gray-300" : "text-gray-500"
-                  }`}
-                >
-                  Rating: {getAverageRating(story.ratings)}★
-                </p>
-              </div>
-            ))}
-          </div>
         )}
       </section>
     </PageLayout>
