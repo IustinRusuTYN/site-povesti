@@ -1,7 +1,7 @@
 // src/components/header/modalcontainer.js
 import React from "react";
-import SignInForm from "../signinform";
-import SignUpForm from "../signupform";
+import SignInForm from "../forms/SignInForm";
+import SignupForm from "../forms/SignupForm";
 
 export default function ModalContainer({
   showModal,
@@ -26,7 +26,7 @@ export default function ModalContainer({
           <SignInForm onClose={() => setShowModal(null)} emailRef={emailRef} />
         )}
         {showModal === "signup" && (
-          <SignUpForm onClose={() => setShowModal(null)} />
+          <SignupForm onClose={() => setShowModal(null)} />
         )}
       </div>
     </div>

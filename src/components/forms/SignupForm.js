@@ -1,8 +1,8 @@
-// src/components/SignupForm.js
-import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../context/authcontext";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../context/authcontext";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import InputField from "./InputField";
 
 export default function SignupForm({ onClose }) {
   const { signup, loading } = useContext(AuthContext);
@@ -15,7 +15,6 @@ export default function SignupForm({ onClose }) {
   const [rememberMe, setRememberMe] = useState(true);
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -92,85 +91,63 @@ export default function SignupForm({ onClose }) {
       {success && <p className="text-green-500 font-medium mb-3">{success}</p>}
 
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* Name with suggestions */}
-        <label className="block">
-          <input
-            type="text"
-            placeholder="Nume"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            list="name-suggestions"
-            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
-            required
-          />
-          <datalist id="name-suggestions">
-            <option value="Andrei" />
-            <option value="Maria" />
-            <option value="Ioana" />
-            <option value="Alex" />
-            <option value="Cristina" />
-          </datalist>
-        </label>
+        <InputField
+          type="text"
+          placeholder="Nume"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          datalistId="name-suggestions"
+          options={["Andrei", "Maria", "Ioana", "Alex", "Cristina"]}
+          required
+        />
 
-        {/* Email with suggestions */}
-        <label className="block">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            list="email-suggestions"
-            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
-            required
-          />
-          <datalist id="email-suggestions">
-            <option value="andrei@example.com" />
-            <option value="maria@example.com" />
-            <option value="ioana@example.com" />
-            <option value="alex@example.com" />
-            <option value="cristina@example.com" />
-          </datalist>
-        </label>
+        <InputField
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          datalistId="email-suggestions"
+          options={[
+            "andrei@example.com",
+            "maria@example.com",
+            "ioana@example.com",
+            "alex@example.com",
+            "cristina@example.com",
+          ]}
+          required
+        />
 
-        {/* Passwords */}
-        <label className="block">
-          <input
-            type="password"
-            placeholder="Parolă"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
-            required
-          />
-        </label>
+        <InputField
+          type="password"
+          placeholder="Parolă"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-        <label className="block">
-          <input
-            type="password"
-            placeholder="Confirmă parola"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300"
-            required
-          />
-        </label>
+        <InputField
+          type="password"
+          placeholder="Confirmă parola"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
 
-        {/* Security Question */}
+        {/* CAPTCHA */}
         <div className="flex items-center space-x-3">
           <span className="font-semibold">
             {num1} + {num2} = ?
           </span>
-          <input
+          <InputField
             type="number"
             placeholder="Răspuns"
             value={securityAnswer}
             onChange={(e) => setSecurityAnswer(e.target.value)}
-            className="w-24 px-3 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-24"
             required
           />
         </div>
 
-        {/* Remember Me */}
         <div className="flex items-center mt-2">
           <input
             type="checkbox"

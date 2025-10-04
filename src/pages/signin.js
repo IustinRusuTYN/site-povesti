@@ -1,7 +1,7 @@
 import React from "react";
 import AuthHeader from "../components/authheader";
 import Footer from "../components/footer"; // dacă ai deja footer
-import SignInForm from "../components/signinform";
+import SignInForm from "../components/forms/SignInForm";
 
 export default function SignInPage() {
   return (

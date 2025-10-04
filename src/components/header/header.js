@@ -1,6 +1,6 @@
 // src/components/header/header.js
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo/bnk.svg";
 
 import NavLinks from "./navlinks";
@@ -16,8 +16,8 @@ import { SearchContext } from "../../context/searchcontext";
 
 export default function Header() {
   const { darkMode } = useContext(ThemeContext);
+  // eslint-disable-next-line no-unused-vars
   const { query, setQuery } = useContext(SearchContext);
-  const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showModal, setShowModal] = useState(null);
@@ -25,7 +25,8 @@ export default function Header() {
 
   // Reset search dacă nu suntem pe /allstories
   useEffect(() => {
-    if (location.pathname !== "/allstories" && query) setQuery("");
+    if (location.pathname !== "/allstories") setQuery("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   return (

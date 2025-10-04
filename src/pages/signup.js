@@ -1,7 +1,7 @@
 import React from "react";
 import AuthHeader from "../components/authheader";
 import Footer from "../components/footer"; // dacă ai deja footer
-import SignUpForm from "../components/signupform";
+import SignupForm from "../components/forms/SignupForm";
 
 export default function SignUpPage() {
   return (
@@ -9,7 +9,7 @@ export default function SignUpPage() {
       <AuthHeader />
 
       <main className="flex-grow flex items-center justify-center px-4">
-        <SignUpForm />
+        <SignupForm />
       </main>
 
       <Footer />

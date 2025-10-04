@@ -1,8 +1,8 @@
-// src/components/signinform.js
 import React, { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../context/authcontext";
+import { AuthContext } from "../../context/authcontext";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import InputField from "./InputField";
 
 export default function SignInForm({ onClose, emailRef }) {
   const { login, loading } = useContext(AuthContext);
@@ -12,7 +12,6 @@ export default function SignInForm({ onClose, emailRef }) {
   const [useSecurity, setUseSecurity] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState("");
-
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
 
@@ -49,7 +48,6 @@ export default function SignInForm({ onClose, emailRef }) {
 
   return (
     <div className="w-full max-w-md mx-auto p-8 rounded-xl shadow-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
-      {/* X Close Button */}
       <button
         onClick={onClose}
         aria-label="Închide formularul"
@@ -68,55 +66,47 @@ export default function SignInForm({ onClose, emailRef }) {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Email cu sugestii */}
-        <label className="block">
-          <input
-            type="email"
-            placeholder="Email"
-            ref={emailRef}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            list="email-suggestions"
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            required
-          />
-          <datalist id="email-suggestions">
-            <option value="andrei@example.com" />
-            <option value="maria@example.com" />
-            <option value="ioana@example.com" />
-            <option value="alex@example.com" />
-            <option value="cristina@example.com" />
-          </datalist>
-        </label>
+        <InputField
+          type="email"
+          placeholder="Email"
+          ref={emailRef}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          datalistId="email-suggestions"
+          options={[
+            "andrei@example.com",
+            "maria@example.com",
+            "ioana@example.com",
+            "alex@example.com",
+            "cristina@example.com",
+          ]}
+          required
+        />
 
-        {/* Parolă */}
-        <input
+        <InputField
           type="password"
           placeholder="Parolă"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           required
         />
 
-        {/* Security Question (optional) */}
         {useSecurity && (
           <div className="flex items-center space-x-3">
             <span className="font-semibold">
               {num1} + {num2} = ?
             </span>
-            <input
+            <InputField
               type="number"
               placeholder="Răspuns"
               value={securityAnswer}
               onChange={(e) => setSecurityAnswer(e.target.value)}
-              className="w-20 px-3 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-20"
               required
             />
           </div>
         )}
 
-        {/* Remember Me + Forgot password */}
         <div className="flex items-center justify-between">
           <label className="flex items-center space-x-2 text-sm">
             <input
@@ -144,14 +134,12 @@ export default function SignInForm({ onClose, emailRef }) {
         </button>
       </form>
 
-      {/* Divider */}
       <div className="flex items-center my-4">
         <hr className="flex-1 border-gray-300 dark:border-gray-600" />
         <span className="mx-3 text-gray-400">sau</span>
         <hr className="flex-1 border-gray-300 dark:border-gray-600" />
       </div>
 
-      {/* Social Login */}
       <div className="flex flex-col gap-3">
         <button className="flex items-center justify-center gap-2 py-3 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-800 transition">
           <FcGoogle size={20} /> Continuă cu Google
