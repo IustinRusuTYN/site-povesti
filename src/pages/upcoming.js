@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+// src/pages/upcoming.js
+import React from "react";
 import { motion } from "framer-motion";
 import PageLayout from "../components/pagelayout";
-import { ThemeContext } from "../context/themecontext";
-import { Link } from "react-router-dom";
+import UpcomingCard from "../components/upcoming/upcomingCard";
+import UpcomingCTA from "../components/upcoming/upcomingCTA";
 import { FaBookOpen, FaCalendarAlt, FaStar, FaUsers } from "react-icons/fa";
 
 const upcomingItems = [
@@ -38,31 +39,7 @@ const upcomingItems = [
   },
 ];
 
-function UpcomingCard({ title, date, icon }) {
-  return (
-    <motion.div
-      tabIndex={0}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="relative p-8 rounded-3xl shadow-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transform transition-transform hover:-translate-y-2 hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-500"
-    >
-      <div className="flex items-center gap-3 mb-3">
-        <span className="text-2xl">{icon}</span>
-        <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100">
-          {title}
-        </h3>
-      </div>
-      <p className="text-gray-500 dark:text-gray-300">{date}</p>
-      <span className="absolute -top-3 -left-3 w-6 h-6 bg-purple-500 dark:bg-purple-400 rounded-full animate-ping"></span>
-    </motion.div>
-  );
-}
-
 export default function Upcoming() {
-  const { darkMode } = useContext(ThemeContext);
-
   return (
     <PageLayout>
       {/* Hero Section */}
@@ -113,34 +90,7 @@ export default function Upcoming() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 text-center relative bg-gradient-to-r from-purple-100 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-5xl font-bold mb-8 text-gray-900 dark:text-gray-100">
-            Want Early Access? 🚀
-          </h2>
-          <p className="text-xl text-gray-700 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Subscribe now and unlock early access to stories, live events, and
-            exclusive behind-the-scenes content.
-          </p>
-          <motion.div
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-block"
-          >
-            <Link
-              to="/subscribe"
-              className="px-12 py-5 bg-purple-600 dark:bg-purple-500 text-white font-semibold text-lg rounded-full shadow-xl hover:bg-purple-700 dark:hover:bg-purple-400 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-500"
-            >
-              Go to Subscribe
-            </Link>
-          </motion.div>
-        </motion.div>
-      </section>
+      <UpcomingCTA />
     </PageLayout>
   );
 }
