@@ -33,7 +33,7 @@ export default function HeroSection() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className={`text-4xl md:text-6xl font-extrabold mb-4 ${
-            darkMode ? "text-indigo-600" : "text-gray-800"
+            darkMode ? "text-indigo-100" : "text-indigo-100"
           }`}
         >
           Read Imaginary Stories
