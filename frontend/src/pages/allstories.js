@@ -1,31 +1,39 @@
+// src/pages/AllStories.js
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
 import { SearchContext } from "../context/searchcontext";
-import api from "../utils/api";
 import storiesData from "../data/stories"; // fallback local
+import api from "../utils/api";
 
 import CategoryFilter from "../components/allstories/categoryfilter";
 import StoryList from "../components/allstories/storylist";
 import LoadingError from "../components/allstories/loadingerror";
+import SignInForm from "../components/forms/SignInForm";
+import { AuthContext } from "../context/authcontext";
 
 export default function AllStories() {
   const { darkMode } = useContext(ThemeContext);
   const { query } = useContext(SearchContext);
+  const { isAuthenticated } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
-  const [stories, setStories] = useState(storiesData); // fallback imediat
+  const [stories, setStories] = useState(storiesData);
   const [filteredStories, setFilteredStories] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch stories din backend, fallback la local dacă e eroare
+  // Modal SignIn
+  const [showSignInModal, setShowSignInModal] = useState(false);
+
+  // Fetch stories from backend with fallback
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const res = await api.get("/stories"); // endpoint backend
+        const res = await api.get("/stories");
         setStories(res.data);
         setError(null);
       } catch (err) {
@@ -40,13 +48,13 @@ export default function AllStories() {
     fetchStories();
   }, []);
 
-  // Extrage categoriile disponibile
+  // Extract categories
   const categories = [
     "all",
     ...new Set(stories.map((s) => s.category).filter(Boolean)),
   ];
 
-  // Filtrare stories după query și categorie
+  // Filter stories by query & category
   useEffect(() => {
     if (!stories || stories.length === 0) return;
 
@@ -67,8 +75,19 @@ export default function AllStories() {
     navigate(`/story/${id}`);
   };
 
+  const handleRequireAuth = () => {
+    setShowSignInModal(true);
+  };
+
   return (
     <PageLayout>
+      {/* SignIn Modal */}
+      {showSignInModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <SignInForm onClose={() => setShowSignInModal(false)} />
+        </div>
+      )}
+
       <section className="max-w-7xl mx-auto px-4 py-10">
         <h1
           className={`text-3xl md:text-4xl font-bold text-center mb-6 ${
@@ -78,7 +97,7 @@ export default function AllStories() {
           Toate poveștile
         </h1>
 
-        {/* Filtrare categorii */}
+        {/* Category Filter */}
         <CategoryFilter
           categories={categories}
           categoryFilter={categoryFilter}
@@ -88,13 +107,16 @@ export default function AllStories() {
 
         {/* Loading / Error / Stories */}
         <LoadingError loading={loading} error={error} />
+
         {!loading && filteredStories.length > 0 && (
           <StoryList
             stories={filteredStories}
             onStoryClick={handleStoryClick}
+            onRequireAuth={handleRequireAuth}
             darkMode={darkMode}
           />
         )}
+
         {!loading && filteredStories.length === 0 && (
           <p className="text-center text-gray-500">
             Nicio poveste găsită...
