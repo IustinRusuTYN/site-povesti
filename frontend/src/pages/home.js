@@ -9,7 +9,7 @@ import PageLayout from "../components/pagelayout";
  * - featuredstoriescarousel
  * - adfreesection
  *
- * Keeping page file minimal: it simply composes the smaller pieces.
+ * Keeping pages file minimal: it simply composes the smaller pieces.
  */
 import Herosection from "../components/home/herosection";
 import FeaturedStoriesCarousel from "../components/home/featuredstoriescarousel";
