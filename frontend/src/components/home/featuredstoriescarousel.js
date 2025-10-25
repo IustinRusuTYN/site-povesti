@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next"; // 🔹 import
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -14,6 +15,7 @@ import { ThemeContext } from "../../context/themecontext";
 
 export default function FeaturedStoriesCarousel() {
   const { darkMode } = useContext(ThemeContext);
+  const { t } = useTranslation(); // 🔹 hook pentru traduceri
 
   return (
     <section
@@ -30,7 +32,8 @@ export default function FeaturedStoriesCarousel() {
             : "text-gray-800 hover:text-gray-400"
         }`}
       >
-        <Link to="/allstories">Featured Stories</Link>
+        <Link to="/allstories">{t("featuredStories")}</Link>{" "}
+        {/* 🔹 text tradus */}
       </h3>
 
       <Swiper

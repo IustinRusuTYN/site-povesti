@@ -12,11 +12,13 @@ import StoryList from "../components/allstories/storylist";
 import LoadingError from "../components/allstories/loadingerror";
 import SignInForm from "../components/forms/SignInForm";
 import { AuthContext } from "../context/authcontext";
+import { useTranslation } from "react-i18next"; // 🔹 import i18n
 
 export default function AllStories() {
   const { darkMode } = useContext(ThemeContext);
   const { query } = useContext(SearchContext);
   const { isAuthenticated } = useContext(AuthContext);
+  const { t } = useTranslation(); // 🔹 hook i18n
 
   const navigate = useNavigate();
 
@@ -40,13 +42,13 @@ export default function AllStories() {
         console.warn(
           "Nu am putut încărca de la backend, folosesc date locale."
         );
-        setError("Se folosesc date locale.");
+        setError(t("usingLocalData")); // 🔹 traducere mesaj fallback
       } finally {
         setLoading(false);
       }
     };
     fetchStories();
-  }, []);
+  }, [t]);
 
   // Extract categories
   const categories = [
@@ -94,7 +96,7 @@ export default function AllStories() {
             darkMode ? "text-gray-100" : "text-gray-800"
           }`}
         >
-          Toate poveștile
+          {t("allStoriesTitle")} {/* 🔹 text traductibil */}
         </h1>
 
         {/* Category Filter */}
@@ -119,7 +121,7 @@ export default function AllStories() {
 
         {!loading && filteredStories.length === 0 && (
           <p className="text-center text-gray-500">
-            Nicio poveste găsită...
+            {t("noStoriesFound")}
             {error && (
               <span className="block text-sm text-gray-400">{error}</span>
             )}

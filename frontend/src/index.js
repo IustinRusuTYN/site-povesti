@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client"; // Corect, folosește ReactDOM.createRoot
 import { BrowserRouter } from "react-router-dom"; // ✅ adăugat
 import "./index.css"; // Fișierele de stil
+import "./i18n";
 import App from "./App"; // Importă corect componenta App
 import reportWebVitals from "./reportWebVitals"; // Performanța aplicației
 import "./styles/tailwind.css"; // Stilurile Tailwind CSS

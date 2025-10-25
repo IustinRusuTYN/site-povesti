@@ -1,4 +1,6 @@
+// src/components/allstories/categoryfilter.js
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function CategoryFilter({
   categories,
@@ -6,6 +8,8 @@ export default function CategoryFilter({
   setCategoryFilter,
   darkMode,
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex justify-center mb-8">
       <select
@@ -19,7 +23,7 @@ export default function CategoryFilter({
       >
         {categories.map((cat) => (
           <option key={cat} value={cat}>
-            {cat === "all" ? "Toate" : cat}
+            {cat === "all" ? t("allCategories") : cat}
           </option>
         ))}
       </select>

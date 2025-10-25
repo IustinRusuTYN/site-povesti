@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../context/themecontext";
 import { FaRegSmileBeam } from "react-icons/fa";
 import Button from "../buttons/Button";
+import { useTranslation } from "react-i18next"; // 🔹 import
 
 export default function AdFreeSection() {
   const navigate = useNavigate();
   const { darkMode } = useContext(ThemeContext);
+  const { t } = useTranslation(); // 🔹 hook pentru traduceri
 
   return (
     <section
@@ -28,19 +30,17 @@ export default function AdFreeSection() {
             darkMode ? "text-indigo-600" : "text-gray-800"
           }`}
         >
-          Enjoy an Ad-Free Experience!
+          {t("adFreeTitle")} {/* 🔹 text tradus */}
         </h2>
         <p className="mb-6 max-w-xl text-lg md:text-xl leading-relaxed">
-          Unlock uninterrupted reading, exclusive content, and a smoother
-          experience by upgrading to premium. Say goodbye to ads and hello to
-          more stories!
+          {t("adFreeDescription")} {/* 🔹 text tradus */}
         </p>
         <Button
           variant="primary"
           className="px-8 py-4 text-lg font-semibold transition-transform duration-300 hover:scale-105"
           onClick={() => navigate("/subscribe")}
         >
-          Go Ad-Free Now
+          {t("adFreeButton")} {/* 🔹 text tradus */}
         </Button>
       </div>
     </section>

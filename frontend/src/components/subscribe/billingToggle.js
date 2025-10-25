@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
-export default function billingToggle({ billing, setBilling, darkMode }) {
+export default function BillingToggle({ billing, setBilling, darkMode }) {
+  const { t } = useTranslation();
+
   return (
     <div
       className={`inline-flex items-center rounded-full mt-6 p-1 ${
@@ -19,7 +22,7 @@ export default function billingToggle({ billing, setBilling, darkMode }) {
               : "text-gray-400 dark:text-gray-300"
           }`}
         >
-          {type === "monthly" ? "Lunar" : "Anual (reducere)"}
+          {t(`subscribePage.billing.${type}`)}
         </button>
       ))}
     </div>

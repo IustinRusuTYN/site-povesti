@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
+import { useTranslation } from "react-i18next";
 
 function InfoCard({ title, icon, children, delay }) {
   const [visible, setVisible] = useState(false);
@@ -59,6 +60,9 @@ function RoadmapItem({ year, title, description, delay }) {
 export default function AboutUs() {
   const { darkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const about = t("aboutPage", { returnObjects: true });
+
   const [heroVisible, setHeroVisible] = useState(false);
   const [paragraphVisible, setParagraphVisible] = useState(false);
   const [ctaVisible, setCtaVisible] = useState(false);
@@ -80,7 +84,7 @@ export default function AboutUs() {
               : "opacity-0 -translate-y-6"
           }`}
         >
-          Every Story Shapes a World 🌌
+          {about.hero.title}
         </h1>
         <p
           className={`text-2xl md:text-3xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto transition-transform duration-700 transform ${
@@ -89,28 +93,22 @@ export default function AboutUs() {
               : "opacity-0 translate-y-6"
           }`}
         >
-          At{" "}
-          <span className="font-bold text-blue-600 dark:text-blue-400">
-            StoryTeller
-          </span>
-          , we believe that words carry magic. Stories are not just tales — they
-          are sparks of inspiration, bridges between cultures, and voices that
-          connect hearts across the globe.
+          {about.hero.description}
         </p>
       </section>
 
       {/* Info Cards */}
       <section className="py-24 px-6 max-w-6xl mx-auto grid gap-12 md:grid-cols-2">
-        <InfoCard title="Our Vision" icon="✨" delay={300}>
-          To light up imaginations and inspire change through the art of
-          storytelling. We dream of a world where every voice finds a listener
-          and every story leaves a trace of hope.
-        </InfoCard>
-        <InfoCard title="Our Mission" icon="🚀" delay={600}>
-          To bring together readers and storytellers, creating a vibrant space
-          where stories spark curiosity, inspire creativity, and nurture a
-          global community of dreamers.
-        </InfoCard>
+        {about.infoCards.map((card, idx) => (
+          <InfoCard
+            key={idx}
+            title={card.title}
+            icon={card.icon}
+            delay={300 + idx * 300}
+          >
+            {card.description}
+          </InfoCard>
+        ))}
       </section>
 
       {/* Roadmap Section */}
@@ -123,32 +121,17 @@ export default function AboutUs() {
                 : "opacity-0 translate-y-6"
             }`}
           >
-            Our Roadmap to the Future 🚀
+            {t("aboutPage.roadmapTitle", "Our Roadmap to the Future 🚀")}
           </h2>
-          <RoadmapItem
-            year="2024"
-            title="Launch & Foundation"
-            description="We open the doors to StoryTeller — a new home for stories, where readers and writers meet to inspire and be inspired."
-            delay={300}
-          />
-          <RoadmapItem
-            year="2025"
-            title="Community Growth"
-            description="We aim to grow a vibrant global community of storytellers, offering interactive features, live readings, and collaborations."
-            delay={500}
-          />
-          <RoadmapItem
-            year="2026"
-            title="Mobile Experience"
-            description="Bringing the magic of stories everywhere with our dedicated mobile app — making storytelling a part of daily life."
-            delay={700}
-          />
-          <RoadmapItem
-            year="2027"
-            title="Global Impact"
-            description="Our vision is to empower millions of voices across the world, turning StoryTeller into the go-to platform for creativity and inspiration."
-            delay={900}
-          />
+          {about.roadmap.map((item, idx) => (
+            <RoadmapItem
+              key={idx}
+              year={item.year}
+              title={item.title}
+              description={item.description}
+              delay={300 + idx * 200}
+            />
+          ))}
         </div>
       </section>
 
@@ -159,15 +142,14 @@ export default function AboutUs() {
             ctaVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          Be Part of the Story ✨
+          {about.cta.title}
         </h2>
         <p
           className={`text-xl text-gray-700 dark:text-gray-300 mb-10 max-w-3xl mx-auto transition-transform duration-700 transform ${
             ctaVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          Stories are stronger when shared. Join us in building a world filled
-          with imagination, courage, and inspiration — one story at a time.
+          {about.cta.description}
         </p>
         <button
           onClick={() => navigate("/subscribe")}
@@ -175,7 +157,7 @@ export default function AboutUs() {
             ctaVisible ? "opacity-100" : "opacity-0"
           }`}
         >
-          Go to Subscribe
+          {about.cta.button}
         </button>
       </section>
     </PageLayout>

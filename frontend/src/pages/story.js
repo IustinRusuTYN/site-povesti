@@ -12,7 +12,10 @@ import StoryPagination from "../components/story/storypagination";
 import StoryComments from "../components/story/storycomments";
 import StoryNotFound from "../components/story/storynotfound";
 
+import { useTranslation } from "react-i18next"; // ✅ import i18n
+
 export default function Story() {
+  const { t } = useTranslation(); // ✅ hook i18n
   const { id } = useParams();
   const { darkMode } = useContext(ThemeContext);
   const { user, isAuthenticated } = useContext(AuthContext);
@@ -29,7 +32,6 @@ export default function Story() {
   );
   const [votes, setVotes] = useState(story?.ratings?.length || 0);
 
-  // salvează recent stories
   useEffect(() => {
     if (!story) return;
     const saved = JSON.parse(localStorage.getItem("recentStories")) || [];
@@ -48,14 +50,12 @@ export default function Story() {
     );
   }
 
-  // determină tipul poveștii și accesul userului
-  const accessLevel = story.accessLevel || "free"; // free, basic, premium
+  const accessLevel = story.accessLevel || "free";
   const userAccess = isAuthenticated ? user?.plan || "free" : "free";
 
   const isPremium = accessLevel === "premium";
   const isBasic = accessLevel === "basic";
 
-  // conținut vizibil
   let displayedContent = story.content || [];
   const totalPages = story.content
     ? Math.ceil(story.content.length / paragraphsPerPage)
@@ -79,11 +79,16 @@ export default function Story() {
     setVotes(newVotes);
   };
 
-  // când un utilizator free apasă pe poveste basic
   const showLoginModal = isBasic && !isAuthenticated;
 
   return (
     <PageLayout>
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          {/* poți pune aici SignInForm dacă vrei */}
+        </div>
+      )}
+
       <section className="max-w-4xl mx-auto px-4 py-10">
         <StoryHeader
           story={story}
@@ -102,16 +107,16 @@ export default function Story() {
                 darkMode ? "text-yellow-400" : "text-yellow-600"
               }`}
             >
-              Poveste exclusivă pentru membri Premium 🔒
+              {t("storyPremiumTitle")} 🔒
             </h2>
             <p className={darkMode ? "text-gray-300" : "text-gray-700"}>
-              Această poveste este disponibilă doar pentru abonații Premium.
+              {t("storyPremiumDescription")}
             </p>
             <button
               onClick={() => navigate("/subscribe")}
               className="mt-4 px-5 py-2 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-lg hover:opacity-90 transition"
             >
-              Devino membru Premium
+              {t("storyPremiumButton")}
             </button>
           </div>
         )}
@@ -123,13 +128,13 @@ export default function Story() {
                 darkMode ? "text-gray-300" : "text-gray-700"
               }`}
             >
-              Aceasta este doar o previzualizare a poveștii.
+              {t("storyBasicPreview")}
             </p>
             <button
               onClick={() => navigate("/subscribe")}
               className="mt-4 px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:opacity-90 transition"
             >
-              Continuă citirea cu planul Basic sau Premium 💫
+              {t("storyBasicButton")}
             </button>
           </div>
         )}
@@ -153,7 +158,7 @@ export default function Story() {
             to="/allstories"
             className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
           >
-            Înapoi la toate poveștile
+            {t("backToAllStories")}
           </Link>
         </div>
       </section>

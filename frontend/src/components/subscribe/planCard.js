@@ -1,8 +1,11 @@
 import React from "react";
 import Button from "../buttons/Button";
 import PriceDisplay from "./priceDisplay";
+import { useTranslation } from "react-i18next";
 
-export default function planCard({ plan, billing, darkMode, onSubscribe }) {
+export default function PlanCard({ plan, billing, darkMode, onSubscribe }) {
+  const { t } = useTranslation();
+
   return (
     <article
       className={`relative p-8 rounded-2xl shadow-lg border transition transform hover:-translate-y-2 ${
@@ -17,26 +20,31 @@ export default function planCard({ plan, billing, darkMode, onSubscribe }) {
     >
       {plan.recommended && (
         <div className="absolute -top-3 right-4 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-semibold shadow">
-          Recomandat
+          {t("subscribePage.planCard.recommended")}
         </div>
       )}
+
       <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
       <p className="mb-6 text-sm text-gray-400 dark:text-gray-200">
         {plan.description}
       </p>
+
       <div className="mb-6">
         <PriceDisplay plan={plan} billing={billing} />
       </div>
+
       <ul className="mb-6 space-y-2 text-left">
-        {plan.highlights.map((h, i) => (
-          <li key={i} className="flex items-start gap-3">
-            <span className="mt-1 text-green-600 dark:text-green-400">✔</span>
-            <span className="text-sm text-gray-400 dark:text-gray-200">
-              {h}
-            </span>
-          </li>
-        ))}
+        {Array.isArray(plan.highlights) &&
+          plan.highlights.map((h, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="mt-1 text-green-600 dark:text-green-400">✔</span>
+              <span className="text-sm text-gray-400 dark:text-gray-200">
+                {h}
+              </span>
+            </li>
+          ))}
       </ul>
+
       <Button
         variant={plan.recommended ? "secondary" : "primary"}
         onClick={() => onSubscribe(plan.id)}
@@ -44,10 +52,13 @@ export default function planCard({ plan, billing, darkMode, onSubscribe }) {
           plan.recommended ? "bg-yellow-400 text-black hover:bg-yellow-500" : ""
         }`}
       >
-        {plan.recommended ? "Go Premium" : "Alege Basic"}
+        {plan.recommended
+          ? t("subscribePage.planCard.goPremium")
+          : t("subscribePage.planCard.chooseBasic")}
       </Button>
+
       <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-        Poți anula oricând • Plăți securizate • Refund 30 zile
+        {t("subscribePage.planCard.disclaimer")}
       </p>
     </article>
   );

@@ -1,6 +1,9 @@
+// src/components/story/storycomments.js
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function StoryComments({ comments, darkMode, onAddComment }) {
+  const { t } = useTranslation();
   const [userName, setUserName] = useState("");
   const [userComment, setUserComment] = useState("");
 
@@ -18,7 +21,7 @@ export default function StoryComments({ comments, darkMode, onAddComment }) {
           darkMode ? "text-gray-100" : "text-gray-800"
         }`}
       >
-        Comentarii
+        {t("commentsTitle")} {/* Titlu Secțiune Comentarii */}
       </h2>
 
       {comments.length > 0 ? (
@@ -39,14 +42,14 @@ export default function StoryComments({ comments, darkMode, onAddComment }) {
         </ul>
       ) : (
         <p className={`${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-          Nu există comentarii încă.
+          {t("noComments")} {/* Text când nu există comentarii */}
         </p>
       )}
 
       <form className="mt-4 flex flex-col space-y-2" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Numele tău"
+          placeholder={t("commentNamePlaceholder")}
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
           className={`px-3 py-2 rounded-md border ${
@@ -57,7 +60,7 @@ export default function StoryComments({ comments, darkMode, onAddComment }) {
           required
         />
         <textarea
-          placeholder="Scrie un comentariu..."
+          placeholder={t("commentTextPlaceholder")}
           value={userComment}
           onChange={(e) => setUserComment(e.target.value)}
           className={`px-3 py-2 rounded-md border ${
@@ -72,7 +75,7 @@ export default function StoryComments({ comments, darkMode, onAddComment }) {
           type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
         >
-          Adaugă comentariu
+          {t("addCommentButton")} {/* Buton adaugare comentariu */}
         </button>
       </form>
     </div>

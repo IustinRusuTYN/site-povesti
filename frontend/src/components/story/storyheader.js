@@ -1,5 +1,7 @@
+// src/components/story/storyheader.js
 import React from "react";
 import Rating from "../rating";
+import { useTranslation } from "react-i18next";
 
 export default function StoryHeader({
   story,
@@ -8,6 +10,8 @@ export default function StoryHeader({
   votes,
   onRate,
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
       <img
@@ -48,7 +52,7 @@ export default function StoryHeader({
               darkMode ? "text-gray-100" : "text-gray-800"
             } font-medium text-sm`}
           >
-            Rating mediu:
+            {t("averageRating")} {/* Traducere: "Rating mediu:" */}
           </span>
           <span className="text-yellow-400 text-sm">
             {votes > 0 ? rating.toFixed(1) : "N/A"}★

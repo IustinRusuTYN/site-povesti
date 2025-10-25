@@ -1,6 +1,6 @@
-// src/components/header/header.js
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import logo from "../../assets/logo/bnk.svg";
 
 import NavLinks from "./navlinks";
@@ -15,18 +15,16 @@ import { ThemeContext } from "../../context/themecontext";
 import { SearchContext } from "../../context/searchcontext";
 
 export default function Header() {
+  const { t } = useTranslation();
   const { darkMode } = useContext(ThemeContext);
-  // eslint-disable-next-line no-unused-vars
   const { query, setQuery } = useContext(SearchContext);
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showModal, setShowModal] = useState(null);
   const emailRef = useRef(null);
 
-  // Reset search dacă nu suntem pe /allstories
   useEffect(() => {
     if (location.pathname !== "/allstories") setQuery("");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   return (
@@ -42,9 +40,8 @@ export default function Header() {
             <span className="font-bold text-xl">StoryTeller</span>
           </Link>
 
-          {/* Desktop navigation */}
           <nav className="hidden md:flex space-x-6 items-center">
-            <NavLinks darkMode={darkMode} />
+            <NavLinks darkMode={darkMode} t={t} />
             <SearchBar isMobile={false} />
             <AuthMenu
               isMobile={false}
@@ -55,7 +52,6 @@ export default function Header() {
             <ThemeToggle isMobile={false} />
           </nav>
 
-          {/* Mobile menu toggle */}
           <button
             className="md:hidden flex items-center focus:outline-none"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -87,15 +83,12 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu Component */}
       <MobileMenu
         isOpen={menuOpen}
         darkMode={darkMode}
         showModal={showModal}
         setShowModal={setShowModal}
       />
-
-      {/* Modals Component */}
       <ModalContainer
         showModal={showModal}
         setShowModal={setShowModal}

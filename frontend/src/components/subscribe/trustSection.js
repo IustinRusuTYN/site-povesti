@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
-export default function trustSection({ darkMode }) {
+export default function TrustSection({ darkMode }) {
+  const { t } = useTranslation();
+
   return (
     <section
       className={`p-6 rounded-xl ${
@@ -9,22 +12,27 @@ export default function trustSection({ darkMode }) {
     >
       <div className="grid gap-6 md:grid-cols-3">
         <div>
-          <h4 className="font-semibold mb-2">Plăți sigure</h4>
+          <h4 className="font-semibold mb-2">
+            {t("subscribePage.trust.safePayments.title")}
+          </h4>
           <p className="text-sm">
-            Procesăm plățile prin Stripe. Datele cardului nu sunt stocate
-            niciodată pe serverele noastre.
+            {t("subscribePage.trust.safePayments.description")}
           </p>
         </div>
         <div>
-          <h4 className="font-semibold mb-2">Anulezi oricând</h4>
+          <h4 className="font-semibold mb-2">
+            {t("subscribePage.trust.cancelAnytime.title")}
+          </h4>
           <p className="text-sm">
-            Oprești reînnoirea din profil, fără taxe ascunse.
+            {t("subscribePage.trust.cancelAnytime.description")}
           </p>
         </div>
         <div>
-          <h4 className="font-semibold mb-2">Suport și refund</h4>
+          <h4 className="font-semibold mb-2">
+            {t("subscribePage.trust.supportRefund.title")}
+          </h4>
           <p className="text-sm">
-            Suport prioritar pentru Premium și refund în 30 de zile.
+            {t("subscribePage.trust.supportRefund.description")}
           </p>
         </div>
       </div>

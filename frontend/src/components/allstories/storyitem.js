@@ -2,9 +2,11 @@
 import React, { useContext } from "react";
 import StoryCard from "../storycard";
 import { AuthContext } from "../../context/authcontext";
+import { useTranslation } from "react-i18next";
 
 export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   const { isAuthenticated } = useContext(AuthContext);
+  const { t } = useTranslation();
 
   const getAverageRating = (ratings) => {
     if (!ratings || ratings.length === 0) return "N/A";
@@ -32,6 +34,9 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
     premium: "bg-yellow-400 text-gray-800",
   };
 
+  // Translate access levels
+  const badgeText = t(`accessLevels.${accessLevel}`);
+
   return (
     <div
       key={story.id}
@@ -44,15 +49,15 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
-      aria-label={`Poveste: ${story.title}, Rating: ${getAverageRating(
-        story.ratings
-      )} stele, Tip: ${accessLevel}`}
+      aria-label={`${t("story")}: ${story.title}, ${t(
+        "rating"
+      )}: ${getAverageRating(story.ratings)}★, ${t("type")}: ${badgeText}`}
     >
       {/* Badge tip poveste - dreapta sus */}
       <span
         className={`absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-md uppercase ${badgeColors[accessLevel]}`}
       >
-        {accessLevel}
+        {badgeText}
       </span>
 
       <StoryCard
@@ -67,8 +72,10 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
           darkMode ? "text-gray-300" : "text-gray-600"
         }`}
       >
-        <span className="italic">{story.category || "Fără categorie"}</span>
-        <span>Rating: {getAverageRating(story.ratings)}★</span>
+        <span className="italic">{story.category || t("noCategory")}</span>
+        <span>
+          {t("rating")}: {getAverageRating(story.ratings)}★
+        </span>
       </div>
     </div>
   );

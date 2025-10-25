@@ -5,16 +5,18 @@ import { ThemeContext } from "../../context/themecontext";
 import Button from "../buttons/Button";
 import girlReading from "../../assets/images/girl-reading.png";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export default function HeroSection() {
   const navigate = useNavigate();
   const { darkMode } = useContext(ThemeContext);
+  const { t } = useTranslation();
 
   return (
     <section className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
       <img
         src={girlReading}
-        alt="Reading girl"
+        alt={t("hero.alt")}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
       />
 
@@ -36,7 +38,7 @@ export default function HeroSection() {
             darkMode ? "text-indigo-100" : "text-indigo-100"
           }`}
         >
-          Read Imaginary Stories
+          {t("hero.title")}
         </motion.h1>
 
         <motion.p
@@ -45,7 +47,7 @@ export default function HeroSection() {
           transition={{ duration: 1, ease: "easeOut" }}
           className="text-lg md:text-2xl mb-6 max-w-xl text-gray-100 dark:text-gray-300"
         >
-          Explore a collection of romance, sci-fi, fantasy, and more.
+          {t("hero.subtitle")}
         </motion.p>
 
         <motion.div
@@ -58,7 +60,7 @@ export default function HeroSection() {
             className="px-8 py-4 text-lg font-semibold transition-transform duration-300 hover:scale-105"
             onClick={() => navigate("/allstories")}
           >
-            Browse Stories
+            {t("hero.cta")}
           </Button>
         </motion.div>
       </div>

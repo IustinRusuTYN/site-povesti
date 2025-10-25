@@ -1,8 +1,11 @@
+// src/components/footer.js
 import React, { useContext } from "react";
 import { ThemeContext } from "../context/themecontext";
+import { useTranslation } from "react-i18next"; // 🔹 import
 
 export default function Footer() {
   const { darkMode } = useContext(ThemeContext);
+  const { t } = useTranslation(); // 🔹 hook pentru traduceri
 
   return (
     <footer
@@ -12,8 +15,7 @@ export default function Footer() {
     >
       <div className="max-w-screen-lg mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
         <p className="text-sm mb-4 md:mb-0">
-          &copy; {new Date().getFullYear()} PovestiMagice. Toate drepturile
-          rezervate.
+          &copy; {new Date().getFullYear()} {t("footerText")}
         </p>
 
         <div className="flex space-x-6">
