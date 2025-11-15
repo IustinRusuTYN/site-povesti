@@ -4,22 +4,22 @@ import { useNavigate } from "react-router-dom";
 import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
 import { SearchContext } from "../context/searchcontext";
-import storiesData from "../data/stories"; // fallback local
+import storiesData from "../data/stories";
 import api from "../utils/api";
+import { getStoryText } from "../utils/storyHelpers";
 
 import CategoryFilter from "../components/allstories/categoryfilter";
 import StoryList from "../components/allstories/storylist";
 import LoadingError from "../components/allstories/loadingerror";
 import SignInForm from "../components/forms/SignInForm";
 import { AuthContext } from "../context/authcontext";
-import { useTranslation } from "react-i18next"; // 🔹 import i18n
+import { useTranslation } from "react-i18next";
 
 export default function AllStories() {
   const { darkMode } = useContext(ThemeContext);
   const { query } = useContext(SearchContext);
   const { isAuthenticated } = useContext(AuthContext);
-  const { t } = useTranslation(); // 🔹 hook i18n
-
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [stories, setStories] = useState(storiesData);
@@ -27,11 +27,8 @@ export default function AllStories() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Modal SignIn
   const [showSignInModal, setShowSignInModal] = useState(false);
 
-  // Fetch stories from backend with fallback
   useEffect(() => {
     const fetchStories = async () => {
       try {
@@ -42,7 +39,7 @@ export default function AllStories() {
         console.warn(
           "Nu am putut încărca de la backend, folosesc date locale."
         );
-        setError(t("usingLocalData")); // 🔹 traducere mesaj fallback
+        setError(t("usingLocalData"));
       } finally {
         setLoading(false);
       }
@@ -50,40 +47,58 @@ export default function AllStories() {
     fetchStories();
   }, [t]);
 
-  // Extract categories
   const categories = [
     "all",
     ...new Set(stories.map((s) => s.category).filter(Boolean)),
   ];
 
-  // Filter stories by query & category
   useEffect(() => {
     if (!stories || stories.length === 0) return;
 
-    const filtered = stories.filter((story) => {
+    const filtered = stories.filter(Boolean).filter((story, index) => {
+      if (!story || !story.translations) {
+        console.warn(
+          "Story invalid sau fără translations:",
+          story,
+          "la index:",
+          index
+        );
+        return false;
+      }
+
       const matchesCategory =
         categoryFilter === "all" || story.category === categoryFilter;
+
+      const { title, excerpt } = getStoryText(story, i18n.language);
+      const safeTitle = (title || "").toString();
+      const safeExcerpt = (excerpt || "").toString();
+      const safeQuery = (query || "").toString();
+
+      // Log pentru debugging
+      console.log("DEBUG AllStories:", {
+        index,
+        storyId: story.id,
+        safeTitle,
+        safeExcerpt,
+        safeQuery,
+      });
+
       const matchesQuery =
-        !query ||
-        story.title.toLowerCase().includes(query.toLowerCase()) ||
-        story.excerpt.toLowerCase().includes(query.toLowerCase());
+        safeQuery === "" ||
+        safeTitle.toLowerCase().includes(safeQuery.toLowerCase()) ||
+        safeExcerpt.toLowerCase().includes(safeQuery.toLowerCase());
+
       return matchesCategory && matchesQuery;
     });
 
     setFilteredStories(filtered);
-  }, [stories, query, categoryFilter]);
+  }, [stories, query, categoryFilter, i18n.language]);
 
-  const handleStoryClick = (id) => {
-    navigate(`/story/${id}`);
-  };
-
-  const handleRequireAuth = () => {
-    setShowSignInModal(true);
-  };
+  const handleStoryClick = (id) => navigate(`/story/${id}`);
+  const handleRequireAuth = () => setShowSignInModal(true);
 
   return (
     <PageLayout>
-      {/* SignIn Modal */}
       {showSignInModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <SignInForm onClose={() => setShowSignInModal(false)} />
@@ -96,10 +111,9 @@ export default function AllStories() {
             darkMode ? "text-gray-100" : "text-gray-800"
           }`}
         >
-          {t("allStoriesTitle")} {/* 🔹 text traductibil */}
+          {t("allStoriesTitle")}
         </h1>
 
-        {/* Category Filter */}
         <CategoryFilter
           categories={categories}
           categoryFilter={categoryFilter}
@@ -107,7 +121,6 @@ export default function AllStories() {
           darkMode={darkMode}
         />
 
-        {/* Loading / Error / Stories */}
         <LoadingError loading={loading} error={error} />
 
         {!loading && filteredStories.length > 0 && (

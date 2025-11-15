@@ -11,9 +11,12 @@ import ProfileRecent from "../components/profile/profilerecent";
 import ProfileRecommended from "../components/profile/profilerecommended";
 import ProfileSubscription from "../components/profile/profilesubscription";
 
+import { useTranslation } from "react-i18next";
+
 export default function Profile() {
   const { darkMode } = useContext(ThemeContext);
   const { user, logout } = useContext(AuthContext);
+  const { t } = useTranslation();
 
   const [recentStories, setRecentStories] = useState([]);
   const [recommended, setRecommended] = useState([]);
@@ -35,7 +38,7 @@ export default function Profile() {
             darkMode ? "text-gray-100" : "text-gray-800"
           }`}
         >
-          Profilul tău
+          {t("profile.title")}
         </h1>
 
         {/* Tabs */}

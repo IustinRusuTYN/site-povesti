@@ -15,7 +15,7 @@ export default function InputField({
     <>
       <input
         type={type}
-        placeholder={placeholder}
+        placeholder={placeholder} // deja tradus în componenta părinte
         value={value}
         onChange={onChange}
         list={datalistId}

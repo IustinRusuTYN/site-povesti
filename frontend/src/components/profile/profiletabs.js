@@ -1,15 +1,17 @@
 // src/components/profile/profiletabs.js
 import React, { useContext } from "react";
 import { ThemeContext } from "../../context/themecontext";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileTabs({ activeTab, setActiveTab }) {
   const { darkMode } = useContext(ThemeContext);
+  const { t } = useTranslation();
 
   const tabs = [
-    { id: "info", label: "Informații cont" },
-    { id: "recent", label: "Povești recente" },
-    { id: "rec", label: "Recomandări" },
-    { id: "subscription", label: "Abonament" },
+    { id: "info", label: t("profile.tabs.info") },
+    { id: "recent", label: t("profile.tabs.recent") },
+    { id: "rec", label: t("profile.tabs.recommended") },
+    { id: "subscription", label: t("profile.tabs.subscription") },
   ];
 
   return (

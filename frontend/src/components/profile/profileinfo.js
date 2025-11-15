@@ -1,7 +1,10 @@
 // src/components/profile/profileinfo.js
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileInfo({ darkMode, user, logout }) {
+  const { t } = useTranslation();
+
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -9,11 +12,13 @@ export default function ProfileInfo({ darkMode, user, logout }) {
 
   const handlePasswordReset = (e) => {
     e.preventDefault();
+
     if (newPassword !== confirmPassword) {
-      setMessage("Parolele nu coincid!");
+      setMessage(t("profilePage.info.errorMismatch"));
       return;
     }
-    setMessage("Parola a fost schimbată cu succes!");
+
+    setMessage(t("profilePage.info.successChanged"));
     setCurrentPassword("");
     setNewPassword("");
     setConfirmPassword("");
@@ -22,10 +27,11 @@ export default function ProfileInfo({ darkMode, user, logout }) {
   return (
     <div className="mb-10 space-y-4">
       <p className={`${darkMode ? "text-gray-100" : "text-gray-800"}`}>
-        <strong>Nume:</strong> {user?.name}
+        <strong>{t("profilePage.info.name")}:</strong> {user?.name}
       </p>
+
       <p className={`${darkMode ? "text-gray-100" : "text-gray-800"}`}>
-        <strong>Email:</strong> {user?.email}
+        <strong>{t("profilePage.info.email")}:</strong> {user?.email}
       </p>
 
       {/* Reset Password */}
@@ -38,16 +44,18 @@ export default function ProfileInfo({ darkMode, user, logout }) {
             darkMode ? "text-gray-100" : "text-gray-800"
           }`}
         >
-          Schimbă parola
+          {t("profilePage.info.changePasswordTitle")}
         </h2>
+
         {message && (
           <p className={`${darkMode ? "text-green-400" : "text-green-600"}`}>
             {message}
           </p>
         )}
+
         <input
           type="password"
-          placeholder="Parola curentă"
+          placeholder={t("profilePage.info.currentPassword")}
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
           className={`px-3 py-2 rounded-md border ${
@@ -57,9 +65,10 @@ export default function ProfileInfo({ darkMode, user, logout }) {
           }`}
           required
         />
+
         <input
           type="password"
-          placeholder="Parola nouă"
+          placeholder={t("profilePage.info.newPassword")}
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           className={`px-3 py-2 rounded-md border ${
@@ -69,9 +78,10 @@ export default function ProfileInfo({ darkMode, user, logout }) {
           }`}
           required
         />
+
         <input
           type="password"
-          placeholder="Confirmă parola nouă"
+          placeholder={t("profilePage.info.confirmPassword")}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           className={`px-3 py-2 rounded-md border ${
@@ -81,11 +91,12 @@ export default function ProfileInfo({ darkMode, user, logout }) {
           }`}
           required
         />
+
         <button
           type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
         >
-          Schimbă parola
+          {t("profilePage.info.changePasswordBtn")}
         </button>
       </form>
 
@@ -93,7 +104,7 @@ export default function ProfileInfo({ darkMode, user, logout }) {
         onClick={logout}
         className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
       >
-        Logout
+        {t("profilePage.info.logout")}
       </button>
     </div>
   );

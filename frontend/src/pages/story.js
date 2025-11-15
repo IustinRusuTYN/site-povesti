@@ -1,4 +1,3 @@
-// src/pages/story.js
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import PageLayout from "../components/pagelayout";
@@ -12,10 +11,10 @@ import StoryPagination from "../components/story/storypagination";
 import StoryComments from "../components/story/storycomments";
 import StoryNotFound from "../components/story/storynotfound";
 
-import { useTranslation } from "react-i18next"; // ✅ import i18n
+import { useTranslation } from "react-i18next";
 
 export default function Story() {
-  const { t } = useTranslation(); // ✅ hook i18n
+  const { t } = useTranslation();
   const { id } = useParams();
   const { darkMode } = useContext(ThemeContext);
   const { user, isAuthenticated } = useContext(AuthContext);
@@ -56,15 +55,17 @@ export default function Story() {
   const isPremium = accessLevel === "premium";
   const isBasic = accessLevel === "basic";
 
-  let displayedContent = story.content || [];
-  const totalPages = story.content
-    ? Math.ceil(story.content.length / paragraphsPerPage)
+  let displayedContent =
+    story.content?.map((p, idx) => t(`stories.${story.id}.content.${idx}`)) ||
+    [];
+  const totalPages = displayedContent.length
+    ? Math.ceil(displayedContent.length / paragraphsPerPage)
     : 0;
 
   if (isBasic && !isAuthenticated) {
-    displayedContent = story.content.slice(0, paragraphsPerPage);
+    displayedContent = displayedContent.slice(0, paragraphsPerPage);
   } else if (!isPremium) {
-    displayedContent = story.content.slice(
+    displayedContent = displayedContent.slice(
       page * paragraphsPerPage,
       (page + 1) * paragraphsPerPage
     );
@@ -85,13 +86,17 @@ export default function Story() {
     <PageLayout>
       {showLoginModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          {/* poți pune aici SignInForm dacă vrei */}
+          {/* aici poti pune SignInForm dacă vrei */}
         </div>
       )}
 
       <section className="max-w-4xl mx-auto px-4 py-10">
         <StoryHeader
-          story={story}
+          story={{
+            ...story,
+            title: t(`stories.${story.id}.title`),
+            excerpt: t(`stories.${story.id}.excerpt`),
+          }}
           darkMode={darkMode}
           rating={rating}
           votes={votes}

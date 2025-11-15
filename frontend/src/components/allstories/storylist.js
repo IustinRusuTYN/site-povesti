@@ -6,9 +6,10 @@ export default function StoryList({
   onStoryClick,
   onRequireAuth,
   darkMode,
+  useTranslation, // 🔹 funcția t transmisă din AllStories
 }) {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-10">
       {stories.map((story) => (
         <StoryItem
           key={story.id}
@@ -16,6 +17,7 @@ export default function StoryList({
           onClick={onStoryClick}
           onRequireAuth={onRequireAuth}
           darkMode={darkMode}
+          useTranslation={useTranslation} // 🔹 trimitem t pentru fiecare item
         />
       ))}
     </div>

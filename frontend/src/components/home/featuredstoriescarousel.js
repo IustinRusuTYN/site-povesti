@@ -1,9 +1,8 @@
-// src/components/home/featuredstoriescarousel.js
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next"; // 🔹 import
+import { useTranslation } from "react-i18next";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -15,7 +14,20 @@ import { ThemeContext } from "../../context/themecontext";
 
 export default function FeaturedStoriesCarousel() {
   const { darkMode } = useContext(ThemeContext);
-  const { t } = useTranslation(); // 🔹 hook pentru traduceri
+  const { t, i18n } = useTranslation();
+
+  const [currentStories, setCurrentStories] = useState(stories);
+
+  useEffect(() => {
+    // Refacem lista de stories la schimbarea limbii
+    const lang = i18n.language;
+    const translated = stories.map((story) => ({
+      ...story,
+      title: story.translations?.[lang]?.title || story.title,
+      excerpt: story.translations?.[lang]?.excerpt || story.excerpt,
+    }));
+    setCurrentStories(translated);
+  }, [i18n.language]); // 🔹 dependență pe limba curentă
 
   return (
     <section
@@ -32,8 +44,7 @@ export default function FeaturedStoriesCarousel() {
             : "text-gray-800 hover:text-gray-400"
         }`}
       >
-        <Link to="/allstories">{t("featuredStories")}</Link>{" "}
-        {/* 🔹 text tradus */}
+        <Link to="/allstories">{t("featuredStories")}</Link>
       </h3>
 
       <Swiper
@@ -55,7 +66,7 @@ export default function FeaturedStoriesCarousel() {
         pagination={{ clickable: true }}
         navigation={true}
       >
-        {stories.map((story) => (
+        {currentStories.map((story) => (
           <SwiperSlide key={story.id} className="h-auto">
             <Link to={`/story/${story.id}`} className="block h-full">
               <div

@@ -19,22 +19,21 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   const isBasic = accessLevel === "basic";
 
   const handleClick = () => {
-    if (isPremium) return; // Premium e blocat complet
+    if (isPremium) return; // Premium complet blocat
     if (isBasic && !isAuthenticated) {
-      onRequireAuth(); // deschide modalul de log-in
+      onRequireAuth(); // deschide modal log-in
       return;
     }
     onClick(story.id); // accesează povestea
   };
 
-  // badge colors
+  // Culori badge
   const badgeColors = {
     free: "bg-green-500 text-white",
     basic: "bg-blue-500 text-white",
     premium: "bg-yellow-400 text-gray-800",
   };
 
-  // Translate access levels
   const badgeText = t(`accessLevels.${accessLevel}`);
 
   return (
@@ -49,7 +48,7 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
-      aria-label={`${t("story")}: ${story.title}, ${t(
+      aria-label={`${t("story")}: ${t(`stories.${story.id}.title`)}, ${t(
         "rating"
       )}: ${getAverageRating(story.ratings)}★, ${t("type")}: ${badgeText}`}
     >
@@ -61,12 +60,12 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
       </span>
 
       <StoryCard
-        title={story.title}
-        excerpt={story.excerpt}
+        title={t(`stories.${story.id}.title`)}
+        excerpt={t(`stories.${story.id}.excerpt`)}
         image={story.image}
       />
 
-      {/* Categorie + Rating pe aceeași linie */}
+      {/* Categorie + Rating */}
       <div
         className={`mt-2 flex justify-between items-center text-sm font-medium px-2 ${
           darkMode ? "text-gray-300" : "text-gray-600"

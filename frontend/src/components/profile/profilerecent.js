@@ -1,8 +1,11 @@
 // src/components/profile/profilerecent.js
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileRecent({ darkMode, stories }) {
+  const { t } = useTranslation();
+
   return (
     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-10">
       {stories.length > 0 ? (
@@ -32,7 +35,7 @@ export default function ProfileRecent({ darkMode, stories }) {
         ))
       ) : (
         <p className={`${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-          Nu ai vizualizat încă nicio poveste.
+          {t("profile.recent.noStories")}
         </p>
       )}
     </div>
