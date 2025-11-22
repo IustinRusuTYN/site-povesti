@@ -61,7 +61,7 @@ export default function AllStories() {
         return false;
       }
 
-      // Verificare category sigură
+      // Verificare category sigură.
       const matchesCategory =
         categoryFilter === "all" || story.category === categoryFilter;
 
