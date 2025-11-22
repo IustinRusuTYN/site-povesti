@@ -1,27 +1,30 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-export default function InputField({
-  type,
-  placeholder,
-  value,
-  onChange,
-  required = false,
-  className = "",
-  datalistId,
-  options,
-  ...props
-}) {
+const InputField = forwardRef((props, ref) => {
+  const {
+    type,
+    placeholder,
+    value,
+    onChange,
+    required = false,
+    className = "",
+    datalistId,
+    options,
+    ...rest
+  } = props;
+
   return (
     <>
       <input
         type={type}
-        placeholder={placeholder} // deja tradus în componenta părinte
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
-        list={datalistId}
-        className={`w-full px-4 py-2 rounded-md border dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-300 ${className}`}
+        ref={ref} // acum accepta ref
+        className={`w-full px-4 py-2 rounded-md border ... ${className}`}
         required={required}
-        {...props}
+        list={datalistId}
+        {...rest}
       />
       {datalistId && options && (
         <datalist id={datalistId}>
@@ -32,4 +35,6 @@ export default function InputField({
       )}
     </>
   );
-}
+});
+
+export default InputField;

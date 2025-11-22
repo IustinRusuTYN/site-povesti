@@ -79,16 +79,6 @@ export default function AllStories() {
         safeTitle.toLowerCase().includes(safeQuery.toLowerCase()) ||
         safeExcerpt.toLowerCase().includes(safeQuery.toLowerCase());
 
-      // Debugging
-      console.log("DEBUG AllStories:", {
-        index,
-        storyId: story?.id,
-        safeTitle,
-        safeExcerpt,
-        safeQuery,
-        category: story.category,
-      });
-
       return matchesCategory && matchesQuery;
     });
 

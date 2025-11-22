@@ -34,14 +34,6 @@ export const SearchProvider = ({ children }) => {
       // dacă toate sunt goale, nu are sens să fie inclus
       if (!safeTitle && !safeExcerpt) return false;
 
-      // DEBUG
-      console.log("DEBUG SearchContext:", {
-        storyId: story.id,
-        safeTitle,
-        safeExcerpt,
-        safeQuery,
-      });
-
       return (
         safeQuery === "" ||
         safeTitle.toLowerCase().includes(safeQuery.toLowerCase()) ||
