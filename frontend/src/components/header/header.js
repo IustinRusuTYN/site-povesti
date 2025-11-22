@@ -85,6 +85,7 @@ export default function Header() {
 
       <MobileMenu
         isOpen={menuOpen}
+        setIsOpen={setMenuOpen} // ⚡ aici e cheia
         darkMode={darkMode}
         showModal={showModal}
         setShowModal={setShowModal}

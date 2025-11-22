@@ -1,4 +1,3 @@
-// src/components/header/mobilemenu.js
 import React, { useRef, useEffect, useState } from "react";
 import NavLinks from "./navlinks";
 import SearchBar from "./Hsearchbar";
@@ -8,6 +7,7 @@ import ThemeToggle from "./themeToggle";
 
 export default function MobileMenu({
   isOpen,
+  setIsOpen,
   darkMode,
   showModal,
   setShowModal,
@@ -15,16 +15,31 @@ export default function MobileMenu({
   const menuRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState("0px");
 
-  // Setăm înălțimea reală când se deschide
+  // Ajustăm înălțimea meniului
   useEffect(() => {
     if (menuRef.current) {
-      if (isOpen) {
-        setMaxHeight(menuRef.current.scrollHeight + "px");
-      } else {
-        setMaxHeight("0px");
-      }
+      setMaxHeight(isOpen ? menuRef.current.scrollHeight + "px" : "0px");
     }
   }, [isOpen]);
+
+  // Închidem meniul la click în afara lui
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !event.target.closest("button[aria-label='Toggle menu']")
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, setIsOpen]);
 
   return (
     <nav
