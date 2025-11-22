@@ -55,38 +55,39 @@ export default function AllStories() {
   useEffect(() => {
     if (!stories || stories.length === 0) return;
 
-    const filtered = stories.filter(Boolean).filter((story, index) => {
-      if (!story || !story.translations) {
-        console.warn(
-          "Story invalid sau fără translations:",
-          story,
-          "la index:",
-          index
-        );
+    const filtered = stories.filter((story, index) => {
+      if (!story) {
+        console.warn("Story undefined la index:", index);
         return false;
       }
 
+      // Verificare category sigură
       const matchesCategory =
         categoryFilter === "all" || story.category === categoryFilter;
 
+      // Obținem corect textele
       const { title, excerpt } = getStoryText(story, i18n.language);
-      const safeTitle = (title || "").toString();
-      const safeExcerpt = (excerpt || "").toString();
-      const safeQuery = (query || "").toString();
 
-      // Log pentru debugging
-      console.log("DEBUG AllStories:", {
-        index,
-        storyId: story.id,
-        safeTitle,
-        safeExcerpt,
-        safeQuery,
-      });
+      // Asigurăm că *oricând* avem string valid
+      const safeTitle = typeof title === "string" ? title : "";
+      const safeExcerpt = typeof excerpt === "string" ? excerpt : "";
+      const safeQuery = typeof query === "string" ? query : "";
 
+      // Verificare fără risc
       const matchesQuery =
         safeQuery === "" ||
         safeTitle.toLowerCase().includes(safeQuery.toLowerCase()) ||
         safeExcerpt.toLowerCase().includes(safeQuery.toLowerCase());
+
+      // Debugging
+      console.log("DEBUG AllStories:", {
+        index,
+        storyId: story?.id,
+        safeTitle,
+        safeExcerpt,
+        safeQuery,
+        category: story.category,
+      });
 
       return matchesCategory && matchesQuery;
     });

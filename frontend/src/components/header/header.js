@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import logo from "../../assets/logo/bnk.svg";
 
 import NavLinks from "./navlinks";
-import SearchBar from "./searchbar";
+import SearchBar from "./Hsearchbar";
 import AuthMenu from "./authmenu";
 import LanguageSelect from "./languageSelect";
 import ThemeToggle from "./themeToggle";

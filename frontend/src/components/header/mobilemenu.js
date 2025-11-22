@@ -1,7 +1,7 @@
 // src/components/header/mobilemenu.js
 import React, { useRef, useEffect, useState } from "react";
 import NavLinks from "./navlinks";
-import SearchBar from "./searchbar";
+import SearchBar from "./Hsearchbar";
 import AuthMenu from "./authmenu";
 import LanguageSelect from "./languageSelect";
 import ThemeToggle from "./themeToggle";

@@ -21,27 +21,29 @@ export const SearchProvider = ({ children }) => {
 
     const lang = i18n.language || "ro";
 
-    const filtered = stories.filter(Boolean).filter((story) => {
+    const filtered = stories.filter((story) => {
       if (!story || !story.translations) return false;
 
       const { title, excerpt } = getStoryText(story, lang);
 
-      // Fallback complet pentru orice situație
+      // asigurăm 100% că este string valid
       const safeTitle = typeof title === "string" ? title : "";
       const safeExcerpt = typeof excerpt === "string" ? excerpt : "";
       const safeQuery = typeof searchValue === "string" ? searchValue : "";
 
-      // DEBUG complet
+      // dacă toate sunt goale, nu are sens să fie inclus
+      if (!safeTitle && !safeExcerpt) return false;
+
+      // DEBUG
       console.log("DEBUG SearchContext:", {
         storyId: story.id,
-        title,
-        excerpt,
         safeTitle,
         safeExcerpt,
         safeQuery,
       });
 
       return (
+        safeQuery === "" ||
         safeTitle.toLowerCase().includes(safeQuery.toLowerCase()) ||
         safeExcerpt.toLowerCase().includes(safeQuery.toLowerCase())
       );
