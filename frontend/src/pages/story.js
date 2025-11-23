@@ -23,7 +23,7 @@ export default function Story() {
 
   const story = stories.find((s) => s.id === parseInt(id));
   const [page, setPage] = useState(0);
-  const paragraphsPerPage = 3; // câte paragrafe per pagină
+  const paragraphsPerPage = 3;
   const [comments, setComments] = useState(story?.comments || []);
   const [rating, setRating] = useState(
     story?.ratings?.length
@@ -51,7 +51,9 @@ export default function Story() {
   }
 
   const accessLevel = story.accessLevel || "free";
-  const userAccess = isAuthenticated ? user?.plan || "free" : "free";
+  const userAccess = isAuthenticated
+    ? user?.subscriptionPlan || "free"
+    : "free"; // 🔥 MODIFICARE
 
   const isPremium = accessLevel === "premium";
   const isBasic = accessLevel === "basic";
@@ -64,20 +66,38 @@ export default function Story() {
     ? Math.ceil(displayedContent.length / paragraphsPerPage)
     : 0;
 
-  // --- Logica teaser și blocare pagini ---
+  // 🔹 Logica de acces corectată
   let canNavigatePages = true;
 
-  if (isBasic && !isAuthenticated) {
-    displayedContent = displayedContent.slice(0, 1); // teaser doar primul paragraf
-    canNavigatePages = false;
-  } else if (isPremium && userAccess !== "premium") {
-    displayedContent = displayedContent.slice(0, 1); // teaser doar primul paragraf
-    canNavigatePages = false;
-  } else if (!isPremium) {
+  if (accessLevel === "free") {
+    // oricine poate citi free
     displayedContent = displayedContent.slice(
       page * paragraphsPerPage,
       (page + 1) * paragraphsPerPage
     );
+  } else if (accessLevel === "basic") {
+    if (
+      !isAuthenticated ||
+      (userAccess !== "basic" && userAccess !== "premium")
+    ) {
+      displayedContent = displayedContent.slice(0, 1); // teaser
+      canNavigatePages = false;
+    } else {
+      displayedContent = displayedContent.slice(
+        page * paragraphsPerPage,
+        (page + 1) * paragraphsPerPage
+      );
+    }
+  } else if (accessLevel === "premium") {
+    if (userAccess !== "premium") {
+      displayedContent = displayedContent.slice(0, 1); // teaser
+      canNavigatePages = false;
+    } else {
+      displayedContent = displayedContent.slice(
+        page * paragraphsPerPage,
+        (page + 1) * paragraphsPerPage
+      );
+    }
   }
 
   const handleAddComment = (comment) =>
@@ -92,7 +112,6 @@ export default function Story() {
   return (
     <PageLayout>
       <section className="max-w-4xl mx-auto px-4 py-10">
-        {/* Headerul poveștii */}
         <StoryHeader
           story={{
             ...story,
@@ -105,15 +124,12 @@ export default function Story() {
           onRate={handleRate}
         />
 
-        {/* Conținutul poveștii */}
         <StoryContent content={displayedContent} darkMode={darkMode} />
 
         {/* Teaser / blocare pentru Basic sau Premium */}
-        {(!canNavigatePages ||
-          isBasic ||
-          (isPremium && userAccess !== "premium")) && (
+        {!canNavigatePages && (
           <div className="mt-6 text-center p-6 border-t border-gray-300 dark:border-gray-700">
-            {isBasic && !isAuthenticated && (
+            {isBasic && (userAccess === "free" || !isAuthenticated) && (
               <>
                 <p
                   className={`text-lg font-medium ${
@@ -153,7 +169,6 @@ export default function Story() {
           </div>
         )}
 
-        {/* Paginare pentru cei care pot naviga */}
         {canNavigatePages && totalPages > 1 && (
           <StoryPagination
             page={page}
@@ -162,14 +177,12 @@ export default function Story() {
           />
         )}
 
-        {/* Comentarii */}
         <StoryComments
           comments={comments}
           darkMode={darkMode}
           onAddComment={handleAddComment}
         />
 
-        {/* Back to All Stories */}
         <div className="mt-8 text-center">
           <Link
             to="/allstories"

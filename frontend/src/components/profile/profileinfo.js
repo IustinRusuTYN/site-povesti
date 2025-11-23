@@ -4,108 +4,162 @@ import { useTranslation } from "react-i18next";
 
 export default function ProfileInfo({ darkMode, user, logout }) {
   const { t } = useTranslation();
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState(user?.name || "");
+  const [bio, setBio] = useState(user?.bio || "");
 
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-
-  const handlePasswordReset = (e) => {
-    e.preventDefault();
-
-    if (newPassword !== confirmPassword) {
-      setMessage(t("profilePage.info.errorMismatch"));
-      return;
-    }
-
-    setMessage(t("profilePage.info.successChanged"));
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+  const handleSave = () => {
+    // Aici poți adăuga logica de salvare
+    console.log("Salvare:", { name, bio });
+    setIsEditing(false);
   };
 
   return (
-    <div className="mb-10 space-y-4">
-      <p className={`${darkMode ? "text-gray-100" : "text-gray-800"}`}>
-        <strong>{t("profilePage.info.name")}:</strong> {user?.name}
-      </p>
-
-      <p className={`${darkMode ? "text-gray-100" : "text-gray-800"}`}>
-        <strong>{t("profilePage.info.email")}:</strong> {user?.email}
-      </p>
-
-      {/* Reset Password */}
-      <form
-        className="flex flex-col space-y-3 max-w-md mt-4"
-        onSubmit={handlePasswordReset}
+    <div className="space-y-6">
+      {/* Card Principal */}
+      <div
+        className={`rounded-xl p-6 ${
+          darkMode ? "bg-gray-800" : "bg-white"
+        } shadow-lg`}
       >
-        <h2
-          className={`text-xl font-semibold ${
-            darkMode ? "text-gray-100" : "text-gray-800"
-          }`}
-        >
-          {t("profilePage.info.changePasswordTitle")}
-        </h2>
+        <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+          {/* Avatar */}
+          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
+            {(user?.name || "U").charAt(0).toUpperCase()}
+          </div>
 
-        {message && (
-          <p className={`${darkMode ? "text-green-400" : "text-green-600"}`}>
-            {message}
-          </p>
-        )}
+          {/* Info */}
+          <div className="flex-1 text-center md:text-left w-full">
+            {isEditing ? (
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={t("profile.namePlaceholder")}
+                  className={`w-full px-4 py-2 rounded-lg ${
+                    darkMode
+                      ? "bg-gray-700 text-white"
+                      : "bg-gray-100 text-gray-900"
+                  }`}
+                />
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder={t("profile.bioPlaceholder")}
+                  rows="3"
+                  className={`w-full px-4 py-2 rounded-lg ${
+                    darkMode
+                      ? "bg-gray-700 text-white"
+                      : "bg-gray-100 text-gray-900"
+                  }`}
+                />
+              </div>
+            ) : (
+              <>
+                <h2
+                  className={`text-2xl md:text-3xl font-bold mb-2 ${
+                    darkMode ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  {user?.name || t("profile.defaultName")}
+                </h2>
+                <p
+                  className={`mb-3 ${
+                    darkMode ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  {user?.email}
+                </p>
+                <p
+                  className={`text-sm ${
+                    darkMode ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  {bio || t("profile.noBio")}
+                </p>
+              </>
+            )}
+          </div>
 
-        <input
-          type="password"
-          placeholder={t("profilePage.info.currentPassword")}
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          className={`px-3 py-2 rounded-md border ${
-            darkMode
-              ? "bg-gray-700 border-gray-600 text-white"
-              : "bg-white border-gray-300 text-gray-900"
-          }`}
-          required
-        />
+          {/* Butoane */}
+          <div className="flex flex-col gap-2 w-full md:w-auto">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={handleSave}
+                  className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:shadow-lg transition-all"
+                >
+                  {t("profile.save")}
+                </button>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className={`px-6 py-2 rounded-lg font-medium ${
+                    darkMode
+                      ? "bg-gray-700 text-white hover:bg-gray-600"
+                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                  }`}
+                >
+                  {t("profile.cancel")}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:shadow-lg transition-all"
+                >
+                  {t("profile.edit")}
+                </button>
+                <button
+                  onClick={logout}
+                  className={`px-6 py-2 rounded-lg font-medium ${
+                    darkMode
+                      ? "bg-red-900/30 text-red-400 hover:bg-red-900/50"
+                      : "bg-red-50 text-red-600 hover:bg-red-100"
+                  }`}
+                >
+                  {t("profile.logout")}
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
 
-        <input
-          type="password"
-          placeholder={t("profilePage.info.newPassword")}
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className={`px-3 py-2 rounded-md border ${
-            darkMode
-              ? "bg-gray-700 border-gray-600 text-white"
-              : "bg-white border-gray-300 text-gray-900"
-          }`}
-          required
-        />
-
-        <input
-          type="password"
-          placeholder={t("profilePage.info.confirmPassword")}
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className={`px-3 py-2 rounded-md border ${
-            darkMode
-              ? "bg-gray-700 border-gray-600 text-white"
-              : "bg-white border-gray-300 text-gray-900"
-          }`}
-          required
-        />
-
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-        >
-          {t("profilePage.info.changePasswordBtn")}
-        </button>
-      </form>
-
-      <button
-        onClick={logout}
-        className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
-      >
-        {t("profilePage.info.logout")}
-      </button>
+      {/* Statistici Rapide */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[
+          {
+            label: t("profile.stats.storiesRead"),
+            value: user?.storiesRead || 0,
+          },
+          { label: t("profile.stats.favorites"), value: user?.favorites || 0 },
+          {
+            label: t("profile.stats.timeSpent"),
+            value: `${user?.timeSpent || 0}h`,
+          },
+          { label: t("profile.stats.streak"), value: `${user?.streak || 0}d` },
+        ].map((stat, idx) => (
+          <div
+            key={idx}
+            className={`p-4 rounded-xl text-center ${
+              darkMode ? "bg-gray-800" : "bg-white"
+            } shadow-lg`}
+          >
+            <div className="text-2xl md:text-3xl font-bold text-purple-500 mb-1">
+              {stat.value}
+            </div>
+            <div
+              className={`text-xs md:text-sm ${
+                darkMode ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

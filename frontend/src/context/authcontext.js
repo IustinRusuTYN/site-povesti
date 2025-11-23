@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 export const AuthContext = createContext();
 
 const STORAGE_KEY = "app_auth_v1";
-const USERS_KEY = "app_users_v1"; // utilizatori fictivi
+const USERS_KEY = "app_users_v1";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -45,16 +45,25 @@ export function AuthProvider({ children }) {
       const users = JSON.parse(usersRaw);
 
       const found = users.find((u) => u.email === email);
+
       if (!found) throw new Error("Email-ul nu există!");
       if (found.password !== password) throw new Error("Parolă incorectă!");
 
       const token = Math.random().toString(36).substr(2);
-      setUser({ name: found.name, email: found.email });
+
+      // 🔹 MODIFICARE: adaugă subscriptionPlan
+      const userData = {
+        name: found.name,
+        email: found.email,
+        subscriptionPlan: found.subscriptionPlan || "free", // 🔥 IMPORTANT
+      };
+
+      setUser(userData);
       setAccessToken(token);
       setRefreshToken(token);
       persist(
         {
-          user: { name: found.name, email: found.email },
+          user: userData,
           accessToken: token,
           refreshToken: token,
         },
@@ -62,7 +71,7 @@ export function AuthProvider({ children }) {
       );
       setLoading(false);
       return {
-        user: { name: found.name, email: found.email },
+        user: userData,
         accessToken: token,
         refreshToken: token,
       };
@@ -84,20 +93,28 @@ export function AuthProvider({ children }) {
       if (users.find((u) => u.email === email))
         throw new Error("Email deja înregistrat!");
 
-      const newUser = { name, email, password };
+      // 🔹 MODIFICARE: adaugă subscriptionPlan implicit "free"
+      const newUser = {
+        name,
+        email,
+        password,
+        subscriptionPlan: "free", // 🔥 default free la signup
+      };
       users.push(newUser);
       localStorage.setItem(USERS_KEY, JSON.stringify(users));
 
       const token = Math.random().toString(36).substr(2);
-      setUser({ name, email });
+      const userData = { name, email, subscriptionPlan: "free" };
+
+      setUser(userData);
       setAccessToken(token);
       setRefreshToken(token);
       persist(
-        { user: { name, email }, accessToken: token, refreshToken: token },
+        { user: userData, accessToken: token, refreshToken: token },
         remember
       );
       setLoading(false);
-      return { user: { name, email }, accessToken: token, refreshToken: token };
+      return { user: userData, accessToken: token, refreshToken: token };
     } catch (err) {
       setError(err.message);
       setLoading(false);

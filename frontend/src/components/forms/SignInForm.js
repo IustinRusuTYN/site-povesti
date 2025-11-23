@@ -41,7 +41,7 @@ export default function SignInForm({ onClose, emailRef }) {
     }
 
     try {
-      await login({ email, password, rememberMe });
+      await login(email, password, rememberMe); // 🔥 MODIFICARE AICI
       onClose();
     } catch (err) {
       setError("invalid");

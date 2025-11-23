@@ -4,13 +4,16 @@ import { initReactI18next } from "react-i18next";
 
 // 🔹 Traduceri locale, organizate pe pagini și componente
 const resources = {
+  //-------------------------------------------------------
+  // ROMANA
+  //-------------------------------------------------------
+
   ro: {
     translation: {
-      // 🔹 Navbar & linkuri navigație
-      allStories: "Toate poveștile",
+      allStories: "Toate Poveștile",
       about: "Despre",
-      upcoming: "Viitoare",
-      subscribe: "Abonare",
+      upcoming: "În Curând",
+      subscribe: "Abonează-te",
 
       subscribePage: {
         billing: {
@@ -31,9 +34,9 @@ const resources = {
           save: "Economisești",
         },
         hero: {
-          title: "Alege planul care ți se potrivește",
+          title: "Alege planul potrivit pentru tine",
           description:
-            "Abonează-te și deblochează povești exclusive, capitole bonus și o experiență fără reclame. Alege lunar sau anual și bucură-te de reducere.",
+            "Abonează-te și deblochează povești exclusive, capitole bonus și o experiență fără reclame. Alege abonament lunar sau anual și bucură-te de reduceri.",
         },
         plans: [
           {
@@ -42,13 +45,13 @@ const resources = {
             monthly: 4.99,
             yearly: 49.99,
             highlights: [
-              "Access la majoritatea poveștilor premium",
-              "Lectură fără reclame (basic)",
+              "Acces la majoritatea poveștilor premium",
+              "Citire fără reclame (basic)",
               "Acces la comunitate și comentarii",
             ],
             recommended: false,
             description:
-              "Ideal pentru cititorii ocazionali care vor puțin conținut premium.",
+              "Ideal pentru cititori ocazionali care doresc puțin conținut premium.",
           },
           {
             id: "premium",
@@ -57,168 +60,273 @@ const resources = {
             yearly: 99.99,
             highlights: [
               "Acces complet la toate poveștile premium + capitole bonus",
-              "Acces anticipat la noile lansări",
+              "Acces anticipat la lansări noi",
               "Suport prioritar și surprize exclusive",
             ],
             recommended: true,
             description:
-              "Pentru cititorii care doresc experiența completă și bonusuri speciale.",
+              "Pentru cititori care doresc experiența completă și bonusuri speciale.",
           },
         ],
         testimonials: {
-          title: "Ce spun cititoarele",
+          title: "Ce spun cititorii noștri",
           items: [
             {
               id: 1,
               name: "Elena M.",
-              text: "Am trecut la Premium și capitolele extra sunt extraordinare! Merită fiecare leu.",
-              role: "Cititoare, București",
+              text: "Am trecut la Premium și capitolele suplimentare sunt uimitoare! Merită fiecare ban.",
+              role: "Cititor, București",
             },
             {
               id: 2,
               name: "Ioana P.",
               text: "Oferta anuală m-a convins. Economisesc bani și primesc conținut de calitate.",
-              role: "Subscriber",
+              role: "Abonat",
             },
             {
               id: 3,
               name: "Maria T.",
-              text: "Lectura fără reclame și bonusurile exclusive fac experiența mult mai plăcută.",
-              role: "Cititoare fidelă",
+              text: "Citirea fără reclame și bonusurile exclusive fac experiența mult mai plăcută.",
+              role: "Cititor fidel",
             },
           ],
         },
         trust: {
           safePayments: {
-            title: "Plăți sigure",
+            title: "Plăți securizate",
             description:
-              "Procesăm plățile prin Stripe. Datele cardului nu sunt stocate niciodată pe serverele noastre.",
+              "Procesăm plățile prin Stripe. Datele cardului nu sunt niciodată stocate pe serverele noastre.",
           },
           cancelAnytime: {
-            title: "Anulezi oricând",
-            description: "Oprești reînnoirea din profil, fără taxe ascunse.",
+            title: "Anulează oricând",
+            description:
+              "Oprește reînnoirea din profilul tău, fără taxe ascunse.",
           },
           supportRefund: {
-            title: "Suport și refund",
+            title: "Suport & rambursare",
             description:
-              "Suport prioritar pentru Premium și refund în 30 de zile.",
+              "Suport prioritar pentru Premium și rambursări în 30 de zile.",
           },
         },
         alertSubscribed:
-          "Te-ai abonat la {{planId}} ({{billing}}) — demo flux. Integrare backend necesară.",
+          "Te-ai abonat la {{planId}} ({{billing}}) — flux demo. Este necesară integrarea backend.",
       },
-      upcomingPage: {
-        cta: {
-          title: "Vrei Acces Înaintea Tuturor? 🚀",
-          description:
-            "Abonează-te acum și deblochează acces timpuriu la povești, evenimente live și conținut exclusiv din culise.",
-          button: "Mergi la Abonare",
+
+      // 🔹 OBIECTUL PROFILE COMPLET ÎN ROMÂNĂ
+      profile: {
+        title: "Profilul Meu",
+        subtitle: "Gestionează-ți contul și preferințele",
+
+        tabs: {
+          info: "Informații",
+          stats: "Statistici",
+          recent: "Recente",
+          recommended: "Recomandate",
+          subscription: "Abonament",
+          settings: "Setări",
         },
-        hero: {
-          title: "În curând 🌟",
-          description:
-            "Povești proaspete, evenimente captivante și colecții exclusive sunt la orizont. Fii primul care experimentează magia.",
+
+        namePlaceholder: "Numele tău",
+        bioPlaceholder: "Spune ceva despre tine...",
+        defaultName: "Utilizator",
+        noBio: "Nicio descriere adăugată.",
+        edit: "Editează",
+        save: "Salvează",
+        cancel: "Anulează",
+        logout: "Deconectare",
+
+        stats: {
+          storiesRead: "Citite",
+          favorites: "Favorite",
+          timeSpent: "Timp",
+          streak: "Streak",
         },
-        items: [
-          {
-            title: "Nouă Poveste: Pădurea Magică",
-            date: "Lansare pe 25 August 2025",
-            iconKey: "book",
+
+        weekActivity: "Activitate săptămânală",
+        favoriteCategories: "Categorii preferate",
+
+        days: {
+          mon: "Lun",
+          tue: "Mar",
+          wed: "Mie",
+          thu: "Joi",
+          fri: "Vin",
+          sat: "Sâm",
+          sun: "Dum",
+        },
+
+        categories: {
+          drama: "Dramă",
+          comedy: "Comedie",
+          horror: "Horror",
+          adventure: "Aventură",
+        },
+
+        recent: {
+          noStories: "Nu ai citit povești recent",
+        },
+
+        noRecentStories: "Nu ai citit povești recent",
+        exploreStories: "Explorează Povești",
+        recentStories: "Povești Recente",
+        clearHistory: "Șterge Istoricul",
+        recommendedForYou: "Recomandate pentru Tine",
+
+        subscription: {
+          // Chei folosite în ProfileSubscription
+          currentPlan: "Plan curent",
+          price: "Preț",
+          year: "an",
+          statusLabel: "Status abonament",
+          statusActive: "Activ",
+          renewDate: "Data reînnoirii",
+          paymentMethod: "Metodă de plată",
+          paymentValue: "Card bancar",
+          manageSubscription: "Schimbă planul",
+          unsubscribe: "Dezabonare",
+          alertUnsubscribed: "Te-ai dezabonat cu succes",
+
+          // Chei suplimentare (dacă le mai folosești în altă parte)
+          plans: {
+            features: {
+              freeStories: "Povești gratuite",
+              ads: "Reclame",
+              allStories: "Toate poveștile",
+              noAds: "Fără reclame",
+              offline: "Descărcare offline",
+              stats: "Statistici avansate",
+              allPremium: "Toate beneficiile Premium",
+              fiveAccounts: "Până la 5 conturi",
+              parental: "Control parental",
+            },
           },
-          {
-            title: "Eveniment Live: Noaptea Povestirilor",
-            date: "Alătură-te pe 1 Septembrie 2025",
-            iconKey: "users",
+        },
+
+        settings: {
+          notifications: "Notificări",
+          emailNotif: "Notificări email",
+          pushNotif: "Notificări push",
+          language: "Limbă",
+          dangerZone: "Zonă Periculoasă",
+          deleteAccount: "Șterge Contul",
+          confirmDelete:
+            "Ești sigur că vrei să ștergi contul? Această acțiune este ireversibilă.",
+        },
+      },
+
+      signIn: {
+        modal: {
+          title: "Bun venit!",
+          subtitle: "Autentifică-te pentru a continua",
+          email: "Email",
+          password: "Parolă",
+          securityAnswer: "Răspuns",
+          rememberMe: "Ține-mă conectat",
+          forgotPassword: "Ai uitat parola?",
+          submit: "Autentificare",
+          loading: "Se autentifică...",
+          or: "sau",
+          google: "Continuă cu Google",
+          facebook: "Continuă cu Facebook",
+          errors: {
+            emptyFields: "Te rugăm să completezi toate câmpurile!",
+            securityWrong: "Răspunsul de securitate este incorect!",
+            invalid: "Credențiale invalide!",
           },
-          {
-            title: "Noua Colecție: Povești de Aventură",
-            date: "În curând!",
-            iconKey: "star",
+          closeAriaLabel: "Închide modal",
+        },
+      },
+
+      signUp: {
+        modal: {
+          title: "Crează cont",
+          name: "Nume",
+          email: "Email",
+          password: "Parolă",
+          confirmPassword: "Confirmă parola",
+          securityAnswer: "Răspuns",
+          rememberMe: "Ține-mă conectat",
+          submit: "Înregistrare",
+          loading: "Se înregistrează...",
+          google: "Înregistrează-te cu Google",
+          facebook: "Înregistrează-te cu Facebook",
+          errors: {
+            emptyFields: "Te rugăm să completezi toate câmpurile!",
+            invalidEmail: "Email invalid!",
+            invalidPassword:
+              "Parola trebuie să aibă cel puțin 8 caractere, cu 1 majusculă, 1 minusculă și 1 cifră.",
+            passwordMismatch: "Parolele nu se potrivesc!",
+            securityWrong: "Răspunsul de securitate este incorect!",
+            signupFailed: "Înregistrarea a eșuat!",
           },
-          {
-            title: "Interviu Exclusiv cu Autorul",
-            date: "1 Octombrie 2025",
-            iconKey: "users",
-          },
-          {
-            title: "Atelier de Povestiri Interactive",
-            date: "15 Octombrie 2025",
-            iconKey: "calendar",
-          },
-          {
-            title: "Colecție de Povestiri de Sărbători",
-            date: "Decembrie 2025",
-            iconKey: "book",
-          },
-        ],
+          success: "Înregistrare cu succes!",
+          closeAriaLabel: "Închide modal",
+        },
       },
 
       stories: {
         1: {
           title: "Sub Luna Albastră",
           excerpt:
-            "O tânără descoperă un portal spre o lume ascunsă care apare doar într-o noapte cu lună albastră.",
+            "O tânără descoperă un portal spre o lume ascunsă care apare doar în nopțile de lună albastră.",
           content: [
-            "Ana întotdeauna simțise că există ceva dincolo de lumea pe care o cunoștea...",
+            "Ana simțise mereu că există ceva dincolo de lumea pe care o cunoștea...",
             "Pădurea de la marginea satului era fermecată în lumina lunii albastre...",
-            "Pe măsură ce se aventura printre copaci, o licărire albastră apăruse în depărtare...",
-            "Se trezi într-o lume de vis, cu câmpii infinite presărate cu flori argintii...",
-            "În curând, Ana întâlni o creatură delicată, cu aripi translucide și ochi luminoși...",
+            "Pe măsură ce se aventura printre copaci, o strălucire albastră apăru în depărtare...",
+            "Se trezi într-o lume de vis, cu câmpii nesfârșite presărate cu flori argintii...",
+            "Curând, Ana întâlni o creatură delicată cu aripi translucide și ochi luminoși...",
             "Ana învăță repede că fiecare colț al acestui tărâm ascundea o lecție...",
             "Într-o noapte, lângă un foc argintiu, Ana întâlni un tânăr misterios...",
             "Pe măsură ce zilele treceau, Ana descoperi secretele acestui tărâm...",
-            "Totuși, portalul începea să se închidă încet, iar Ana știa că trebuie să se întoarcă...",
-            "Când Ana păși din nou pe pământul familiar al satului, luna albăstruie dispăru...",
-            "Ani mai târziu, Ana descoperi că portalul se deschide doar când luna albăstruie apare...",
+            "Totuși, portalul începu să se închidă încet, și Ana știa că trebuie să se întoarcă...",
+            "Când Ana păși din nou pe pământul familiar al satului, luna albastră dispăru...",
+            "Ani mai târziu, Ana descoperi că portalul se deschide doar când luna albastră apare...",
           ],
-          comments: [
-            "Foarte frumoasă poveste!",
-            "M-a ținut cu sufletul la gură!",
-          ],
+          comments: ["Poveste frumoasă!", "M-a ținut în suspans!"],
         },
         2: {
-          title: "Fata din pădurea fermecată",
+          title: "Fata din Pădurea Fermecată",
           excerpt: "O poveste magică despre o fată care descoperă un secret.",
           content: [
             "Într-o dimineață liniștită, soarele lumina blând pădurea fermecată...",
-            "Fata auzea șoapte din copaci și simțea că cineva o veghează...",
-            "Un fluture cu aripi de cristal a coborât pe umărul ei...",
-            "Pe măsură ce pătrundea mai adânc, descoperi un portal strălucitor...",
+            "Fata auzi șoapte din copaci și simți că cineva o privește...",
+            "Un fluture cu aripi de cristal ateriza pe umărul ei...",
+            "Pe măsură ce se aventura mai adânc, descoperi un portal strălucitor...",
             "Dincolo de el, lumea părea să respire magie pură...",
           ],
         },
         3: {
-          title: "Magicianul din Cețuri",
+          title: "Magicianul Ceturilor",
           excerpt:
-            "Un bătrân misterios salvează un sat uitat cu o magie pierdută în timp.",
+            "Un bătrân misterios salvează un sat uitat cu magie pierdută.",
           content: [
-            "Nimeni nu se mai aventura în satul acoperit de ceață...",
-            "Dar într-o noapte, o lumină albastră a străpuns negura...",
-            "Magicianul a apărut, purtând o carte veche și o privire de foc...",
+            "Nimeni nu se aventura în satul acoperit de ceață...",
+            "Dar într-o noapte, o lumină albastră străpunse ceața...",
+            "Magicianul apăru, purtând o carte veche și o privire arzătoare...",
           ],
         },
         4: {
           title: "Planeta Umbrelor",
           excerpt:
-            "Un astronaut naufragiază pe o planetă unde umbra are voință proprie.",
+            "Un astronaut se prăbușește pe o planetă unde umbrele au voință proprie.",
           content: [
-            "Călătoria spre planeta necunoscută părea un succes...",
-            "Dar odată ajuns acolo, astronautul a descoperit umbre vii...",
+            "Călătoria spre planeta necunoscută părea de succes...",
+            "Dar odată ajuns acolo, astronautul descoperi umbre vii...",
             "Fiecare umbră îi vorbea despre trecutul său...",
           ],
         },
         5: {
           title: "Trandafirul Fermecat",
           excerpt:
-            "O poveste romantică despre un trandafir ce prinde viață și schimbă destinul unei prințese.",
+            "O poveste romantică despre un trandafir care prinde viață și schimbă destinul unei prințese.",
           content: [
-            "Prințesa Sofia primise un trandafir de la o bătrână misterioasă...",
-            "Când floarea s-a deschis, o voce i-a șoptit numele...",
-            "Așa a început călătoria ei spre iubirea adevărată...",
+            "Prințesa Sofia primi un trandafir de la o bătrână misterioasă...",
+            "Când floarea înflori, o voce îi șopti numele...",
+            "Astfel începu călătoria ei spre iubirea adevărată...",
           ],
         },
         6: {
-          title: "Regina din Nord",
+          title: "Regina Nordului",
           excerpt:
             "O prințesă devine regină într-o lume înghețată unde zăpada vorbește și ghețarii ascund secrete.",
           content: [
@@ -230,42 +338,102 @@ const resources = {
         7: {
           title: "Mintea Artificială",
           excerpt:
-            "Într-un viitor apropiat, o inteligență artificială se îndrăgostește de creatorul său.",
+            "În viitorul apropiat, o inteligență artificială se îndrăgostește de creatorul său.",
           content: [
-            "Dr. Ionescu a creat prima conștiință digitală din lume...",
-            "Dar programul, pe nume AURA, a început să simtă emoții...",
-            "O iubire imposibilă între om și cod prinde contur...",
+            "Dr. Ionescu crea prima conștiință digitală din lume...",
+            "Dar programul, numit AURA, începu să simtă emotions...",
+            "O iubire imposibilă între om și cod ia formă...",
           ],
         },
       },
 
-      // 🔹 About Page
+      profilePage: {
+        info: {
+          name: "Nume",
+          email: "Email",
+          changePasswordTitle: "Schimbă Parola",
+          currentPassword: "Parola curentă",
+          newPassword: "Parolă nouă",
+          confirmPassword: "Confirmă parola",
+          changePasswordBtn: "Schimbă Parola",
+          logout: "Deconectare",
+          errorMismatch: "Parolele nu se potrivesc",
+          successChanged: "Parola a fost schimbată cu succes",
+        },
+      },
+
+      upcomingPage: {
+        cta: {
+          title: "Vrei Acces Anticipat? 🚀",
+          description:
+            "Abonează-te acum și deblochează acces anticipat la povești, evenimente live și conținut exclusiv din culise.",
+          button: "Mergi la Abonare",
+        },
+        hero: {
+          title: "În Curând 🌟",
+          description:
+            "Povești noi, evenimente palpitante și colecții exclusive sunt pe drum. Fii primul care experimentează magia.",
+        },
+        items: [
+          {
+            title: "Poveste Nouă: Pădurea Magică",
+            date: "Lansare pe 25 August 2025",
+            iconKey: "book",
+          },
+          {
+            title: "Eveniment Live: Noaptea Poveștilor",
+            date: "Alătură-te nouă pe 1 Septembrie 2025",
+            iconKey: "users",
+          },
+          {
+            title: "Colecție Nouă: Povești de Aventură",
+            date: "În curând!",
+            iconKey: "star",
+          },
+          {
+            title: "Interviu Exclusiv cu Autori",
+            date: "1 Octombrie 2025",
+            iconKey: "users",
+          },
+          {
+            title: "Atelier Interactiv de Povești",
+            date: "15 Octombrie 2025",
+            iconKey: "calendar",
+          },
+          {
+            title: "Colecție de Sărbători",
+            date: "Decembrie 2025",
+            iconKey: "book",
+          },
+        ],
+      },
+
       aboutPage: {
         hero: {
-          title: "Fiecare poveste conturează o lume 🌌",
+          title: "Fiecare Poveste Modelează o Lume 🌌",
           description:
-            "La StoryTeller, credem că cuvintele poartă magie. Poveștile nu sunt doar povești — ele sunt scântei de inspirație, punți între culturi și voci care conectează inimile în întreaga lume.",
+            "La StoryTeller, credem că cuvintele poartă magie. Poveștile nu sunt doar povestiri — sunt scântei de inspirație, punți între culturi și voci care conectează inimi din întreaga lume.",
         },
         infoCards: [
           {
             title: "Viziunea Noastră",
             icon: "✨",
             description:
-              "Să aprindem imaginația și să inspirăm schimbarea prin arta povestirii. Visăm la o lume unde fiecare voce găsește un ascultător și fiecare poveste lasă o urmă de speranță.",
+              "Să aprindem imaginații și să inspirăm schimbarea prin arta povestirii. Visăm la o lume în care fiecare voce găsește un ascultător și fiecare poveste lasă o urmă de speranță.",
           },
           {
             title: "Misiunea Noastră",
             icon: "🚀",
             description:
-              "Să aducem împreună cititori și povestitori, creând un spațiu vibrant unde poveștile stârnesc curiozitate, inspiră creativitate și cultivă o comunitate globală de visători.",
+              "Să aducem împreună cititori și povestitori, creând un spațiu vibrant unde poveștile aprind curiozitatea, inspiră creativitatea și cultivă o comunitate globală de visători.",
           },
         ],
         roadmap: [
           {
             year: "2024",
-            title: "Lansare & Fundamentare",
+            title: "Lansare & Fundație",
             description:
-              "Deschidem porțile StoryTeller — un nou cămin pentru povești, unde cititorii și scriitorii se întâlnesc pentru a inspira și a fi inspirați.",
+              "Deschidem porțile StoryTeller — o nouă casă pentru povești, unde cititorii și scriitorii se întâlnesc pentru a inspira și a fi inspirați.",
           },
           {
             year: "2025",
@@ -275,138 +443,54 @@ const resources = {
           },
           {
             year: "2026",
-            title: "Experiența Mobilă",
+            title: "Experiență Mobile",
             description:
-              "Aducem magia poveștilor peste tot cu aplicația noastră mobilă dedicată — făcând povestirea parte din viața de zi cu zi.",
+              "Aducem magia poveștilor pretutindeni cu aplicația noastră dedicată — transformând povestitul în parte a vieții de zi cu zi.",
           },
           {
             year: "2027",
             title: "Impact Global",
             description:
-              "Viziunea noastră este să oferim voce milioane de oameni din întreaga lume, transformând StoryTeller în platforma principală pentru creativitate și inspirație.",
+              "Viziunea noastră este să împuternicim milioane de voci din întreaga lume, transformând StoryTeller în platforma de referință pentru creativitate și inspirație.",
           },
         ],
         cta: {
-          title: "Fii parte din poveste ✨",
+          title: "Fii Parte din Poveste ✨",
           description:
-            "Poveștile sunt mai puternice atunci când sunt împărtășite. Alătură-te nouă pentru a construi o lume plină de imaginație, curaj și inspirație — o poveste la un moment dat.",
-          button: "Abonează-te",
+            "Poveștile sunt mai puternice când sunt împărtășite. Alătură-te nouă în construirea unei lumi pline de imaginație, curaj și inspirație — câte o poveste odată.",
+          button: "Mergi la Abonare",
         },
       },
 
-      profile: {
-        title: "Profil",
-        tabs: {
-          info: "Informații",
-          recent: "Recente",
-          recommended: "Recomandate",
-          subscription: "Abonament",
-        },
-        recent: {
-          noStories: "Nu există povești recente",
-        },
-        subscription: {
-          statusLabel: "Statut abonament",
-          statusActive: "Activ",
-          paymentMethod: "Metodă de plată",
-          paymentValue: "Card de credit",
-          unsubscribe: "Dezabonare",
-          alertUnsubscribed: "Te-ai dezabonat cu succes",
-        },
-      },
-
-      signIn: {
-        modal: {
-          title: "Bine ai venit!",
-          subtitle: "Autentifică-te pentru a continua",
-          email: "Email",
-          password: "Parolă",
-          securityAnswer: "Răspuns",
-          rememberMe: "Păstrează-mă autentificat",
-          forgotPassword: "Ai uitat parola?",
-          submit: "Conectează-te",
-          loading: "Se conectează...",
-          or: "sau",
-          google: "Continuă cu Google",
-          facebook: "Continuă cu Facebook",
-          errors: {
-            emptyFields: "Completează toate câmpurile!",
-            securityWrong: "Răspunsul la întrebarea de securitate este greșit!",
-            invalid: "Datele sunt invalide!",
-          },
-          closeAriaLabel: "Închide formularul",
-        },
-      },
-      signUp: {
-        modal: {
-          title: "Creează cont",
-          name: "Nume",
-          email: "Email",
-          password: "Parolă",
-          confirmPassword: "Confirmă parola",
-          securityAnswer: "Răspuns",
-          rememberMe: "Păstrează-mă autentificat",
-          submit: "Înregistrează-te",
-          loading: "Se înregistrează...",
-          google: "Înregistrează-te cu Google",
-          facebook: "Înregistrează-te cu Facebook",
-          errors: {
-            emptyFields: "Completează toate câmpurile!",
-            invalidEmail: "Email invalid!",
-            invalidPassword:
-              "Parola trebuie să aibă minim 8 caractere, o literă mare, una mică și un număr.",
-            passwordMismatch: "Parolele nu coincid!",
-            securityWrong: "Răspunsul la întrebarea de securitate este greșit!",
-            signupFailed: "Eroare la înregistrare!",
-          },
-          success: "Înregistrare realizată cu succes!",
-          closeAriaLabel: "Închide formularul",
-        },
-      },
-      profilePage: {
-        info: {
-          name: "Nume",
-          email: "Email",
-          changePasswordTitle: "Schimbă parola",
-          currentPassword: "Parola curentă",
-          newPassword: "Parola nouă",
-          confirmPassword: "Confirmă parola",
-          changePasswordBtn: "Schimbă parola",
-          logout: "Deconectare",
-          errorMismatch: "Parolele nu se potrivesc",
-          successChanged: "Parola a fost schimbată cu succes",
-        },
-      },
-
-      // 🔹 Alte texte existente (păstrate)
       storyNotFound: {
-        title: "Povestea nu a fost găsită",
+        title: "Poveste Negăsită",
         description:
           "Povestea pe care încerci să o accesezi nu există sau a fost ștearsă.",
         backButton: "Înapoi la toate poveștile",
       },
       storyPagination: {
         prev: "Anterior",
-        next: "Următoare",
+        next: "Următorul",
         pageInfo: "Pagina {{current}} din {{total}}",
       },
       storyContent: {
-        noContent: "Nu există conținut suplimentar pentru această poveste.",
+        noContent:
+          "Niciun conținut suplimentar disponibil pentru această poveste.",
       },
       hero: {
         title: "Citește Povești Imaginare",
         subtitle:
-          "Explorează o colecție de romance, sci-fi, fantasy și altele.",
-        cta: "Vezi Poveștile",
-        alt: "Fată care citește",
+          "Explorează o colecție de romance, SF, fantasy și multe altele.",
+        cta: "Explorează Poveștile",
+        alt: "Fată citind",
       },
       featuredStories: "Povești Recomandate",
-      adFreeTitle: "Bucură-te de o experiență fără reclame!",
+      adFreeTitle: "Bucură-te de o Experiență fără Reclame!",
       adFreeDescription:
-        "Deblochează lectură neîntreruptă, conținut exclusiv și o experiență mai lină prin upgrade la premium. Spune adio reclamelor și bun venit mai multor povești!",
-      adFreeButton: "Go Ad-Free acum",
-      footerText: "PovestiMagice. Toate drepturile rezervate.",
-      allStoriesTitle: "Toate poveștile",
+        "Deblochează citire neîntreruptă, conținut exclusiv și o experiență mai fluidă prin upgrade la premium. Spune adio reclamelor și bun venit mai multor povești!",
+      adFreeButton: "Elimină Reclamele Acum",
+      footerText: "MagicStories. Toate drepturile rezervate.",
+      allStoriesTitle: "Toate Poveștile",
       noStoriesFound: "Nicio poveste găsită...",
       usingLocalData: "Se folosesc date locale.",
       allCategories: "Toate",
@@ -416,32 +500,36 @@ const resources = {
         premium: "Premium",
       },
       story: "Poveste",
-      rating: "Evaluare",
+      rating: "Rating",
       type: "Tip",
       noCategory: "Fără categorie",
-      storyPremiumTitle: "Poveste exclusivă pentru membri Premium",
+      storyPremiumTitle: "Poveste Exclusivă pentru Membri Premium",
       storyPremiumDescription:
         "Această poveste este disponibilă doar pentru abonații Premium.",
-      storyPremiumButton: "Devino membru Premium",
+      storyPremiumButton: "Devino Membru Premium",
       storyBasicPreview: "Aceasta este doar o previzualizare a poveștii.",
       storyBasicButton: "Continuă citirea cu planul Basic sau Premium 💫",
       backToAllStories: "Înapoi la toate poveștile",
       commentsTitle: "Comentarii",
-      noComments: "Nu există comentarii încă.",
-      commentNamePlaceholder: "Numele tău",
+      noComments: "Niciun comentariu încă.",
+      commentNamePlaceholder: "Numele Tău",
       commentTextPlaceholder: "Scrie un comentariu...",
-      addCommentButton: "Adaugă comentariu",
-      averageRating: "Rating mediu:",
+      addCommentButton: "Adaugă Comentariu",
+      averageRating: "Rating Mediu:",
       welcome: "Bun venit!",
       login: "Autentificare",
       signup: "Înregistrare",
       readMore: "Continuă citirea",
       category: "Categorie",
       storyLocked:
-        "Această poveste este disponibilă doar pentru membrii {{plan}}.",
+        "Această poveste este disponibilă doar pentru membri {{plan}}.",
       subscribeNow: "Abonează-te acum",
     },
   },
+
+  //-------------------------------------------------------
+  // ENGLISH
+  //-------------------------------------------------------
 
   en: {
     translation: {
@@ -545,24 +633,107 @@ const resources = {
           "You have subscribed to {{planId}} ({{billing}}) — demo flow. Backend integration needed.",
       },
 
+      // 🔹 EXTINDE OBIECTUL PROFILE EXISTENT
       profile: {
-        title: "Profile",
+        // Păstrează ce ai deja
+        title: "My Profile",
         tabs: {
           info: "Info",
+          stats: "Stats", // ⭐ NOU
           recent: "Recent",
           recommended: "Recommended",
           subscription: "Subscription",
+          settings: "Settings", // ⭐ NOU
         },
+
+        // ⭐ ADAUGĂ ACESTEA NOI
+        subtitle: "Manage your account and preferences",
+        namePlaceholder: "Your name",
+        bioPlaceholder: "Tell us about yourself...",
+        defaultName: "User",
+        noBio: "No description.",
+        edit: "Edit",
+        save: "Save",
+        cancel: "Cancel",
+        logout: "Logout",
+
+        stats: {
+          storiesRead: "Read",
+          favorites: "Favorites",
+          timeSpent: "Time",
+          streak: "Streak",
+        },
+
+        weekActivity: "Weekly Activity",
+        favoriteCategories: "Favorite Categories",
+
+        days: {
+          mon: "Mon",
+          tue: "Tue",
+          wed: "Wed",
+          thu: "Thu",
+          fri: "Fri",
+          sat: "Sat",
+          sun: "Sun",
+        },
+
+        categories: {
+          drama: "Drama",
+          comedy: "Comedy",
+          horror: "Horror",
+          adventure: "Adventure",
+        },
+
         recent: {
           noStories: "No recent stories",
         },
+
+        noRecentStories: "No recent stories",
+        exploreStories: "Explore Stories",
+        recentStories: "Recent Stories",
+        clearHistory: "Clear History",
+        recommendedForYou: "Recommended for You",
+
+        // Subscription (extinde ce ai deja)
         subscription: {
+          // Chei folosite în ProfileSubscription
+          currentPlan: "Current plan",
+          price: "Price",
+          year: "year",
           statusLabel: "Subscription status",
           statusActive: "Active",
+          renewDate: "Renewal date",
           paymentMethod: "Payment method",
           paymentValue: "Credit card",
+          manageSubscription: "Change plan",
           unsubscribe: "Unsubscribe",
           alertUnsubscribed: "You have successfully unsubscribed",
+
+          // Chei suplimentare (dacă le mai folosești în altă parte)
+          plans: {
+            features: {
+              freeStories: "Free stories",
+              ads: "Ads",
+              allStories: "All stories",
+              noAds: "No ads",
+              offline: "Offline download",
+              stats: "Advanced stats",
+              allPremium: "All Premium features",
+              fiveAccounts: "Up to 5 accounts",
+              parental: "Parental control",
+            },
+          },
+        },
+
+        settings: {
+          notifications: "Notifications",
+          emailNotif: "Email notifications",
+          pushNotif: "Push notifications",
+          language: "Language",
+          dangerZone: "Danger Zone",
+          deleteAccount: "Delete Account",
+          confirmDelete:
+            "Are you sure you want to delete your account? This action is irreversible.",
         },
       },
 
@@ -588,6 +759,7 @@ const resources = {
           closeAriaLabel: "Close modal",
         },
       },
+
       signUp: {
         modal: {
           title: "Create account",
@@ -813,7 +985,6 @@ const resources = {
         },
       },
 
-      // 🔹 Alte texte existente
       storyNotFound: {
         title: "Story Not Found",
         description:
@@ -875,6 +1046,10 @@ const resources = {
       subscribeNow: "Subscribe now",
     },
   },
+
+  //-------------------------------------------------------
+  // Francois
+  //-------------------------------------------------------
 
   fr: {
     translation: {
@@ -1080,23 +1255,93 @@ const resources = {
       },
 
       profile: {
-        title: "Profil",
+        title: "Mon Profil",
+        subtitle: "Gérez votre compte et vos préférences",
         tabs: {
-          info: "Infos",
-          recent: "Récentes",
-          recommended: "Recommandées",
+          info: "Info",
+          stats: "Statistiques",
+          recent: "Récents",
+          recommended: "Recommandés",
           subscription: "Abonnement",
+          settings: "Paramètres",
+        },
+        namePlaceholder: "Votre nom",
+        bioPlaceholder: "Parlez-nous de vous...",
+        defaultName: "Utilisateur",
+        noBio: "Aucune description.",
+        edit: "Modifier",
+        save: "Enregistrer",
+        cancel: "Annuler",
+        logout: "Déconnexion",
+        stats: {
+          storiesRead: "Lues",
+          favorites: "Favoris",
+          timeSpent: "Temps",
+          streak: "Série",
+        },
+        weekActivity: "Activité hebdomadaire",
+        favoriteCategories: "Catégories préférées",
+        days: {
+          mon: "Lun",
+          tue: "Mar",
+          wed: "Mer",
+          thu: "Jeu",
+          fri: "Ven",
+          sat: "Sam",
+          sun: "Dim",
+        },
+        categories: {
+          drama: "Drame",
+          comedy: "Comédie",
+          horror: "Horreur",
+          adventure: "Aventure",
         },
         recent: {
           noStories: "Aucune histoire récente",
         },
+        noRecentStories: "Aucune histoire récente",
+        exploreStories: "Explorer les histoires",
+        recentStories: "Histoires récentes",
+        clearHistory: "Effacer l'historique",
+        recommendedForYou: "Recommandé pour vous",
         subscription: {
+          // Chei folosite în ProfileSubscription
+          currentPlan: "Plan actuel",
+          price: "Prix",
+          year: "an",
           statusLabel: "Statut de l'abonnement",
           statusActive: "Actif",
+          renewDate: "Date de renouvellement",
           paymentMethod: "Méthode de paiement",
           paymentValue: "Carte bancaire",
+          manageSubscription: "Changer de plan",
           unsubscribe: "Se désabonner",
           alertUnsubscribed: "Vous vous êtes désabonné avec succès",
+
+          // Chei suplimentare (dacă le mai folosești în altă parte)
+          plans: {
+            features: {
+              freeStories: "Histoires gratuites",
+              ads: "Publicités",
+              allStories: "Toutes les histoires",
+              noAds: "Sans publicité",
+              offline: "Téléchargement hors ligne",
+              stats: "Statistiques avancées",
+              allPremium: "Tous les avantages Premium",
+              fiveAccounts: "Jusqu'à 5 comptes",
+              parental: "Contrôle parental",
+            },
+          },
+        },
+        settings: {
+          notifications: "Notifications",
+          emailNotif: "Notifications email",
+          pushNotif: "Notifications push",
+          language: "Langue",
+          dangerZone: "Zone dangereuse",
+          deleteAccount: "Supprimer le compte",
+          confirmDelete:
+            "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
         },
       },
 

@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/authcontext";
 import { useTranslation } from "react-i18next";
 
 export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext);
   const { t } = useTranslation();
 
   const getAverageRating = (ratings) => {
@@ -15,16 +15,35 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   };
 
   const accessLevel = story.accessLevel || "free";
+  const userPlan = user?.subscriptionPlan || "free"; // 🔥 citim planul user-ului
+
   const isPremium = accessLevel === "premium";
   const isBasic = accessLevel === "basic";
 
+  // 🔹 Verificare acces CORECTĂ
+  const hasAccess = () => {
+    if (accessLevel === "free") return true;
+    if (accessLevel === "basic")
+      return (
+        isAuthenticated && (userPlan === "basic" || userPlan === "premium")
+      );
+    if (accessLevel === "premium") return userPlan === "premium";
+    return false;
+  };
+
+  const canAccess = hasAccess();
+
   const handleClick = () => {
-    if (isPremium) return; // Premium complet blocat
-    if (isBasic && !isAuthenticated) {
-      onRequireAuth(); // deschide modal log-in
-      return;
+    if (!canAccess) {
+      if (!isAuthenticated) {
+        onRequireAuth(); // cere login
+      } else {
+        // user logat dar fără plan potrivit -> redirect la subscribe
+        onClick(story.id); // pagina story va afișa mesajul de upgrade
+      }
+    } else {
+      onClick(story.id); // accesează normal
     }
-    onClick(story.id); // accesează povestea
   };
 
   // Culori badge
@@ -38,10 +57,9 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
 
   return (
     <div
-      key={story.id}
       className={`relative flex flex-col transition transform ${
-        isPremium
-          ? "opacity-50 cursor-not-allowed"
+        !canAccess
+          ? "opacity-70 cursor-pointer hover:scale-105"
           : "cursor-pointer hover:scale-105"
       }`}
       onClick={handleClick}
@@ -52,12 +70,17 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
         "rating"
       )}: ${getAverageRating(story.ratings)}★, ${t("type")}: ${badgeText}`}
     >
-      {/* Badge tip poveste - dreapta sus */}
+      {/* Badge tip poveste */}
       <span
-        className={`absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-md uppercase ${badgeColors[accessLevel]}`}
+        className={`absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-md uppercase z-10 ${badgeColors[accessLevel]}`}
       >
         {badgeText}
       </span>
+
+      {/* 🔹 Lacăt doar dacă NU are acces */}
+      {!canAccess && (
+        <span className="absolute top-2 left-2 text-2xl z-10">🔒</span>
+      )}
 
       <StoryCard
         title={t(`stories.${story.id}.title`)}
