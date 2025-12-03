@@ -1,82 +1,75 @@
 // src/components/header/languageSelect.js
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { Globe2, ChevronDown } from "lucide-react";
 
-export default function LanguageSelect({ isMobile = false }) {
+export default function LanguageSelect({ isMobile = false, darkMode }) {
   const { i18n } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
 
   const languages = [
-    { code: "ro", label: "Română", flag: "https://flagcdn.com/w20/ro.png" },
-    { code: "en", label: "English", flag: "https://flagcdn.com/w20/gb.png" },
-    { code: "fr", label: "Français", flag: "https://flagcdn.com/w20/fr.png" },
+    { code: "ro", label: "Română", short: "RO", flag: "🇷🇴" },
+    { code: "en", label: "English", short: "EN", flag: "🇬🇧" },
+    { code: "fr", label: "Français", short: "FR", flag: "🇫🇷" },
   ];
-
-  const currentLang =
-    languages.find((l) => l.code === i18n.language) || languages[0];
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const changeLanguage = (code) => {
     i18n.changeLanguage(code);
-    setOpen(false);
   };
 
   return (
-    <div className="relative" ref={ref}>
-      {/* Buton principal */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all shadow-sm"
-      >
-        <img
-          src={currentLang.flag}
-          alt={currentLang.label}
-          className="w-5 h-4 rounded-sm"
-        />
-        <span className="hidden sm:inline text-sm font-medium">
-          {currentLang.label}
-        </span>
-        <ChevronDown size={16} className="text-gray-500 dark:text-gray-400" />
-      </button>
+    <div
+      className={`
+        inline-flex items-center 
+        ${isMobile ? "w-full justify-center" : ""}
+        px-1 py-1 rounded-full
+        border
+        ${
+          darkMode
+            ? "border-gray-700 bg-gray-900/60"
+            : "border-white/40 bg-white/10"
+        }
+        backdrop-blur-sm
+        shadow-md
+        gap-1
+      `}
+    >
+      {languages.map((lang) => {
+        const isActive = i18n.language === lang.code;
 
-      {/* Dropdown limbi */}
-      {open && (
-        <div
-          className={`absolute z-50 rounded-lg shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 ${
-            isMobile
-              ? "w-28 right-0 bottom-[-12px] flex flex-col gap-1 p-1" // mai jos, mai compact
-              : "mt-1 right-0 w-36 flex flex-col gap-1"
-          }`}
-        >
-          {languages.map((lang) => (
-            <button
-              key={lang.code}
-              onClick={() => changeLanguage(lang.code)}
-              className={`flex items-center gap-2 w-full px-2 py-1 text-left text-sm transition-colors rounded-md ${
-                i18n.language === lang.code
-                  ? "bg-blue-100 dark:bg-blue-700 text-blue-700 dark:text-white font-semibold"
-                  : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-              }`}
-            >
-              <img
-                src={lang.flag}
-                alt={lang.label}
-                className="w-4 h-3 rounded-sm"
-              />
-              <span className="text-xs">{lang.label}</span>
-            </button>
-          ))}
-        </div>
-      )}
+        return (
+          <button
+            key={lang.code}
+            onClick={() => changeLanguage(lang.code)}
+            className={`
+              flex items-center justify-center
+              rounded-full px-2 py-1
+              text-xs font-semibold
+              whitespace-nowrap
+              transition-all duration-200
+              ${
+                isActive
+                  ? darkMode
+                    ? "bg-white text-indigo-700 shadow"
+                    : "bg-white text-indigo-700 shadow"
+                  : darkMode
+                  ? "text-gray-300 hover:bg-gray-800"
+                  : "text-white hover:bg-white/20"
+              }
+            `}
+            aria-label={lang.label}
+          >
+            {/* Pe desktop, păstrăm totul foarte compact */}
+            {!isMobile && <span className="text-[11px]">{lang.short}</span>}
+
+            {/* Pe mobil, arătăm și flag + abreviere */}
+            {isMobile && (
+              <>
+                <span className="mr-1 text-sm">{lang.flag}</span>
+                <span className="text-[11px]">{lang.short}</span>
+              </>
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }

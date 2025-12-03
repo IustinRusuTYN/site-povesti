@@ -15,6 +15,10 @@ const resources = {
       upcoming: "În Curând",
       subscribe: "Abonează-te",
 
+      search: {
+        placeholder: "Caută o poveste...",
+      },
+
       subscribePage: {
         billing: {
           monthly: "Lunar",
@@ -538,6 +542,10 @@ const resources = {
       upcoming: "Upcoming",
       subscribe: "Subscribe",
 
+      search: {
+        placeholder: "Search for a story...",
+      },
+
       subscribePage: {
         billing: {
           monthly: "Monthly",
@@ -1057,6 +1065,10 @@ const resources = {
       about: "À propos",
       upcoming: "À venir",
       subscribe: "S'abonner",
+
+      search: {
+        placeholder: "Rechercher une histoire...",
+      },
 
       subscribePage: {
         billing: {

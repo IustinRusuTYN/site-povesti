@@ -1,3 +1,4 @@
+// src/context/searchcontext.js
 import { createContext, useState } from "react";
 import stories from "../data/stories";
 import { useTranslation } from "react-i18next";
@@ -26,12 +27,10 @@ export const SearchProvider = ({ children }) => {
 
       const { title, excerpt } = getStoryText(story, lang);
 
-      // asigurăm 100% că este string valid
       const safeTitle = typeof title === "string" ? title : "";
       const safeExcerpt = typeof excerpt === "string" ? excerpt : "";
       const safeQuery = typeof searchValue === "string" ? searchValue : "";
 
-      // dacă toate sunt goale, nu are sens să fie inclus
       if (!safeTitle && !safeExcerpt) return false;
 
       return (

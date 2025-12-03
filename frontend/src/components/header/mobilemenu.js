@@ -15,14 +15,12 @@ export default function MobileMenu({
   const menuRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState("0px");
 
-  // Ajustăm înălțimea meniului
   useEffect(() => {
     if (menuRef.current) {
       setMaxHeight(isOpen ? menuRef.current.scrollHeight + "px" : "0px");
     }
   }, [isOpen]);
 
-  // Închidem meniul la click în afara lui
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -52,7 +50,7 @@ export default function MobileMenu({
       style={{ maxHeight }}
     >
       <div className="space-y-3 py-3">
-        <NavLinks isMobile={true} />
+        <NavLinks darkMode={darkMode} isMobile={true} />
         <SearchBar isMobile={true} />
         <AuthMenu
           isMobile={true}
