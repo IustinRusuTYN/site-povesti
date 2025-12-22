@@ -61,19 +61,15 @@ export default function AllStories() {
         return false;
       }
 
-      // Verificare category sigură.
       const matchesCategory =
         categoryFilter === "all" || story.category === categoryFilter;
 
-      // Obținem corect textele
       const { title, excerpt } = getStoryText(story, i18n.language);
 
-      // Asigurăm că *oricând* avem string valid
       const safeTitle = typeof title === "string" ? title : "";
       const safeExcerpt = typeof excerpt === "string" ? excerpt : "";
       const safeQuery = typeof query === "string" ? query : "";
 
-      // Verificare fără risc
       const matchesQuery =
         safeQuery === "" ||
         safeTitle.toLowerCase().includes(safeQuery.toLowerCase()) ||
@@ -91,46 +87,78 @@ export default function AllStories() {
   return (
     <PageLayout>
       {showSignInModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <SignInForm onClose={() => setShowSignInModal(false)} />
         </div>
       )}
 
-      <section className="max-w-7xl mx-auto px-4 py-10">
-        <h1
-          className={`text-3xl md:text-4xl font-bold text-center mb-6 ${
-            darkMode ? "text-gray-100" : "text-gray-800"
-          }`}
-        >
-          {t("allStoriesTitle")}
-        </h1>
+      <section
+        className={`min-h-screen py-8 px-4 ${
+          darkMode ? "bg-gray-900" : "bg-gray-50"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1
+              className={`text-3xl md:text-4xl font-bold text-center mb-2 ${
+                darkMode ? "text-white" : "text-gray-900"
+              }`}
+            >
+              {t("allStoriesTitle")}
+            </h1>
+            <p
+              className={`text-center text-sm ${
+                darkMode ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
+              {filteredStories.length} {t("storiesFound")}
+            </p>
+          </div>
 
-        <CategoryFilter
-          categories={categories}
-          categoryFilter={categoryFilter}
-          setCategoryFilter={setCategoryFilter}
-          darkMode={darkMode}
-        />
-
-        <LoadingError loading={loading} error={error} />
-
-        {!loading && filteredStories.length > 0 && (
-          <StoryList
-            stories={filteredStories}
-            onStoryClick={handleStoryClick}
-            onRequireAuth={handleRequireAuth}
+          {/* Category Filter */}
+          <CategoryFilter
+            categories={categories}
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
             darkMode={darkMode}
           />
-        )}
 
-        {!loading && filteredStories.length === 0 && (
-          <p className="text-center text-gray-500">
-            {t("noStoriesFound")}
-            {error && (
-              <span className="block text-sm text-gray-400">{error}</span>
-            )}
-          </p>
-        )}
+          {/* Loading/Error */}
+          <LoadingError loading={loading} error={error} darkMode={darkMode} />
+
+          {/* Story Grid */}
+          {!loading && filteredStories.length > 0 && (
+            <StoryList
+              stories={filteredStories}
+              onStoryClick={handleStoryClick}
+              onRequireAuth={handleRequireAuth}
+              darkMode={darkMode}
+            />
+          )}
+
+          {/* No Results */}
+          {!loading && filteredStories.length === 0 && (
+            <div className="text-center py-16">
+              <p
+                className={`text-lg mb-2 ${
+                  darkMode ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                {t("noStoriesFound")}
+              </p>
+              {error && (
+                <span
+                  className={`text-sm ${
+                    darkMode ? "text-gray-500" : "text-gray-500"
+                  }`}
+                >
+                  {error}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </section>
     </PageLayout>
   );

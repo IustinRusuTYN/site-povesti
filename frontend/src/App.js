@@ -17,6 +17,7 @@ import { AuthProvider } from "./context/authcontext"; // 👈 corectat casing
 import { UserProvider } from "./context/usercontext";
 import PrivateRoute from "./components/privateroute";
 import i18next from "i18next";
+
 console.log("i18next loaded:", !!i18next);
 
 export default function App() {

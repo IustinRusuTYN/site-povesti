@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import StoryCard from "../storycard";
 import { AuthContext } from "../../context/authcontext";
 import { useTranslation } from "react-i18next";
+import { Lock, Star } from "lucide-react";
 
 export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   const { isAuthenticated, user } = useContext(AuthContext);
@@ -15,12 +16,8 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   };
 
   const accessLevel = story.accessLevel || "free";
-  const userPlan = user?.subscriptionPlan || "free"; // 🔥 citim planul user-ului
+  const userPlan = user?.subscriptionPlan || "free";
 
-  const isPremium = accessLevel === "premium";
-  const isBasic = accessLevel === "basic";
-
-  // 🔹 Verificare acces CORECTĂ
   const hasAccess = () => {
     if (accessLevel === "free") return true;
     if (accessLevel === "basic")
@@ -36,31 +33,28 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   const handleClick = () => {
     if (!canAccess) {
       if (!isAuthenticated) {
-        onRequireAuth(); // cere login
+        onRequireAuth();
       } else {
-        // user logat dar fără plan potrivit -> redirect la subscribe
-        onClick(story.id); // pagina story va afișa mesajul de upgrade
+        onClick(story.id);
       }
     } else {
-      onClick(story.id); // accesează normal
+      onClick(story.id);
     }
   };
 
-  // Culori badge
   const badgeColors = {
     free: "bg-green-500 text-white",
     basic: "bg-blue-500 text-white",
-    premium: "bg-yellow-400 text-gray-800",
+    premium: "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900",
   };
 
   const badgeText = t(`accessLevels.${accessLevel}`);
+  const avgRating = getAverageRating(story.ratings);
 
   return (
     <div
-      className={`relative flex flex-col transition transform ${
-        !canAccess
-          ? "opacity-70 cursor-pointer hover:scale-105"
-          : "cursor-pointer hover:scale-105"
+      className={`group relative cursor-pointer ${
+        !canAccess ? "opacity-80" : ""
       }`}
       onClick={handleClick}
       role="button"
@@ -68,36 +62,52 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
       aria-label={`${t("story")}: ${t(`stories.${story.id}.title`)}, ${t(
         "rating"
-      )}: ${getAverageRating(story.ratings)}★, ${t("type")}: ${badgeText}`}
+      )}: ${avgRating}★, ${t("type")}: ${badgeText}`}
     >
-      {/* Badge tip poveste */}
-      <span
-        className={`absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-md uppercase z-10 ${badgeColors[accessLevel]}`}
-      >
-        {badgeText}
-      </span>
+      {/* Access Badge - Top Right */}
+      <div className="absolute top-2 right-2 z-20">
+        <span
+          className={`px-2 py-1 text-[10px] font-bold rounded-md uppercase shadow-lg ${badgeColors[accessLevel]}`}
+        >
+          {badgeText}
+        </span>
+      </div>
 
-      {/* 🔹 Lacăt doar dacă NU are acces */}
+      {/* Lock Icon - Top Left (only if no access) */}
       {!canAccess && (
-        <span className="absolute top-2 left-2 text-2xl z-10">🔒</span>
+        <div className="absolute top-2 left-2 z-20">
+          <div className="bg-black/70 backdrop-blur-sm rounded-full p-1.5">
+            <Lock size={16} className="text-white" />
+          </div>
+        </div>
       )}
 
+      {/* Story Card */}
       <StoryCard
         title={t(`stories.${story.id}.title`)}
         excerpt={t(`stories.${story.id}.excerpt`)}
         image={story.image}
+        variant="compact" // 🔥 ADĂUGAT
       />
 
-      {/* Categorie + Rating */}
+      {/* Footer Info - Category + Rating */}
       <div
-        className={`mt-2 flex justify-between items-center text-sm font-medium px-2 ${
-          darkMode ? "text-gray-300" : "text-gray-600"
+        className={`mt-2 flex items-center justify-between text-xs px-1 ${
+          darkMode ? "text-gray-400" : "text-gray-600"
         }`}
       >
-        <span className="italic">{story.category || t("noCategory")}</span>
-        <span>
-          {t("rating")}: {getAverageRating(story.ratings)}★
+        {/* Category */}
+        <span className="font-medium truncate flex-1">
+          {story.category || t("noCategory")}
         </span>
+
+        {/* Rating */}
+        {avgRating !== "N/A" && (
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <Star size={12} className="text-yellow-500 fill-yellow-500" />
+            <span className="font-bold">{avgRating}</span>
+          </div>
+        )}
       </div>
     </div>
   );
