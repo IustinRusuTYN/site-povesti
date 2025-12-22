@@ -351,6 +351,136 @@ const resources = {
             "O iubire imposibilă între om și cod ia formă...",
           ],
         },
+        8: {
+          title: "Casa de la capătul străzii",
+          excerpt:
+            "În fiecare seară, o lumină ciudată se aprindea la fereastra unei case abandonate...",
+          content: [
+            "Casa de la capătul străzii fusese, odinioară, cea mai frumoasă din cartier. Acum, ferestrele ei erau acoperite de praf, iar gardul de lemn se înclina periculos spre trotuar. Cu toate astea, în fiecare seară, la aceeași oră, o lumină slabă se aprindea la etaj.",
+            "Vecinii o ignorau. Se obișnuiseră să întoarcă privirea, prefăcându-se că nimic nu se întâmplă. Copiii, însă, își șopteau unii altora povești despre fantome, vrăjitoare și ritualuri secrete, arătând cu degetul spre fereastra luminată.",
+            "Mara nu credea în povești. Era curioasă din fire și avea un caiet în care nota tot ce i se părea ciudat în cartier. Iar lumina aceea devenise, în ultimele luni, cel mai important mister din lista ei.",
+            "Într-o seară rece de toamnă, și-a luat inima în dinți. A așteptat ca părinții să adoarmă, apoi a ieșit tiptil din casă, cu lanterna în buzunar și cu caietul bine strâns la piept. Strada era aproape goală, doar vântul foșnea într-un tei bătrân.",
+            "Pe măsură ce se apropia de casă, simțea cum aerul devenea mai greu. Lumina de la etaj pâlpâia slab, ca o lumânare pe sfârșite. Mara s-a oprit la poartă, și-a ținut respirația și a ascultat. Nicio voce, niciun foșnet. Doar tăcere.",
+            "Cu mâinile tremurând, a împins poarta. Un scârțâit ascuțit a tăiat liniștea, iar inima i s-a oprit pentru o clipă. S-a strecurat în curte, ocolind buruienile înalte. Ușa de la intrare era întredeschisă, ca și cum ar fi așteptat pe cineva.",
+            "Mara a urcat scările interioare, sprijinindu-se de balustrada rece. Fiecare treaptă scârțâia, de parcă anunța prezența ei. Când a ajuns la etaj, lumina venea clar de sub o ușă veche, vopsită cândva în albastru.",
+            "A respirat adânc, a numărat în gând până la trei și a împins ușa. Înăuntru, o singură veioză stătea aprinsă pe un birou plin de caiete, fotografii și hărți. Iar în fața biroului, cu spatele la ea, stătea un bărbat în vârstă, cu părul alb și drept, privind fix o fotografie înrămată.",
+            "— Știam că, mai devreme sau mai târziu, cineva va veni, a spus el, fără să se întoarcă. Mara a înghețat în prag. Vocea lui era calmă, dar încărcată de o tristețe veche. — De ce aprindeți lumina în fiecare seară? a reușit ea să șoptească.",
+            "Bărbatul s-a întors încet. În ochii lui albaștri se citea un dor greu de descris. — Pentru ca ea să găsească drumul înapoi acasă, a spus el, arătând spre fotografia cu o femeie tânără, zâmbitoare. — Și pentru ca cineva, într-o zi, să aibă curajul să întrebe de ce.",
+            "Mara a pășit înăuntru, iar senzația de teamă a început să se topească. Misterul casei de la capătul străzii nu era despre fantome sau blesteme. Era despre promisiuni uitate, despre așteptare și despre felul în care lumina, oricât de slabă, poate ghida mereu pe cineva înapoi.",
+          ],
+        },
+
+        9: {
+          title: "Trenul de la miezul nopții",
+          excerpt:
+            "Se spune că un tren misterios oprește în gară doar pentru cei care au ceva de schimbat în viața lor...",
+          content: [
+            "Gara era aproape pustie la acea oră. Doar un ceas vechi, atârnat deasupra peronului, ticăia obosit, apropiindu-se de miezul nopții. Andrei își freca mâinile pentru a le încălzi, întrebându-se pentru a zecea oară de ce acceptase să vină.",
+            "Un prieten îi povestise, în glumă, despre un tren straniu care apărea doar o dată pe an, exact la miezul nopții, și care lua cu el oamenii care nu mai știau încotro să meargă. Andrei râsese atunci, dar, pe măsură ce zilele treceau, gândul îi rămăsese în minte.",
+            "Își pierduse jobul, prietenii se îndepărtaseră, iar apartamentul lui se transformase într-o cutie tăcută, plină de lucruri fără sens. În seara aceea, nu mai avea nimic de pierdut. Așa că venise la gară, doar ca să vadă.",
+            "Când ceasul bătu de douăsprezece ori, aerul se schimbă. Un vânt rece trecu prin gară, iar luminile pâlpâiră pentru o clipă. Apoi, din întunericul traseului 3, se auzi un huruit profund, ca un ecou venit din alt timp.",
+            "Trenul apăru încet, ca și cum ar fi fost desenat din umbre și abur. Vagoanele erau vechi, dar straniu de bine păstrate. Pe o placă de metal, luminată slab, scria: „Linia Destinului – Numai Dus”.",
+            "Ușile se deschiseră fără zgomot. Dinăuntru, o lumină caldă, gălbuie, îl invita să pășească. Andrei privi în jur – nu era nimeni altcineva pe peron. Inima îi bătea nebunește. — E doar o glumă, își spuse. Și totuși, făcu un pas înainte.",
+            "În vagon, scaunele erau din catifea albastră, iar ferestrele reflectau nu gara, ci un fel de noapte infinită, presărată cu stele. În capătul culoarului, o femeie îmbrăcată într-un costum elegant îl privea atent.",
+            "— Biletul, te rog, zise ea, întinzând mâna. Andrei se bâlbâi: — Eu... nu am bilet. — Ba da, ai, îi răspunse ea calm. L-ai cumpărat în ziua în care ai decis că nu mai vrei să trăiești așa cum o făceai până acum.",
+            "Dintr-un buzunar de la piept, pe care nu-l observase înainte, Andrei scoase un carton mic, violet, pe care scria doar numele lui. — Unde mă duce trenul ăsta? întrebă el. Femeia zâmbi ușor: — Depinde. Unii coboară într-un oraș unde își găsesc curajul. Alții, într-un sat unde învață să ierte. Tu vei coborî acolo unde ți-ai lăsat versiunea pe care ai pierdut-o.",
+            "Pe tot parcursul călătoriei, prin geam nu se vedea nimic cunoscut. Doar frânturi: o mână care ținea un bilet de avion nefolosit, un caiet plin de desene neterminate, o fotografie cu el râzând, mai tânăr, mai viu.",
+            "Când trenul opri, Andrei coborî într-un oraș luminat, plin de culori și persoane care păreau să-l cunoască. Nu era nici trecutul și nici viitorul. Era o nouă șansă, un loc în care putea alege din nou. În spatele lui, trenul de la miezul nopții dispăru în tăcere, lăsând în urmă doar sunetul vag al unei promisiuni împlinite.",
+          ],
+        },
+
+        10: {
+          title: "Librăria dintre lumi",
+          excerpt:
+            "O librărie misterioasă apare doar celor care au nevoie de o poveste anume...",
+          content: [
+            "Ploua de ore întregi, iar Clara se adăpostise sub o streașină, încercând să-și dea seama încotro să meargă. Harta orașului nu-i mai spunea nimic. Străzile păreau să se schimbe de fiecare dată când clipea.",
+            "Când deja se gândea să renunțe, văzu o firmă mică, de lemn, atârnată deasupra unei uși înguste: „Librăria dintre lumi”. Jurase că, în urmă cu câteva minute, acolo nu fusese nimic. Dar ploaia, oboseala și curiozitatea se împleteau periculos.",
+            "A împins ușa și un clopoțel discret a anunțat intrarea ei. Înăuntru, aerul mirosea a hârtie veche, praf și ceva dulce, ca vanilia. Rafturi înalte până la tavan erau pline de cărți de toate culorile și mărimile.",
+            "La tejghea, un bărbat în vârstă, cu ochelari rotunzi, ridică privirea dintr-un volum masiv. — Bună seara, Clara, spuse el calm. Ea se opri în loc. — Ne cunoaștem? — Într-un fel, da. Știu fiecare cititor care ne trece pragul.",
+            "— Caut ceva anume? întrebă ezitantă. — Nu tu cauți, ci cartea te caută pe tine, răspunse el, făcându-i semn să-l urmeze printre rafturi. Pe măsură ce mergea, culorile cotoarelor păreau să se schimbe ușor, ca și cum ar fi reacționat la prezența ei.",
+            "Se opri în fața unui raft îngust, unde o singură carte strălucea slab. Coperta era simplă, fără titlu, doar cu un simbol mic, asemănător cu o cheie. — Aceasta e a ta, spuse librarul. — Despre ce e? — Despre ceea ce ai putea fi, dacă ai înceta să fugi de tine.",
+            "Când o deschise, nu găsi pagini tipărite, ci imagini în mișcare – fragmente din viața ei, momente în care făcuse un pas înapoi de teamă, clipe în care spusese „nu pot” în loc de „voi încerca”.",
+            "Cu fiecare filă întoarsă, ceva în pieptul ei se strângea, apoi începea să se elibereze. Cartea nu o judeca, ci doar îi arăta posibilități pe care nu le văzuse. Într-un capitol, pleca în orașul în care visase mereu să studieze. În altul, își publica propriul roman.",
+            "Când ajunse la ultima pagină, găsi un spațiu gol și un stilou prins de copertă. — Aici începi tu să scrii, spuse librarul din spatele ei. — Nu pentru mine, ci pentru tine. Librăria noastră nu dă povești gata scrise. Ea doar îți arată că poți fi autorul propriei vieți.",
+            "Clara a ieșit din librărie cu cartea la piept și cu o senzație ciudată de ușurință. Când s-a întors să mai privească încă o dată firma de lemn, clădirea dispăruse. Rămăsese doar ploaia, mai blândă acum, și o decizie nouă care începea să prindă rădăcini în inima ei.",
+          ],
+        },
+
+        11: {
+          title: "Cafeneaua în care timpul se oprește",
+          excerpt:
+            "Există un loc unde, cât timp bei o cafea, timpul din afară nu trece deloc...",
+          content: [
+            "Luca descoperise cafeneaua din greșeală, într-o dimineață în care întârziase la muncă și încerca să scurteze drumul printr-o alee necunoscută. O firmă discretă, din metal, atârna deasupra unei uși de sticlă: „Cafeneaua Orei Pierdute”.",
+            "Împins de curiozitate și de mirosul de cafea proaspăt măcinată, a intrat. În interior, lumina era caldă, plăcută, iar muzica de fundal era suficient de încetă pentru a nu deranja gândurile. Pe pereți, ceasuri de toate formele ticăiau liniștit.",
+            "Barista, o femeie cu părul prins într-un coc lejer și cu un zâmbet blând, l-a întâmpinat cu un simplu: — Prima dată aici, nu-i așa? — Da, recunoscu Luca. — Atunci, îți recomand „Espresso Suspendat”. Merge bine cu deciziile grele.",
+            "A zâmbit încurcat, dar a acceptat. S-a așezat la o masă lângă fereastră și a privit înapoi spre drum. Traficul era haotic ca de obicei, oamenii grăbiți, dar, pe măsură ce își aștepta cafeaua, simțea cum o liniște ciudată îl învăluie.",
+            "Când ceșcuța a fost așezată în fața lui, barista i-a făcut cu ochiul: — Ține minte: cât timp bei, timpul de afară se oprește. Doar aici curge. — Cum adică? a râs Luca. — O să vezi, a răspuns ea simplu.",
+            "A ridicat ceșcuța la buze și, din primul sorb, a simțit cum ceva se schimbă. Sunetele de afară se estompaseră, ca și cum cineva ar fi închis ușa între două lumi. Ceasurile de pe pereți continuau să ticăie, dar niciunul nu părea sincronizat cu altul.",
+            "S-a cufundat în gânduri: la jobul pe care îl ura, la relațiile pe care le lăsase să se stingă, la visele puse „pe mai târziu”. Pentru prima dată după mult timp, nu se simțea alergat de nimic. Nici de termene limită, nici de ceasul de la încheietură.",
+            "Când a terminat cafeaua, a privit instinctiv la ceasul de la mână. 08:17. Ora la care intrase în cafenea. Confuz, s-a uitat pe geam. Oamenii de afară se mișcau exact ca înainte. Mașinile erau în aceleași poziții. Ca și cum timpul ar fi stat pe loc.",
+            "— Ți-am spus, spuse barista, sprijinindu-se de tejghea. — La noi, primești o oră doar pentru tine. O oră în care să gândești, să simți, să-ți amintești cine ești, fără să pierzi nimic „acolo afară”.",
+            "Luca a rămas mult timp în prag, după ce a plătit. Știa că, din punct de vedere logic, totul era imposibil. Dar, în piept, simțea recunoștință. Se simțea mai ușor, mai clar. Data viitoare când se va simți copleșit, știa exact unde va veni. Cafeneaua în care timpul se oprește nu era un loc de fugit din realitate, ci unul unde să înveți cum să te întorci în ea altfel.",
+          ],
+        },
+
+        12: {
+          title: "Orașul care apare doar pe hartă",
+          excerpt:
+            "Pe GPS, un orășel necunoscut apărea între două localități familiare, dar în realitate nimeni nu îl găsise vreodată...",
+          content: [
+            "Mara și Vlad erau în drum spre mare când, plictisiți de autostradă, au decis să aleagă ruta „scenică”. Vlad a mărit harta pe GPS și a observat ceva ciudat: între două orașe pe care le cunoștea bine, apărea un orășel mic, numit simplu „Luminia”.",
+            "— Ai auzit vreodată de Luminia? a întrebat el. Mara a ridicat din umeri. — Niciodată. — Uite, există și drum direct până acolo, spuse el, arătând cu degetul. Curioși, au urmat indicațiile. Drumul i-a scos de pe șoseaua principală, prin sate liniștite și câmpuri nesfârșite.",
+            "După aproape o oră, GPS-ul insista că se apropiau de destinație. Dar în fața lor nu era niciun oraș, nicio clădire. Doar un câmp imens, cu iarbă înaltă, mișcându-se leneș în bătaia vântului. — Cred că sistemul are o eroare, zise Mara.",
+            "Și totuși, pe ecran, un punct albastru clipitoare era exact „în centrul” orașului Luminia. Atunci au văzut indicatorul: un stâlp vechi de metal, pe care scria, abia vizibil, „Bine ați venit”. Fără nume de localitate, fără altceva.",
+            "Cum au coborât din mașină, semnalul la telefon a dispărut. Harta a rămas înghețată, cu aceeași imagine a unui oraș invizibil. Aerul avea o liniște prea densă, ca înaintea unei furtuni. — Poate e doar un câmp cu fundații vechi, zise Vlad, încercând să pară calm.",
+            "Au început să meargă printre ierburile înalte. După câțiva pași, pământul s-a schimbat. Din iarbă au început să răsară alei de piatră, contururi de străzi, bănci ruginite. Apoi, ca și cum cineva ar fi reglat un canal, clădirile au început să se contureze din aerul dens.",
+            "În câteva secunde, în jurul lor se înălța un oraș complet: clădiri vechi, felinare, vitrine de magazine, o fântână în piața centrală. Totul părea perfect real, dar ușor translucid, ca o reflexie într-un geam.",
+            "Pe o bancă, un bătrân hrănea porumbei invizibili. — Bun venit în Luminia, spuse, fără să-i privească. — Unde... suntem? abia reuși Mara să întrebe. — Într-un loc pe care oamenii l-au uitat, dar pe care hărțile nu l-au lăsat să dispară.",
+            "Au aflat că Luminia fusese, cândva, un oraș mic, plin de viață, dar oamenii plecaseră, rând pe rând, în căutarea unor oportunități mai mari. Când ultimul locuitor a părăsit orașul, acesta a încetat să mai existe pe hartă fizic, dar a rămas prins în memoria drumurilor și a poveștilor neterminate.",
+            "— De ce putem noi să-l vedem? a întrebat Vlad. — Pentru că, la fel ca orașul acesta, și voi sunteți între două drumuri, răspunse bătrânul. — Și pentru că încă nu v-ați hotărât încotro să mergeți cu adevărat. Luminia apare doar celor care au nevoie să se oprească și să-și amintească de ce au pornit la drum.",
+            "Când au plecat, orașul s-a estompat în spatele lor, revenind la forma de câmp liniștit. Pe GPS, punctul albastru continua să înainteze. Iar, pentru prima dată după mult timp, Mara și Vlad știau exact unde voiau să ajungă – nu doar cu mașina, ci și cu viețile lor.",
+          ],
+        },
+
+        13: {
+          title: "Jurnalul necitit",
+          excerpt:
+            "Un jurnal găsit într-un anticariat pare să știe mai multe despre viața ta decât tu însuți...",
+          content: [
+            "Anticariatul mirosea a hârtie veche, lemn umed și timp. Alex rătăcea fără țintă printre rafturi, atingând din când în când coperțile prăfuite. Nu căuta nimic anume. Sau poate căuta ceva ce nu știa numi.",
+            "Un jurnal cu copertă de piele maro, legat cu o panglică subțire, i-a atras privirea. Nu avea titlu, nici autor. Doar un mic simbol în colțul din dreapta jos – un cerc străpuns de o linie, ca un fel de ceas fără limbi.",
+            "— Cât costă? a întrebat, ducând jurnalul la tejghea. Vânzătorul, un dom bătrân cu mustață albă, l-a privit lung. — Pentru tine, nimic. Dar ține minte: odată ce îl deschizi, nu vei mai putea pretinde că nu ai știut.",
+            "Alex a râs, crezând că e doar o replică de anticariat. A luat jurnalul acasă și l-a așezat pe birou. Câteva zile a evitat să-l deschidă, ocupându-se de orice altceva. Dar, într-o seară târzie, a cedat.",
+            "Pe prima pagină, cu un scris ordonat, era notată o dată: cu exact zece ani în urmă. Sub ea, rânduri de text descriau o zi ploioasă în care „autorul” se simțise blocat, fără direcție, plimbându-se prin oraș doar ca să scape de propriile gânduri.",
+            "Pasajul descria, în detaliu, un anticariat mic, o carte cumpărată din impuls și senzația că acel obiect avea să schimbe ceva. Alex simți cum i se strânge stomacul. Fusese, practic, aceeași zi prin care trecuse el acum.",
+            "A întors pagina. Următoarea însemnare descria o ceartă violentă cu un prieten apropiat, cuvinte spuse la nervi și tăceri care au durat ani. Detaliile erau atât de precise, încât Alex simți că cineva îi răsfoiește propriile amintiri.",
+            "Cu fiecare pagină, jurnalul părea să înainteze în timp, descriind momente din viața lui – decizii pe care le amânase, oportunități ratate, frici neadresate. Nu era doar un jurnal. Era o oglindă a tuturor lucrurilor pe care le lăsese nespuse sau netrăite.",
+            "La un moment dat, textul se opri brusc. Ultimele rânduri păreau incomplete, ca și cum cineva ar fi fost întrerupt la mijlocul unei fraze. Apoi, paginile următoare erau complet albe. Alex a simțit un impuls ciudat de a lua un pix.",
+            "— Continuă tu, parcă auzea vocea vânzătorului. — Acesta e punctul în care nu ai mai ales. Acum trebuie să o faci. Cu mâna tremurândă, Alex a început să scrie. Nu despre trecut, ci despre ce ar vrea să devină următoarele capitole ale vieții lui.",
+            "Dimineața, când s-a întors la anticariat să caute explicații, magazinul nu mai era. În locul lui era un spațiu gol, cu geamuri acoperite de praf. Doar reflexia lui în sticlă îl privea înapoi, ținând încă jurnalul necitit complet – pentru că restul urma să fie scris.",
+          ],
+        },
+
+        14: {
+          title: "Steaua căzută în grădină",
+          excerpt:
+            "Într-o noapte de vară, o stea cade direct în grădina unui băiat care nu mai credea în dorințe...",
+          content: [
+            "David stătea întins pe iarbă, cu mâinile sub cap, privind cerul nopții. Stelele îl fascinaseră când era mic, dar, cu timpul, deveniseră doar puncte reci, departe, fără nicio legătură reală cu viața lui.",
+            "— Îți mai pui dorințe? îl întrebase sora lui, cu câteva seri în urmă. El ridicase din umeri. — Pentru ce? Nu se întâmplă oricum nimic. De data asta, însă, cerul părea mai clar ca niciodată, iar aerul avea o liniște aparte.",
+            "De nicăieri, o dârză de lumină tăie bolta, mult mai aproape decât orice „stea căzătoare” văzută vreodată. În loc să dispară la orizont, se prăbuși, cu un sunet abia auzit, chiar în capătul grădinii.",
+            "David se ridică deodată, cu inima bătându-i în piept. Alergă printre tufele de trandafiri până la locul impactului. Acolo, printre firele de iarbă arse ușor, se afla o sferă mică de lumină, palpitând ca un glob de sticlă în care pulsează o inimă.",
+            "Când întinse mâna, lumina se strânse într-un punct, apoi se deschise, dezvăluind o formă umană minusculă, alcătuită din praf de stele. — În sfârșit, ai privit în sus, spuse o voce subțire, dar clară. — Cine... ce ești? bâigui David.",
+            "— Sunt o stea rătăcită, răspunse creatura, plutind la nivelul ochilor lui. — Ne chemăm unii pe alții de fiecare dată când cineva renunță la dorințe. Pentru că dorințele ne cer să existăm. Fără ele, ne stingem.",
+            "David râse nervos. — Eu nu mai cred în dorințe de mult timp. — Știu, zise steaua. — De aceea am căzut aici. Ca să-ți arăt că nu e vorba despre a crede în magie, ci despre a-ți recunoaște ceea ce îți dorești cu adevărat.",
+            "Steaua îi atinse fruntea și, pentru o clipă, tot ceea ce își dorise vreodată trecu prin mintea lui ca un șuvoi: zile în care voia să-și ceară scuze cuiva, seri în care visa să cânte pe o scenă, momente în care ar fi vrut doar să spună „nu” și să aleagă alt drum.",
+            "— Dorințele neîmplinite nu dispar, spuse steaua. — Ele doar se adună în locuri greu de atins în noi. Tu poți alege: să le lași acolo sau să faci, începând de mâine, un pas mic spre una dintre ele.",
+            "Dimineața, în locul unde căzuse steaua, rămăsese doar un mic cerc de iarbă arsă și un sentiment ciudat de claritate. David nu a devenit brusc un optimist convins. Dar, în ziua aceea, și-a sunat un vechi prieten cu care nu mai vorbise de ani. A doua zi, a scos chitara de sub pat.",
+            "Nu a spus nimănui despre steaua căzută. Dar, în unele nopți, când cerul era senin, o lumină anume părea să-i facă cu ochiul. Iar el, de data asta, nu mai privea în altă parte.",
+          ],
+        },
       },
 
       profilePage: {
@@ -881,6 +1011,136 @@ const resources = {
             "Dr. Ionescu created the world's first digital consciousness...",
             "But the program, named AURA, began to feel emotions...",
             "An impossible love between human and code takes shape...",
+          ],
+        },
+        8: {
+          title: "The House at the End of the Street",
+          excerpt:
+            "Every evening, a strange light appeared in the window of an abandoned house...",
+          content: [
+            "The house at the end of the street had once been the most beautiful in the neighborhood. Now its windows were covered in dust, and the wooden fence leaned dangerously toward the sidewalk. And yet, every evening, at the same hour, a faint light turned on upstairs.",
+            "The neighbors ignored it. They had grown used to looking away, pretending nothing was happening. The children, however, whispered stories about ghosts, witches, and secret rituals, pointing at the lit window.",
+            "Mara didn’t believe in stories. She was curious by nature and kept a notebook where she wrote down everything strange in the neighborhood. That light had become, in the last few months, the most important mystery on her list.",
+            "One cold autumn evening, she gathered her courage. She waited until her parents fell asleep, then slipped out of the house, a flashlight in her pocket and the notebook clutched to her chest. The street was almost empty, only the wind rustling through an old linden tree.",
+            "As she approached the house, the air felt heavier. The light upstairs flickered weakly, like a candle about to die. Mara stopped at the gate, held her breath, and listened. No voices, no movement. Just silence.",
+            "With trembling hands, she pushed the gate. A sharp creak cut through the quiet, and her heart skipped a beat. She slipped into the yard, avoiding the tall weeds. The front door was slightly ajar, as if it had been waiting for someone.",
+            "She climbed the stairs, supporting herself on the cold banister. Every step creaked, as if announcing her presence. When she reached the landing, the light clearly shone from under an old blue-painted door.",
+            "She took a deep breath, counted to three in her head, and pushed the door open. Inside, a single lamp was lit on a desk cluttered with notebooks, photos, and maps. In front of it, with his back to her, sat an old man with white, straight hair, staring at a framed photograph.",
+            "“I knew that sooner or later someone would come,” he said, without turning. Mara froze in the doorway. His voice was calm but heavy with an old sadness. “Why do you turn on the light every evening?” she managed to whisper.",
+            "The man slowly turned around. In his blue eyes lay a longing hard to describe. “So that she can find her way home,” he said, pointing to the picture of a young, smiling woman. “And so that one day, someone would be brave enough to ask why.”",
+            "Mara stepped into the room, and her fear began to melt away. The mystery of the house at the end of the street wasn’t about ghosts or curses. It was about forgotten promises, waiting, and the way light, no matter how faint, can always guide someone back.",
+          ],
+        },
+
+        9: {
+          title: "The Midnight Train",
+          excerpt:
+            "They say a mysterious train stops at the station only for those who need to change their lives...",
+          content: [
+            "The station was almost empty at that hour. Only an old clock hanging above the platform ticked tiredly, inching toward midnight. Andrei rubbed his hands to warm them, wondering for the tenth time why he had agreed to come.",
+            "A friend had once told him, half-joking, about a strange train that appeared only once a year, exactly at midnight, taking with it people who no longer knew where to go. Andrei had laughed back then, but as the days passed, the story stayed in his mind.",
+            "He had lost his job, his friends had drifted away, and his apartment had turned into a silent box full of meaningless things. That evening, he had nothing left to lose. So he came to the station—just to see.",
+            "When the clock struck twelve, the air shifted. A cold wind swept through the station, and the lights flickered for a moment. Then, from the darkness of track three, a deep rumble echoed, like a sound from another time.",
+            "The train appeared slowly, as if drawn from shadows and steam. The carriages were old but strangely well kept. On a small metal plate, dimly lit, it read: “Line of Destiny – One Way Only.”",
+            "The doors opened without a sound. From inside, a warm yellow glow invited him in. Andrei looked around—no one else was on the platform. His heart pounded wildly. “It’s just a joke,” he told himself. Still, he took a step forward.",
+            "Inside, the seats were covered in blue velvet, and the windows reflected not the station, but some kind of infinite night full of stars. At the end of the aisle, a woman in an elegant suit watched him closely.",
+            "“Ticket, please,” she said, holding out her hand. Andrei stammered, “I... I don’t have a ticket.” “Yes, you do,” she replied calmly. “You bought it the day you decided you no longer wanted to live the way you were.”",
+            "From an inner pocket he hadn’t noticed before, Andrei pulled out a small violet card with only his name on it. “Where does this train take me?” he asked. The woman smiled faintly. “It depends. Some get off in a city where they find courage. Others, in a village where they learn to forgive. You will get off where you left the version of yourself you lost.”",
+            "Throughout the journey, nothing familiar appeared outside the window. Only fragments: a hand holding an unused plane ticket, a notebook full of unfinished sketches, a photograph of himself laughing, younger, more alive.",
+            "When the train stopped, Andrei stepped into a bright city full of colors and faces that seemed to recognize him. It was neither the past nor the future. It was a new chance—a place where he could choose again. Behind him, the midnight train disappeared silently, leaving only the faint echo of a promise kept.",
+          ],
+        },
+
+        10: {
+          title: "The Library Between Worlds",
+          excerpt:
+            "A mysterious library appears only to those who need a very specific story...",
+          content: [
+            "It had been raining for hours, and Clara had taken shelter under a ledge, trying to figure out where to go next. The city map no longer made sense. The streets seemed to shift every time she blinked.",
+            "Just as she thought about giving up, she noticed a small wooden sign above a narrow door: “The Library Between Worlds.” She could have sworn nothing had been there a few minutes before. But the rain, the exhaustion, and curiosity blended dangerously.",
+            "She pushed the door open, and a tiny bell chimed to announce her arrival. Inside, the air smelled of old paper, dust, and something sweet, like vanilla. Tall shelves stretched to the ceiling, filled with books of all shapes and colors.",
+            "Behind the counter, an elderly man with round glasses looked up from a massive volume. “Good evening, Clara,” he said calmly. She froze. “Do we know each other?” “In a way, yes. I know every reader who walks through that door.”",
+            "“I’m looking for something specific?” she asked hesitantly. “You’re not the one searching. The book is searching for you,” he answered, motioning her to follow between the shelves. As they walked, the colors of the spines shifted slightly, as if reacting to her presence.",
+            "They stopped in front of a narrow shelf, where a single book glowed faintly. Its cover was simple, no title, just a small symbol resembling a key. “This one is yours,” said the librarian. “What is it about?” “About who you could become if you stopped running from yourself.”",
+            "When she opened it, there were no printed words—only moving images. Fragments of her life, moments when she had stepped back out of fear, times when she had said “I can’t” instead of “I’ll try.”",
+            "With each page she turned, something in her chest tightened, then began to loosen. The book wasn’t judging her. It was simply showing her possibilities she had never noticed. In one chapter, she left for the city she had always dreamed of studying in. In another, she published her own novel.",
+            "On the last page, she found a blank space and a pen clipped to the cover. “This is where you start writing,” said the librarian behind her. “Not for me. For you. Our library doesn’t give ready-made stories. It only shows you that you can be the author of your own life.”",
+            "Clara left the library holding the book to her chest, feeling strangely lighter. When she turned to look at the wooden sign one more time, the building had vanished. Only the rain remained—softer now—and a new decision slowly taking root in her heart.",
+          ],
+        },
+
+        11: {
+          title: "The Café Where Time Stops",
+          excerpt:
+            "There is a place where, as long as you drink your coffee, time outside doesn’t move at all...",
+          content: [
+            "Luca had discovered the café by accident, one morning when he was late for work and tried to take a shortcut through an unfamiliar alley. A discreet metal sign hung above a glass door: “The Lost Hour Café.”",
+            "Drawn in by curiosity and the smell of freshly ground coffee, he walked inside. The light was warm and soft, and the background music was quiet enough not to disturb his thoughts. On the walls, clocks of all shapes and sizes ticked softly.",
+            "The barista, a woman with her hair in a loose bun and a gentle smile, greeted him: “First time here, right?” “Yes,” Luca admitted. “Then I recommend the ‘Suspended Espresso’. It goes well with tough decisions.”",
+            "He smiled awkwardly but agreed. He sat by the window and looked back at the street. Traffic was as chaotic as ever, people rushed past, but as he waited for his coffee, he felt a strange calm wrapping around him.",
+            "When the cup was placed in front of him, the barista winked. “Remember: as long as you drink, time outside stands still. Only here it moves.” “What do you mean?” Luca laughed. “You’ll see,” she replied simply.",
+            "He lifted the cup to his lips and, from the first sip, felt something shift. The sounds outside dimmed, as if someone had closed a door between two worlds. The clocks on the walls kept ticking, but none seemed in sync with the others.",
+            "He sank into his thoughts: the job he hated, the relationships he had let fade, the dreams he had postponed “for later.” For the first time in a long while, he didn’t feel chased by anything—not by deadlines, not by the watch on his wrist.",
+            "When he finished his coffee, he glanced at his watch out of habit. 08:17. The same time he had walked in. Confused, he looked outside. People were moving exactly as before. Cars were in the same positions. As if time had truly stopped.",
+            "“Told you,” said the barista, leaning on the counter. “Here, you get an hour just for yourself. An hour to think, to feel, to remember who you are—without losing anything out there.”",
+            "Luca stood in the doorway for a long time after paying. He knew that logically none of it made sense. But in his chest, he felt grateful. Lighter. Clearer. Next time he would feel overwhelmed, he knew exactly where he would go. The café where time stops wasn’t a place to escape reality, but a place to learn how to return to it differently.",
+          ],
+        },
+
+        12: {
+          title: "The City That Exists Only on Maps",
+          excerpt:
+            "On GPS, a small unknown town appears between two familiar cities, but in reality no one has ever found it...",
+          content: [
+            "Mara and Vlad were on their way to the seaside when, bored of the highway, they decided to take the “scenic” route. Vlad zoomed in on the GPS and noticed something odd: between two towns he knew well, a tiny city appeared, simply called “Luminia.”",
+            "“Have you ever heard of Luminia?” he asked. Mara shrugged. “Never.” “Look, there’s even a direct road to it,” he said, pointing. Curious, they followed the directions. The road led them off the main highway, through quiet villages and endless fields.",
+            "After almost an hour, the GPS insisted they were close to their destination. But in front of them there was no town, no buildings. Just a huge field of tall grass swaying lazily in the wind. “Must be a glitch,” said Mara.",
+            "And yet, on the screen, their blue dot blinked right in the “center” of Luminia. That’s when they saw the sign: an old metal pole with a barely visible inscription, “Welcome.” No town name. Nothing else.",
+            "As soon as they stepped out of the car, their phone signal vanished. The map froze, still showing an invisible town. The air felt too still, like just before a storm. “Maybe there used to be something here,” said Vlad, trying to sound calm.",
+            "They started walking through the tall grass. After a few steps, the ground changed. From beneath the grass emerged stone paths, outlines of streets, rusty benches. Then, as if someone had adjusted a channel, buildings began to form out of the dense air.",
+            "Within seconds, a whole town stood around them: old houses, lampposts, shop windows, a fountain in the main square. Everything looked perfectly real, but slightly translucent, like a reflection in glass.",
+            "On a bench, an old man was feeding invisible pigeons. “Welcome to Luminia,” he said without looking at them. “Where... are we?” Mara barely managed to ask. “In a place people forgot,” he replied, “but which maps refused to let disappear.”",
+            "They learned that Luminia had once been a small, lively town, but people had left, one by one, chasing bigger opportunities. When the last resident left, the town vanished physically but remained stuck in the memory of roads and unfinished stories.",
+            "“Why can we see it?” asked Vlad. “Because, like this town, you two are between two paths,” said the old man. “And because you still haven’t decided where you truly want to go. Luminia appears only to those who need to stop and remember why they started their journey.”",
+            "When they left, the town faded behind them, returning to a quiet field. On the GPS, the blue dot moved forward. And for the first time in a long while, Mara and Vlad knew exactly where they wanted to go—not just with the car, but with their lives.",
+          ],
+        },
+
+        13: {
+          title: "The Unread Journal",
+          excerpt:
+            "A journal found in an antique shop seems to know more about your life than you do...",
+          content: [
+            "The antique shop smelled of old paper, damp wood, and time. Alex wandered aimlessly between shelves, occasionally brushing his fingers over dusty covers. He wasn’t looking for anything in particular. Or maybe he was, but he couldn’t name it.",
+            "A brown leather journal tied with a thin ribbon caught his eye. No title, no author. Just a small symbol in the bottom right corner—a circle pierced by a line, like a clock without hands.",
+            "“How much is it?” he asked, placing it on the counter. The shopkeeper, an elderly man with a white mustache, studied him. “For you, it’s free. But remember: once you open it, you won’t be able to pretend you didn’t know.”",
+            "Alex laughed, thinking it was just a dramatic sales line. He took the journal home and left it on his desk. For days, he avoided opening it, keeping himself busy with anything else. But one late night, he gave in.",
+            "On the first page, written neatly, was a date—exactly ten years ago. Below it, lines describing a rainy day when the “author” felt stuck, directionless, wandering through the city just to escape his thoughts.",
+            "The passage described, in detail, a small antique shop, a book bought on impulse, and the feeling that the object would change something. Alex’s stomach tightened. It was, almost exactly, the day he had just lived.",
+            "He turned the page. The next entry described a bitter argument with a close friend, angry words and a silence that lasted for years. The details were so precise he felt someone was flipping through his own memories.",
+            "With every page, the journal moved forward in time, describing moments from his life—choices he had delayed, chances he had missed, fears he had buried. It wasn’t just a journal. It was a mirror of everything he had left unsaid or unlived.",
+            "Then, suddenly, the text stopped. The last sentences were cut off, as if someone had been interrupted mid-thought. The pages that followed were blank. Alex felt a strange urge to pick up a pen.",
+            "“You continue,” he could almost hear the shopkeeper’s voice. “This is the point where you stopped choosing. Now you must choose.” With a trembling hand, Alex began to write—not about the past, but about what he wanted the next chapters of his life to become.",
+            "The next morning, when he returned to the antique shop to look for answers, the store was gone. In its place stood an empty space with dusty windows. Only his reflection stared back at him, still holding the unfinished journal—because the rest was yet to be written.",
+          ],
+        },
+
+        14: {
+          title: "The Star That Fell in the Garden",
+          excerpt:
+            "On a summer night, a star falls right into the garden of a boy who no longer believed in wishes...",
+          content: [
+            "David lay on the grass, hands behind his head, staring at the night sky. As a child, stars had fascinated him, but over time they had become nothing more than cold, distant points with no real connection to his life.",
+            "“Do you still make wishes?” his sister had asked him a few nights before. He had shrugged. “What for? Nothing happens anyway.” But tonight, the sky seemed clearer than ever, and the air held a strange stillness.",
+            "Out of nowhere, a streak of light cut across the sky, much closer than any “shooting star” he had ever seen. Instead of disappearing at the horizon, it fell, with a barely audible sound, right at the edge of the garden.",
+            "His heart pounding, David jumped up and ran past the rose bushes to where it had landed. There, among slightly scorched grass, lay a small sphere of light, pulsing like a glass orb with a beating heart inside.",
+            "When he reached out, the light shrank into a point, then opened, revealing a tiny human-like figure made of stardust. “At last, you looked up,” said a thin but clear voice. “Who... what are you?” David stammered.",
+            "“I am a wandering star,” the creature answered, floating at eye level. “We call to one another every time someone gives up on their wishes. Because wishes are what keep us existing. Without them, we fade.”",
+            "David laughed nervously. “I stopped believing in wishes a long time ago.” “I know,” said the star. “That’s why I fell here. To show you it’s not about believing in magic, but about admitting what you truly want.”",
+            "The star touched his forehead, and for a moment, everything he had ever wished for rushed through his mind: days when he wanted to apologize to someone, nights when he dreamed of playing music on a stage, moments when he wished he had simply said “no” and taken another path.",
+            "“Unfulfilled wishes don’t disappear,” said the star. “They just settle in places that are hard to reach inside us. You can choose: leave them there, or, starting tomorrow, take one small step toward one of them.”",
+            "In the morning, where the star had fallen, only a small circle of burnt grass remained, and a strange sense of clarity. David didn’t suddenly become an incurable optimist. But that day, he called an old friend he hadn’t spoken to in years. The next day, he took the guitar out from under his bed.",
+            "He never told anyone about the fallen star. But on some clear nights, a particular light in the sky seemed to wink at him. And this time, he didn’t look away.",
           ],
         },
       },
@@ -1497,6 +1757,136 @@ const resources = {
             "Le Dr Ionescu créa la première conscience numérique au monde...",
             "Mais le programme, nommé AURA, commença à ressentir des émotions...",
             "Un amour impossible entre l'humain et le code prend forme...",
+          ],
+        },
+        8: {
+          title: "La Maison au Bout de la Rue",
+          excerpt:
+            "Chaque soir, une étrange lumière apparaissait à la fenêtre d'une maison abandonnée...",
+          content: [
+            "La maison au bout de la rue avait autrefois été la plus belle du quartier. À présent, ses fenêtres étaient couvertes de poussière et la clôture en bois penchait dangereusement vers le trottoir. Pourtant, chaque soir, à la même heure, une faible lumière s’allumait à l’étage.",
+            "Les voisins faisaient semblant de ne rien voir. Ils s’étaient habitués à détourner le regard, comme si rien ne se passait. Les enfants, eux, se chuchotaient des histoires de fantômes, de sorcières et de rituels secrets, en pointant du doigt la fenêtre illuminée.",
+            "Mara ne croyait pas aux histoires. Elle était curieuse de nature et tenait un cahier dans lequel elle notait tout ce qui lui paraissait étrange dans le quartier. Et cette lumière était devenue, ces derniers mois, le plus grand mystère de sa liste.",
+            "Un soir froid d’automne, elle prit son courage à deux mains. Elle attendit que ses parents s’endorment, puis sortit discrètement de la maison, une lampe de poche dans la poche et son cahier serré contre elle. La rue était presque déserte, seulement le vent qui faisait bruisser les feuilles d’un vieux tilleul.",
+            "À mesure qu’elle s’approchait de la maison, l’air lui semblait plus lourd. La lumière à l’étage vacillait faiblement, comme une bougie en fin de vie. Mara s’arrêta à la porte du jardin, retint son souffle et écouta. Aucune voix, aucun pas. Seulement le silence.",
+            "Les mains tremblantes, elle poussa le portail. Un grincement aigu déchira le calme et son cœur manqua un battement. Elle se faufila dans la cour, contournant les hautes herbes. La porte d’entrée était entrebâillée, comme si elle attendait quelqu’un.",
+            "Mara monta l’escalier intérieur en s’agrippant à la rampe glacée. Chaque marche grinçait, comme pour annoncer sa présence. Arrivée à l’étage, elle vit que la lumière provenait clairement de sous une vieille porte bleue, écaillée par le temps.",
+            "Elle inspira profondément, compta jusqu’à trois dans sa tête et poussa la porte. À l’intérieur, une seule lampe de bureau était allumée, posée sur une table encombrée de cahiers, de photos et de cartes. Devant, assis de dos, un vieil homme aux cheveux blancs et lisses fixait une photographie encadrée.",
+            "— Je savais que tôt ou tard, quelqu’un viendrait, dit-il sans se retourner. Mara se figea sur le seuil. Sa voix était calme, mais chargée d’une tristesse ancienne. — Pourquoi allumez-vous la lumière chaque soir ? parvint-elle à murmurer.",
+            "L’homme se retourna lentement. Dans ses yeux bleus se lisait une nostalgie difficile à décrire. — Pour qu’elle trouve le chemin du retour, dit-il en désignant la photo d’une jeune femme souriante. — Et pour que quelqu’un, un jour, ait le courage de demander pourquoi.",
+            "Mara fit un pas dans la pièce, et la peur qui l’étreignait commença à se dissiper. Le mystère de la maison au bout de la rue ne parlait ni de fantômes, ni de malédictions. Il parlait de promesses oubliées, d’attente, et de la façon dont une lumière, si faible soit-elle, peut toujours guider quelqu’un vers la maison.",
+          ],
+        },
+
+        9: {
+          title: "Le Train de Minuit",
+          excerpt:
+            "On dit qu'un train mystérieux s'arrête en gare seulement pour ceux qui doivent changer leur vie...",
+          content: [
+            "La gare était presque vide à cette heure-là. Seule une vieille horloge suspendue au-dessus du quai battait la mesure, fatiguée, approchant de minuit. Andrei se frottait les mains pour les réchauffer, se demandant pour la dixième fois pourquoi il avait accepté de venir.",
+            "Un ami lui avait raconté, à moitié en plaisantant, l’histoire d’un train étrange qui n’apparaissait qu’une fois par an, exactement à minuit, et qui emportait avec lui les gens qui ne savaient plus où aller. Andrei avait ri à l’époque, mais avec le temps, l’idée était restée dans un coin de son esprit.",
+            "Il avait perdu son travail, ses amis s’étaient éloignés et son appartement était devenu une boîte silencieuse remplie d’objets sans importance. Ce soir-là, il n’avait plus rien à perdre. Alors il était venu à la gare, juste pour voir.",
+            "Quand l’horloge sonna douze coups, l’air changea. Un vent froid traversa la gare et les lumières vacillèrent. Puis, dans l’obscurité de la voie 3, un grondement profond se fit entendre, comme l’écho d’un autre temps.",
+            "Le train apparut lentement, comme dessiné à partir d’ombres et de vapeur. Les wagons semblaient anciens, mais étonnamment bien conservés. Sur une petite plaque métallique faiblement éclairée, on pouvait lire : « Ligne du Destin – Aller Simple ».",
+            "Les portes s’ouvrirent sans bruit. De l’intérieur venait une lumière chaude, dorée, qui l’invitait à entrer. Andrei regarda autour de lui — il était seul sur le quai. Son cœur battait à tout rompre. « Ce n’est qu’une blague », se dit-il. Pourtant, il fit un pas en avant.",
+            "À l’intérieur, les sièges étaient recouverts de velours bleu et les fenêtres ne reflétaient pas la gare, mais une sorte de nuit infinie, parsemée d’étoiles. Au bout du couloir, une femme en tailleur élégant l’observait.",
+            "— Votre billet, s’il vous plaît, dit-elle en tendant la main. Andrei balbutia : — Je... je n’ai pas de billet. — Si, vous en avez un, répondit-elle calmement. Vous l’avez acheté le jour où vous avez décidé que vous ne vouliez plus vivre comme avant.",
+            "D’une poche intérieure qu’il ne se souvenait pas avoir, Andrei sortit un petit carton violet sur lequel figurait uniquement son nom. — Où m’emmène ce train ? demanda-t-il. La femme eut un léger sourire. — Cela dépend. Certains descendent dans une ville où ils trouvent du courage. D’autres, dans un village où ils apprennent à pardonner. Toi, tu descendras là où tu as laissé la version de toi-même que tu as perdue.",
+            "Pendant tout le trajet, rien de familier ne se dessinait derrière les vitres. Seulement des fragments : une main tenant un billet d’avion jamais utilisé, un cahier rempli de dessins inachevés, une photo de lui plus jeune, riant à pleines dents.",
+            "Quand le train s’arrêta, Andrei descendit dans une ville lumineuse, pleine de couleurs et de visages qui semblaient le reconnaître. Ce n’était ni le passé ni le futur. C’était une nouvelle chance, un endroit où il pouvait choisir à nouveau. Derrière lui, le train de minuit disparut dans le silence, ne laissant qu’un léger écho — celui d’une promesse tenue.",
+          ],
+        },
+
+        10: {
+          title: "La Librairie entre les Mondes",
+          excerpt:
+            "Une librairie mystérieuse apparaît seulement à ceux qui ont besoin d'une histoire précise...",
+          content: [
+            "Il pleuvait depuis des heures et Clara s’était réfugiée sous un auvent, essayant de décider où aller ensuite. Le plan de la ville ne lui disait plus rien. Les rues semblaient changer chaque fois qu’elle clignait des yeux.",
+            "Au moment où elle songeait à renoncer, elle aperçut une petite enseigne en bois au-dessus d’une porte étroite : « La Librairie entre les Mondes ». Elle aurait juré que rien ne se trouvait là quelques minutes plus tôt. Mais la pluie, la fatigue et la curiosité formaient un mélange dangereux.",
+            "Elle poussa la porte et une petite clochette tinta pour annoncer son arrivée. À l’intérieur, l’air sentait le papier ancien, la poussière et quelque chose de doux, comme la vanille. De hautes étagères montaient jusqu’au plafond, chargées de livres de toutes tailles et de toutes couleurs.",
+            "Derrière le comptoir, un vieil homme aux lunettes rondes leva les yeux d’un volume épais. — Bonsoir, Clara, dit-il calmement. Elle se figea. — On se connaît ? — D’une certaine façon, oui. Je connais chaque lecteur qui franchit cette porte.",
+            "— Je cherche quelque chose en particulier ? demanda-t-elle, hésitante. — Ce n’est pas toi qui cherches, c’est le livre qui te cherche, répondit-il en lui faisant signe de le suivre entre les rayonnages. À mesure qu’ils avançaient, les couleurs des dos semblaient changer légèrement, comme si elles réagissaient à sa présence.",
+            "Ils s’arrêtèrent devant une étagère étroite où un seul livre brillait faiblement. La couverture était simple, sans titre, avec seulement un petit symbole qui ressemblait à une clé. — Celui-ci est à toi, dit le libraire. — De quoi parle-t-il ? — De ce que tu pourrais devenir si tu cessais de fuir.",
+            "Lorsqu’elle l’ouvrit, elle ne trouva pas de texte imprimé, mais des images en mouvement — des fragments de sa vie, des moments où elle avait reculé par peur, des instants où elle avait dit « je ne peux pas » au lieu de « j’essaie ».",
+            "À chaque page tournée, quelque chose se serrait dans sa poitrine, puis se desserrait peu à peu. Le livre ne la jugeait pas. Il lui montrait seulement des possibilités qu’elle n’avait jamais envisagées. Dans un chapitre, elle partait enfin pour la ville où elle avait toujours rêvé d’étudier. Dans un autre, elle publiait son propre roman.",
+            "Sur la dernière page, elle trouva un espace vierge et un stylo accroché à la couverture. — C’est ici que tu commences à écrire, dit le libraire derrière elle. — Pas pour moi, pour toi. Notre librairie ne donne pas d’histoires toutes faites. Elle te montre simplement que tu peux être l’auteur de ta propre vie.",
+            "Clara quitta la librairie en serrant le livre contre elle, avec une étrange sensation de légèreté. Lorsqu’elle se retourna pour regarder une dernière fois l’enseigne en bois, le bâtiment avait disparu. Il ne restait que la pluie, plus douce désormais, et une décision nouvelle qui commençait à prendre racine dans son cœur.",
+          ],
+        },
+
+        11: {
+          title: "Le Café où le Temps s'Arrête",
+          excerpt:
+            "Il existe un endroit où, tant que vous buvez votre café, le temps à l'extérieur ne s'écoule plus...",
+          content: [
+            "Luca avait découvert le café par hasard, un matin où il était en retard au travail et cherchait un raccourci dans une ruelle inconnue. Une petite enseigne en métal pendait au-dessus d’une porte vitrée : « Le Café de l’Heure Perdue ».",
+            "Poussé par la curiosité et l’odeur du café fraîchement moulu, il entra. À l’intérieur, la lumière était douce et chaleureuse, et la musique de fond suffisamment discrète pour ne pas déranger ses pensées. Sur les murs, des horloges de toutes les formes tictaquaient tranquillement.",
+            "La barista, une femme aux cheveux relevés en un chignon lâche et au sourire bienveillant, l’accueillit : — Première fois ici, n’est-ce pas ? — Oui, admit Luca. — Alors je te recommande l’« Espresso Suspendu ». Il va bien avec les décisions difficiles.",
+            "Il sourit, un peu gêné, mais accepta. Il s’assit près de la fenêtre et regarda la rue. La circulation était chaotique comme toujours, les gens pressés, mais, en attendant son café, il sentit une étrange paix l’envelopper.",
+            "Quand la tasse fut déposée devant lui, la barista lui fit un clin d’œil. — Souviens-toi : tant que tu bois, le temps dehors s’arrête. Il ne coule qu’ici. — Comment ça ? rit Luca. — Tu verras, répondit-elle simplement.",
+            "Dès la première gorgée, il sentit que quelque chose changeait. Les bruits de l’extérieur s’atténuèrent, comme si une porte se refermait entre deux mondes. Les horloges continuaient de tourner, mais aucune ne semblait à la même heure.",
+            "Luca se perdit dans ses pensées : ce travail qu’il détestait, ces relations qu’il avait laissées s’éteindre, ces rêves repoussés à « plus tard ». Pour la première fois depuis longtemps, il ne se sentait plus poursuivi ni par des échéances, ni par l’heure affichée à son poignet.",
+            "Lorsqu’il eut fini son café, il regarda sa montre par réflexe. 8h17. L’heure exacte à laquelle il était entré. Déconcerté, il jeta un œil dehors. Les passants se déplaçaient exactement comme avant. Les voitures n’avaient presque pas bougé. Comme si le temps s’était vraiment figé.",
+            "— Je te l’avais dit, lança la barista, appuyée contre le comptoir. — Ici, tu reçois une heure rien que pour toi. Une heure pour penser, ressentir, te souvenir de qui tu es, sans rien perdre « là-bas ».",
+            "Luca resta longtemps sur le pas de la porte après avoir payé. Il savait que, rationnellement, tout cela n’avait pas de sens. Mais, au fond de lui, il se sentait reconnaissant. Plus léger. Plus clair. La prochaine fois qu’il se sentirait dépassé, il saurait exactement où revenir. Le café où le temps s’arrête n’était pas un endroit pour fuir la réalité, mais pour apprendre à y revenir autrement.",
+          ],
+        },
+
+        12: {
+          title: "La Ville qui N'existe que sur la Carte",
+          excerpt:
+            "Sur le GPS, une petite ville inconnue apparaît entre deux villes familières, mais en réalité personne ne l'a jamais trouvée...",
+          content: [
+            "Mara et Vlad se rendaient à la mer quand, lassés de l’autoroute, ils décidèrent de choisir un itinéraire « pittoresque ». Vlad zoomen sur la carte du GPS et remarqua quelque chose d’étrange : entre deux villes qu’il connaissait bien, une petite localité apparaissait, simplement appelée « Luminia ».",
+            "— Tu as déjà entendu parler de Luminia ? demanda-t-il. Mara haussa les épaules. — Jamais. — Regarde, il y a même une route directe, ajouta-t-il en désignant l’écran. Curieux, ils suivirent les indications. La route les fit quitter l’axe principal, traversant des villages tranquilles et des champs à perte de vue.",
+            "Au bout d’environ une heure, le GPS affirma qu’ils approchaient de leur destination. Mais devant eux, aucun bâtiment, aucune rue. Juste un immense champ d’herbe haute ondulant sous le vent. — Le système doit bugger, dit Mara.",
+            "Et pourtant, sur l’écran, leur point bleu clignotait en plein « centre » de Luminia. C’est alors qu’ils virent le panneau : un vieux poteau en métal, sur lequel on pouvait lire, à peine : « Bienvenue ». Sans nom de ville. Rien de plus.",
+            "Dès qu’ils sortirent de la voiture, le signal de leurs téléphones disparut. La carte resta figée, montrant encore cette ville invisible. L’air semblait trop immobile, comme juste avant un orage. — Peut-être qu’il y a eu quelque chose ici autrefois, tenta Vlad.",
+            "Ils commencèrent à marcher dans l’herbe. Au bout de quelques pas, le sol changea. Sous les touffes d’herbe apparurent des allées pavées, les contours de rues, des bancs rouillés. Puis, comme si quelqu’un réglait une fréquence, les bâtiments commencèrent à se matérialiser à partir de l’air épais.",
+            "En quelques secondes, une ville entière se dressait autour d’eux : des maisons anciennes, des réverbères, des vitrines, une fontaine au centre de la place. Tout semblait parfaitement réel, mais légèrement translucide, comme un reflet.",
+            "Sur un banc, un vieil homme nourrissait des pigeons invisibles. — Bienvenue à Luminia, dit-il sans lever la tête. — Où... sommes-nous ? osa enfin demander Mara. — Dans un lieu que les gens ont oublié, répondit-il, mais que les cartes ont refusé de laisser disparaître.",
+            "Ils apprirent que Luminia avait été autrefois une petite ville animée, mais que ses habitants étaient partis, un par un, en quête de meilleures opportunités. Quand le dernier habitant avait quitté les lieux, la ville avait cessé d’exister physiquement, se retrouvant coincée dans la mémoire des routes et des histoires inachevées.",
+            "— Pourquoi pouvons-nous la voir ? demanda Vlad. — Parce qu’à l’image de cette ville, vous êtes vous aussi entre deux chemins, répondit le vieil homme. — Et parce que vous n’avez pas encore décidé où vous voulez vraiment aller. Luminia n’apparaît qu’à ceux qui ont besoin de s’arrêter et de se souvenir pourquoi ils ont commencé la route.",
+            "Lorsqu’ils repartirent, la ville se dissipa derrière eux, redevenant un simple champ paisible. Sur le GPS, le point bleu continua d’avancer. Et, pour la première fois depuis longtemps, Mara et Vlad savaient exactement où ils voulaient aller — pas seulement avec la voiture, mais avec leur vie.",
+          ],
+        },
+
+        13: {
+          title: "Le Journal Inlu",
+          excerpt:
+            "Un journal trouvé dans une brocante semble en savoir plus sur votre vie que vous-même...",
+          content: [
+            "La boutique d’antiquités sentait le vieux papier, le bois humide et le temps. Alex errait sans but parmi les étagères, effleurant parfois des couvertures poussiéreuses. Il ne cherchait rien de précis. Ou peut-être quelque chose qu’il n’arrivait pas à nommer.",
+            "Un journal à la couverture en cuir brun, fermé par un fin ruban, attira son regard. Pas de titre, pas d’auteur. Juste un petit symbole dans le coin inférieur droit — un cercle traversé par une ligne, comme une horloge sans aiguilles.",
+            "— Combien ? demanda-t-il en le posant sur le comptoir. Le vendeur, un vieil homme à la moustache blanche, le fixa longuement. — Pour toi, rien. Mais souviens-toi : une fois que tu l’ouvres, tu ne pourras plus prétendre que tu ne savais pas.",
+            "Alex rit, pensant à une réplique de marchand. Il ramena le journal chez lui et le posa sur son bureau. Pendant plusieurs jours, il évita de l’ouvrir, se trouvant toujours autre chose à faire. Mais, une nuit, il céda.",
+            "Sur la première page, d’une écriture soignée, figurait une date — exactement dix ans plus tôt. En dessous, quelques lignes décrivaient un jour de pluie où « l’auteur » s’était senti perdu, sans direction, errant dans la ville juste pour fuir ses pensées.",
+            "Le passage décrivait en détail une petite boutique d’antiquités, un livre acheté sur un coup de tête, et la sensation que cet objet allait changer quelque chose. Alex sentit son estomac se nouer. C’était pratiquement la journée qu’il venait de vivre.",
+            "Il tourna la page. L’entrée suivante racontait une violente dispute avec un ami proche, des mots prononcés sous la colère, et un silence qui avait duré des années. Les détails étaient si précis qu’il eut l’impression que quelqu’un feuilletait ses propres souvenirs.",
+            "À chaque page, le journal avançait dans le temps, décrivant des moments de sa vie — des décisions repoussées, des opportunités ratées, des peurs refoulées. Ce n’était pas seulement un journal. C’était un miroir de tout ce qu’il avait laissé inachevé ou tu.",
+            "Puis, soudainement, le texte s’interrompit. Les dernières phrases semblaient coupées en plein milieu. Les pages suivantes étaient blanches. Alex ressentit une étrange envie de prendre un stylo.",
+            "— À toi de continuer, entendit-il presque la voix du vendeur. — C’est ici que tu as cessé de choisir. Maintenant, il faut reprendre. La main tremblante, Alex se mit à écrire. Non pas sur le passé, mais sur ce qu’il aimerait que soient les prochains chapitres de sa vie.",
+            "Le lendemain matin, quand il retourna à la boutique d’antiquités pour chercher des explications, le magasin n’existait plus. À la place, un local vide, aux vitres poussiéreuses. Seul son reflet le regardait, tenant toujours le journal encore inlu — car le reste était à écrire.",
+          ],
+        },
+
+        14: {
+          title: "L'Étoile Tombée dans le Jardin",
+          excerpt:
+            "Une nuit d'été, une étoile tombe directement dans le jardin d'un garçon qui ne croyait plus aux voeux...",
+          content: [
+            "David était allongé dans l’herbe, les mains derrière la tête, à regarder le ciel nocturne. Enfant, les étoiles le fascinaient, mais avec le temps, elles étaient devenues de simples points froids et lointains, sans lien réel avec sa vie.",
+            "— Tu fais encore des vœux ? lui avait demandé sa sœur quelques soirées plus tôt. Il avait haussé les épaules. — Pour quoi faire ? Rien ne se réalise, de toute façon. Cette nuit-là pourtant, le ciel semblait plus clair que jamais et l’air portait un calme étrange.",
+            "Soudain, un trait de lumière fendit la voûte céleste, bien plus près qu’aucune « étoile filante » qu’il ait jamais vue. Au lieu de disparaître à l’horizon, elle s’écrasa, dans un léger bruit, tout au fond du jardin.",
+            "Le cœur battant, David se redressa et courut à travers les rosiers jusqu’au point d’impact. Là, au milieu de brins d’herbe légèrement brûlés, se trouvait une petite sphère de lumière, palpitant comme un globe de verre traversé par un cœur vivant.",
+            "Lorsqu’il tendit la main, la lumière se contracta en un point, puis s’ouvrit, révélant une minuscule silhouette humaine faite de poussière d’étoiles. — Enfin, tu as levé les yeux, dit une voix fine mais claire. — Qui... que es-tu ? balbutia David.",
+            "— Je suis une étoile égarée, répondit la créature en flottant à hauteur de son visage. — Nous nous appelons les unes les autres chaque fois que quelqu’un renonce à ses vœux. Car ce sont les vœux qui nous maintiennent en vie. Sans eux, nous nous éteignons.",
+            "David eut un rire nerveux. — Je ne crois plus aux vœux depuis longtemps. — Je sais, dit l’étoile. — C’est pour cela que je suis tombée ici. Pour te montrer qu’il ne s’agit pas de magie, mais d’avouer ce que tu désires vraiment.",
+            "L’étoile toucha son front et, l’espace d’un instant, tous les désirs qu’il avait eus défilèrent dans son esprit comme un torrent : des jours où il aurait voulu s’excuser auprès de quelqu’un, des soirées où il rêvait de jouer sur scène, des moments où il aurait simplement aimé dire « non » et choisir un autre chemin.",
+            "— Les vœux non réalisés ne disparaissent pas, dit l’étoile. — Ils se cachent juste dans des endroits difficiles d’accès, à l’intérieur de nous. Toi, tu peux choisir : les laisser là, ou, dès demain, faire un petit pas vers l’un d’entre eux.",
+            "Le matin, à l’endroit où l’étoile était tombée, il ne restait qu’un petit cercle d’herbe brûlée et une étrange clarté dans son esprit. David ne devint pas soudain un optimiste invétéré. Mais ce jour-là, il appela un vieil ami à qui il n’avait pas parlé depuis des années. Le lendemain, il sortit la guitare de sous son lit.",
+            "Il ne parla à personne de l’étoile tombée. Mais certaines nuits, quand le ciel était dégagé, une lumière en particulier semblait lui faire un clin d’œil. Et, cette fois, il ne détournait plus le regard.",
           ],
         },
       },
