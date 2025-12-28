@@ -499,102 +499,208 @@ const resources = {
       },
 
       upcomingPage: {
-        cta: {
-          title: "Vrei Acces Anticipat? 🚀",
-          description:
-            "Abonează-te acum și deblochează acces anticipat la povești, evenimente live și conținut exclusiv din culise.",
-          button: "Mergi la Abonare",
-        },
         hero: {
-          title: "În Curând 🌟",
+          badge: "În Curând",
+          title: "Evoluția Platformei Noastre",
           description:
-            "Povești noi, evenimente palpitante și colecții exclusive sunt pe drum. Fii primul care experimentează magia.",
+            "Descoperă îmbunătățirile planificate care vor face experiența ta de lectură și mai plăcută, pas cu pas.",
+          button: "Vezi Planurile Noastre",
         },
-        items: [
+        featuresTitle: "Funcționalități Viitoare ✨",
+        features: [
           {
-            title: "Poveste Nouă: Pădurea Magică",
-            date: "Lansare pe 25 August 2025",
-            iconKey: "book",
+            icon: "🔔",
+            title: "Sistem de Notificări",
+            date: "T2 2026",
+            description:
+              "Primește alerte personalizate pentru articole noi din categoriile tale preferate, direct în browser.",
           },
           {
-            title: "Eveniment Live: Noaptea Poveștilor",
-            date: "Alătură-te nouă pe 1 Septembrie 2025",
-            iconKey: "users",
+            icon: "⭐",
+            title: "Articole Favorite",
+            date: "T3 2026",
+            description:
+              "Salvează și organizează articolele preferate în colecții personalizate pentru acces rapid.",
           },
           {
-            title: "Colecție Nouă: Povești de Aventură",
-            date: "În curând!",
-            iconKey: "star",
+            icon: "📊",
+            title: "Statistici de Lectură",
+            date: "T4 2026",
+            description:
+              "Urmărește-ți progresul de lectură, timpul petrecut și articolele citite într-un dashboard personalizat.",
           },
           {
-            title: "Interviu Exclusiv cu Autori",
-            date: "1 Octombrie 2025",
-            iconKey: "users",
+            icon: "🎨",
+            title: "Teme Personalizabile",
+            date: "T1 2027",
+            description:
+              "Alege din multiple teme de culori și stiluri de font pentru o experiență de lectură personalizată.",
           },
           {
-            title: "Atelier Interactiv de Povești",
-            date: "15 Octombrie 2025",
-            iconKey: "calendar",
+            icon: "💾",
+            title: "Mod Offline",
+            date: "T2 2027",
+            description:
+              "Descarcă articolele pentru a le citi offline, perfect pentru călătorii sau zone fără internet.",
           },
           {
-            title: "Colecție de Sărbători",
-            date: "Decembrie 2025",
-            iconKey: "book",
+            icon: "🔍",
+            title: "Căutare Avansată",
+            date: "T3 2027",
+            description:
+              "Filtrare inteligentă după categorie, dată, autor și cuvinte cheie pentru găsirea rapidă a conținutului.",
           },
         ],
+        timelineTitle: "Planul Nostru de Dezvoltare 🗺️",
+        timeline: [
+          {
+            year: "2026",
+            quarter: "T1",
+            title: "Îmbunătățiri UI/UX",
+            description:
+              "Optimizare continuă a interfeței cu feedback de la comunitate, animații mai fluide și navigare mai intuitivă.",
+            status: "inProgress",
+          },
+          {
+            year: "2026",
+            quarter: "T2",
+            title: "Sistem de Notificări Push",
+            description:
+              "Implementare notificări în browser pentru articole noi și actualizări importante din categoriile tale preferate.",
+            status: "upcoming",
+          },
+          {
+            year: "2026",
+            quarter: "T3",
+            title: "Funcție Favorite și Colecții",
+            description:
+              "Salvează articolele preferate și organizează-le în colecții personalizate cu taguri și note.",
+            status: "planned",
+          },
+          {
+            year: "2026",
+            quarter: "T4",
+            title: "Dashboard Statistici Personale",
+            description:
+              "Vizualizează statistici despre activitatea ta: articole citite, timp de lectură și categorii preferate.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "T1",
+            title: "Teme și Personalizare",
+            description:
+              "Multiple teme de culori, stiluri de font și opțiuni de layout pentru personalizarea experienței de lectură.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "T2",
+            title: "Mod Offline și PWA",
+            description:
+              "Transformare în Progressive Web App cu posibilitatea de a salva articole pentru lectură offline.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "T3",
+            title: "Căutare și Filtrare Avansată",
+            description:
+              "Motor de căutare îmbunătățit cu filtre multiple, sugestii automate și rezultate relevante instantanee.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "T4",
+            title: "Comentarii și Interacțiune",
+            description:
+              "Sistem de comentarii moderat, aprecieri și posibilitatea de a interacționa cu autorii articolelor.",
+            status: "planned",
+          },
+        ],
+        cta: {
+          title: "Susține Dezvoltarea Platformei",
+          description:
+            "Abonează-te și ajută-ne să implementăm aceste funcționalități mai repede. Fiecare abonament susține dezvoltarea continuă a platformei.",
+          button: "Abonează-te Acum",
+        },
       },
 
       aboutPage: {
         hero: {
-          title: "Fiecare Poveste Modelează o Lume 🌌",
+          badge: "Despre Noi",
+          title: "Descoperă Povestea Noastră",
           description:
-            "La StoryTeller, credem că cuvintele poartă magie. Poveștile nu sunt doar povestiri — sunt scântei de inspirație, punți între culturi și voci care conectează inimi din întreaga lume.",
+            "O platformă dedicată pasionaților de lectură, construită cu grijă pentru a oferi conținut de calitate și o experiență plăcută.",
+          primaryButton: "Începe Acum",
+          secondaryButton: "Află Mai Mult",
         },
+        infoCardsTitle: "De Ce Să Ne Alegi",
         infoCards: [
           {
-            title: "Viziunea Noastră",
-            icon: "✨",
+            icon: "📚",
+            title: "Conținut Selectat cu Grijă",
             description:
-              "Să aprindem imaginații și să inspirăm schimbarea prin arta povestirii. Visăm la o lume în care fiecare voce găsește un ascultător și fiecare poveste lasă o urmă de speranță.",
+              "Articole atent alese și verificate, care acoperă subiecte relevante din tehnologie, știință, cultură și societate.",
           },
           {
-            title: "Misiunea Noastră",
-            icon: "🚀",
+            icon: "🎯",
+            title: "Focus pe Calitate",
             description:
-              "Să aducem împreună cititori și povestitori, creând un spațiu vibrant unde poveștile aprind curiozitatea, inspiră creativitatea și cultivă o comunitate globală de visători.",
+              "Prioritizăm calitatea în locul cantității, oferind conținut care merită cu adevărat timpul tău.",
+          },
+          {
+            icon: "💡",
+            title: "Dezvoltare Continuă",
+            description:
+              "Platformă în evoluție constantă, îmbunătățită pas cu pas bazat pe feedback-ul comunității.",
+          },
+          {
+            icon: "🤝",
+            title: "Comunitate Autentică",
+            description:
+              "O comunitate în creștere de cititori care apreciază jurnalismul de calitate și dezbaterile constructive.",
           },
         ],
+        roadmapTitle: "Călătoria Noastră 🚀",
         roadmap: [
           {
-            year: "2024",
-            title: "Lansare & Fundație",
-            description:
-              "Deschidem porțile StoryTeller — o nouă casă pentru povești, unde cititorii și scriitorii se întâlnesc pentru a inspira și a fi inspirați.",
-          },
-          {
-            year: "2025",
-            title: "Creșterea Comunității",
-            description:
-              "Ne propunem să creștem o comunitate globală vibrantă de povestitori, oferind funcții interactive, lecturi live și colaborări.",
-          },
-          {
             year: "2026",
-            title: "Experiență Mobile",
+            title: "Lansarea Platformei",
             description:
-              "Aducem magia poveștilor pretutindeni cu aplicația noastră dedicată — transformând povestitul în parte a vieții de zi cu zi.",
+              "Am creat o platformă simplă și funcțională, dedicată distribuției de conținut de calitate, cu accent pe experiență de utilizare plăcută.",
           },
           {
             year: "2027",
-            title: "Impact Global",
+            title: "Îmbunătățiri Continue",
             description:
-              "Viziunea noastră este să împuternicim milioane de voci din întreaga lume, transformând StoryTeller în platforma de referință pentru creativitate și inspirație.",
+              "Dezvoltăm noi funcționalități bazate pe feedback-ul comunității: sistem de notificări, favorite și statistici personale.",
+          },
+          {
+            year: "2028",
+            title: "Extindere și Personalizare",
+            description:
+              "Introducem teme personalizabile, mod offline și căutare avansată pentru o experiență optimizată.",
+          },
+          {
+            year: "2029",
+            title: "Comunitate Activă",
+            description:
+              "Construim un spațiu de interacțiune prin sistem de comentarii moderat și funcții sociale responsabile.",
+          },
+          {
+            year: "2030",
+            title: "Maturizare și Stabilitate",
+            description:
+              "Consolidăm platforma cu funcționalități mature, menținând un echilibru între inovație și stabilitate.",
           },
         ],
         cta: {
-          title: "Fii Parte din Poveste ✨",
+          title: "Alătură-te Călătoriei Noastre",
           description:
-            "Poveștile sunt mai puternice când sunt împărtășite. Alătură-te nouă în construirea unei lumi pline de imaginație, curaj și inspirație — câte o poveste odată.",
-          button: "Mergi la Abonare",
+            "Fii parte din comunitatea noastră și primește actualizări regulate, conținut exclusiv și acces la noile funcționalități pe măsură ce le dezvoltăm.",
+          button: "Abonează-te Acum",
+          secondaryButton: "Contactează-ne",
         },
       },
 
@@ -1161,102 +1267,208 @@ const resources = {
       },
 
       upcomingPage: {
-        cta: {
-          title: "Want Early Access? 🚀",
-          description:
-            "Subscribe now and unlock early access to stories, live events, and exclusive behind-the-scenes content.",
-          button: "Go to Subscribe",
-        },
         hero: {
-          title: "Coming Soon 🌟",
+          badge: "Coming Soon",
+          title: "Our Platform Evolution",
           description:
-            "Fresh stories, thrilling events, and exclusive collections are on the horizon. Be the first to experience the magic.",
+            "Discover the planned improvements that will make your reading experience even better, step by step.",
+          button: "View Our Plans",
         },
-        items: [
+        featuresTitle: "Upcoming Features ✨",
+        features: [
           {
-            title: "New Story: The Magic Forest",
-            date: "Releases on 25th August 2025",
-            iconKey: "book",
+            icon: "🔔",
+            title: "Notification System",
+            date: "Q2 2026",
+            description:
+              "Receive personalized alerts for new articles from your favorite categories, directly in your browser.",
           },
           {
-            title: "Live Event: Storytelling Night",
-            date: "Join us on 1st September 2025",
-            iconKey: "users",
+            icon: "⭐",
+            title: "Favorite Articles",
+            date: "Q3 2026",
+            description:
+              "Save and organize your favorite articles in custom collections for quick access.",
           },
           {
-            title: "New Collection: Adventure Tales",
-            date: "Coming soon!",
-            iconKey: "star",
+            icon: "📊",
+            title: "Reading Statistics",
+            date: "Q4 2026",
+            description:
+              "Track your reading progress, time spent and articles read in a personalized dashboard.",
           },
           {
-            title: "Exclusive Author Interview",
-            date: "1st October 2025",
-            iconKey: "users",
+            icon: "🎨",
+            title: "Customizable Themes",
+            date: "Q1 2027",
+            description:
+              "Choose from multiple color themes and font styles for a personalized reading experience.",
           },
           {
-            title: "Interactive Story Workshop",
-            date: "15th October 2025",
-            iconKey: "calendar",
+            icon: "💾",
+            title: "Offline Mode",
+            date: "Q2 2027",
+            description:
+              "Download articles to read offline, perfect for travel or areas without internet.",
           },
           {
-            title: "Holiday Story Collection",
-            date: "December 2025",
-            iconKey: "book",
+            icon: "🔍",
+            title: "Advanced Search",
+            date: "Q3 2027",
+            description:
+              "Smart filtering by category, date, author and keywords for quick content discovery.",
           },
         ],
+        timelineTitle: "Our Development Roadmap 🗺️",
+        timeline: [
+          {
+            year: "2026",
+            quarter: "Q1",
+            title: "UI/UX Improvements",
+            description:
+              "Continuous interface optimization with community feedback, smoother animations and more intuitive navigation.",
+            status: "inProgress",
+          },
+          {
+            year: "2026",
+            quarter: "Q2",
+            title: "Push Notification System",
+            description:
+              "Implementation of browser notifications for new articles and important updates from your favorite categories.",
+            status: "upcoming",
+          },
+          {
+            year: "2026",
+            quarter: "Q3",
+            title: "Favorites and Collections",
+            description:
+              "Save favorite articles and organize them in custom collections with tags and notes.",
+            status: "planned",
+          },
+          {
+            year: "2026",
+            quarter: "Q4",
+            title: "Personal Statistics Dashboard",
+            description:
+              "Visualize statistics about your activity: articles read, reading time and favorite categories.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "Q1",
+            title: "Themes and Customization",
+            description:
+              "Multiple color themes, font styles and layout options to personalize your reading experience.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "Q2",
+            title: "Offline Mode and PWA",
+            description:
+              "Transform into Progressive Web App with ability to save articles for offline reading.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "Q3",
+            title: "Advanced Search and Filtering",
+            description:
+              "Enhanced search engine with multiple filters, auto-suggestions and instant relevant results.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "Q4",
+            title: "Comments and Interaction",
+            description:
+              "Moderated comment system, likes and ability to interact with article authors.",
+            status: "planned",
+          },
+        ],
+        cta: {
+          title: "Support Platform Development",
+          description:
+            "Subscribe and help us implement these features faster. Every subscription supports the continuous development of the platform.",
+          button: "Subscribe Now",
+        },
       },
 
       aboutPage: {
         hero: {
-          title: "Every Story Shapes a World 🌌",
+          badge: "About Us",
+          title: "Discover Our Story",
           description:
-            "At StoryTeller, we believe that words carry magic. Stories are not just tales — they are sparks of inspiration, bridges between cultures, and voices that connect hearts across the globe.",
+            "A platform dedicated to reading enthusiasts, carefully built to deliver quality content and a pleasant experience.",
+          primaryButton: "Get Started",
+          secondaryButton: "Learn More",
         },
+        infoCardsTitle: "Why Choose Us",
         infoCards: [
           {
-            title: "Our Vision",
-            icon: "✨",
+            icon: "📚",
+            title: "Carefully Selected Content",
             description:
-              "To light up imaginations and inspire change through the art of storytelling. We dream of a world where every voice finds a listener and every story leaves a trace of hope.",
+              "Thoughtfully chosen and verified articles covering relevant topics in technology, science, culture and society.",
           },
           {
-            title: "Our Mission",
-            icon: "🚀",
+            icon: "🎯",
+            title: "Focus on Quality",
             description:
-              "To bring together readers and storytellers, creating a vibrant space where stories spark curiosity, inspire creativity, and nurture a global community of dreamers.",
+              "We prioritize quality over quantity, offering content that truly deserves your time.",
+          },
+          {
+            icon: "💡",
+            title: "Continuous Development",
+            description:
+              "A platform in constant evolution, improved step by step based on community feedback.",
+          },
+          {
+            icon: "🤝",
+            title: "Authentic Community",
+            description:
+              "A growing community of readers who appreciate quality journalism and constructive debates.",
           },
         ],
+        roadmapTitle: "Our Journey 🚀",
         roadmap: [
           {
-            year: "2024",
-            title: "Launch & Foundation",
-            description:
-              "We open the doors to StoryTeller — a new home for stories, where readers and writers meet to inspire and be inspired.",
-          },
-          {
-            year: "2025",
-            title: "Community Growth",
-            description:
-              "We aim to grow a vibrant global community of storytellers, offering interactive features, live readings, and collaborations.",
-          },
-          {
             year: "2026",
-            title: "Mobile Experience",
+            title: "Platform Launch",
             description:
-              "Bringing the magic of stories everywhere with our dedicated mobile app — making storytelling a part of daily life.",
+              "We created a simple and functional platform dedicated to quality content distribution, with focus on pleasant user experience.",
           },
           {
             year: "2027",
-            title: "Global Impact",
+            title: "Continuous Improvements",
             description:
-              "Our vision is to empower millions of voices across the world, turning StoryTeller into the go-to platform for creativity and inspiration.",
+              "We develop new features based on community feedback: notification system, favorites and personal statistics.",
+          },
+          {
+            year: "2028",
+            title: "Expansion and Customization",
+            description:
+              "We introduce customizable themes, offline mode and advanced search for an optimized experience.",
+          },
+          {
+            year: "2029",
+            title: "Active Community",
+            description:
+              "We build an interaction space through moderated comment system and responsible social features.",
+          },
+          {
+            year: "2030",
+            title: "Maturity and Stability",
+            description:
+              "We consolidate the platform with mature features, maintaining a balance between innovation and stability.",
           },
         ],
         cta: {
-          title: "Be Part of the Story ✨",
+          title: "Join Our Journey",
           description:
-            "Stories are stronger when shared. Join us in building a world filled with imagination, courage, and inspiration — one story at a time.",
-          button: "Go to Subscribe",
+            "Be part of our community and receive regular updates, exclusive content and access to new features as we develop them.",
+          button: "Subscribe Now",
+          secondaryButton: "Contact Us",
         },
       },
 
@@ -1436,103 +1648,210 @@ const resources = {
         alertSubscribed:
           "Vous vous êtes abonné à {{planId}} ({{billing}}) — flux démo. Intégration backend nécessaire.",
       },
+
       upcomingPage: {
-        cta: {
-          title: "Vous voulez un accès anticipé ? 🚀",
-          description:
-            "Abonnez-vous maintenant et débloquez un accès anticipé aux histoires, événements en direct et contenus exclusifs en coulisses.",
-          button: "Aller à l'abonnement",
-        },
         hero: {
-          title: "Bientôt 🌟",
+          badge: "Prochainement",
+          title: "L'Évolution de Notre Plateforme",
           description:
-            "Des histoires fraîches, des événements passionnants et des collections exclusives sont à l'horizon. Soyez le premier à vivre la magie.",
+            "Découvrez les améliorations planifiées qui rendront votre expérience de lecture encore meilleure, étape par étape.",
+          button: "Voir Nos Plans",
         },
-        items: [
+        featuresTitle: "Fonctionnalités à Venir ✨",
+        features: [
           {
-            title: "Nouvelle Histoire : La Forêt Magique",
-            date: "Sortie le 25 août 2025",
-            iconKey: "book",
+            icon: "🔔",
+            title: "Système de Notifications",
+            date: "T2 2026",
+            description:
+              "Recevez des alertes personnalisées pour les nouveaux articles de vos catégories préférées, directement dans votre navigateur.",
           },
           {
-            title: "Événement en Direct : Nuit du Storytelling",
-            date: "Rejoignez-nous le 1er septembre 2025",
-            iconKey: "users",
+            icon: "⭐",
+            title: "Articles Favoris",
+            date: "T3 2026",
+            description:
+              "Enregistrez et organisez vos articles préférés dans des collections personnalisées pour un accès rapide.",
           },
           {
-            title: "Nouvelle Collection : Contes d'Aventure",
-            date: "Bientôt !",
-            iconKey: "star",
+            icon: "📊",
+            title: "Statistiques de Lecture",
+            date: "T4 2026",
+            description:
+              "Suivez votre progression de lecture, le temps passé et les articles lus dans un tableau de bord personnalisé.",
           },
           {
-            title: "Interview Exclusive de l'Auteur",
-            date: "1er octobre 2025",
-            iconKey: "users",
+            icon: "🎨",
+            title: "Thèmes Personnalisables",
+            date: "T1 2027",
+            description:
+              "Choisissez parmi plusieurs thèmes de couleurs et styles de police pour une expérience de lecture personnalisée.",
           },
           {
-            title: "Atelier de Storytelling Interactif",
-            date: "15 octobre 2025",
-            iconKey: "calendar",
+            icon: "💾",
+            title: "Mode Hors Ligne",
+            date: "T2 2027",
+            description:
+              "Téléchargez des articles pour les lire hors ligne, parfait pour les voyages ou les zones sans internet.",
           },
           {
-            title: "Collection de Histoires de Noël",
-            date: "Décembre 2025",
-            iconKey: "book",
+            icon: "🔍",
+            title: "Recherche Avancée",
+            date: "T3 2027",
+            description:
+              "Filtrage intelligent par catégorie, date, auteur et mots-clés pour une découverte rapide du contenu.",
           },
         ],
+        timelineTitle: "Notre Feuille de Route de Développement 🗺️",
+        timeline: [
+          {
+            year: "2026",
+            quarter: "T1",
+            title: "Améliorations UI/UX",
+            description:
+              "Optimisation continue de l'interface avec retours de la communauté, animations plus fluides et navigation plus intuitive.",
+            status: "inProgress",
+          },
+          {
+            year: "2026",
+            quarter: "T2",
+            title: "Système de Notifications Push",
+            description:
+              "Implémentation de notifications dans le navigateur pour nouveaux articles et mises à jour importantes de vos catégories préférées.",
+            status: "upcoming",
+          },
+          {
+            year: "2026",
+            quarter: "T3",
+            title: "Favoris et Collections",
+            description:
+              "Enregistrez vos articles favoris et organisez-les dans des collections personnalisées avec tags et notes.",
+            status: "planned",
+          },
+          {
+            year: "2026",
+            quarter: "T4",
+            title: "Tableau de Bord Statistiques",
+            description:
+              "Visualisez les statistiques de votre activité : articles lus, temps de lecture et catégories préférées.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "T1",
+            title: "Thèmes et Personnalisation",
+            description:
+              "Plusieurs thèmes de couleurs, styles de police et options de mise en page pour personnaliser votre expérience de lecture.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "T2",
+            title: "Mode Hors Ligne et PWA",
+            description:
+              "Transformation en Progressive Web App avec possibilité d'enregistrer des articles pour lecture hors ligne.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "T3",
+            title: "Recherche et Filtrage Avancés",
+            description:
+              "Moteur de recherche amélioré avec filtres multiples, suggestions automatiques et résultats pertinents instantanés.",
+            status: "planned",
+          },
+          {
+            year: "2027",
+            quarter: "T4",
+            title: "Commentaires et Interaction",
+            description:
+              "Système de commentaires modéré, j'aime et possibilité d'interagir avec les auteurs des articles.",
+            status: "planned",
+          },
+        ],
+        cta: {
+          title: "Soutenez le Développement de la Plateforme",
+          description:
+            "Abonnez-vous et aidez-nous à implémenter ces fonctionnalités plus rapidement. Chaque abonnement soutient le développement continu de la plateforme.",
+          button: "S'abonner Maintenant",
+        },
       },
 
       aboutPage: {
         hero: {
-          title: "Chaque histoire façonne un monde 🌌",
+          badge: "À Propos de Nous",
+          title: "Découvrez Notre Histoire",
           description:
-            "Chez StoryTeller, nous croyons que les mots portent de la magie. Les histoires ne sont pas que des récits — elles sont des étincelles d'inspiration, des ponts entre les cultures et des voix qui connectent les cœurs à travers le monde.",
+            "Une plateforme dédiée aux passionnés de lecture, construite avec soin pour offrir du contenu de qualité et une expérience agréable.",
+          primaryButton: "Commencer",
+          secondaryButton: "En Savoir Plus",
         },
+        infoCardsTitle: "Pourquoi Nous Choisir",
         infoCards: [
           {
-            title: "Notre Vision",
-            icon: "✨",
+            icon: "📚",
+            title: "Contenu Soigneusement Sélectionné",
             description:
-              "Éclairer les imaginaires et inspirer le changement grâce à l'art du storytelling. Nous rêvons d'un monde où chaque voix trouve un auditeur et chaque histoire laisse une trace d'espoir.",
+              "Articles soigneusement choisis et vérifiés, couvrant des sujets pertinents en technologie, science, culture et société.",
           },
           {
-            title: "Notre Mission",
-            icon: "🚀",
+            icon: "🎯",
+            title: "Focus sur la Qualité",
             description:
-              "Rassembler lecteurs et conteurs, créant un espace dynamique où les histoires éveillent la curiosité, inspirent la créativité et nourrissent une communauté mondiale de rêveurs.",
+              "Nous priorisons la qualité plutôt que la quantité, offrant du contenu qui mérite vraiment votre temps.",
+          },
+          {
+            icon: "💡",
+            title: "Développement Continu",
+            description:
+              "Une plateforme en évolution constante, améliorée étape par étape basée sur les retours de la communauté.",
+          },
+          {
+            icon: "🤝",
+            title: "Communauté Authentique",
+            description:
+              "Une communauté croissante de lecteurs qui apprécient le journalisme de qualité et les débats constructifs.",
           },
         ],
+        roadmapTitle: "Notre Parcours 🚀",
         roadmap: [
           {
-            year: "2024",
-            title: "Lancement & Fondation",
-            description:
-              "Nous ouvrons les portes de StoryTeller — une nouvelle maison pour les histoires, où lecteurs et écrivains se rencontrent pour inspirer et être inspirés.",
-          },
-          {
-            year: "2025",
-            title: "Croissance de la Communauté",
-            description:
-              "Nous visons à développer une communauté mondiale dynamique de conteurs, offrant des fonctionnalités interactives, des lectures en direct et des collaborations.",
-          },
-          {
             year: "2026",
-            title: "Expérience Mobile",
+            title: "Lancement de la Plateforme",
             description:
-              "Apporter la magie des histoires partout avec notre application mobile dédiée — rendant la narration partie intégrante de la vie quotidienne.",
+              "Nous avons créé une plateforme simple et fonctionnelle, dédiée à la distribution de contenu de qualité, avec accent sur l'expérience utilisateur agréable.",
           },
           {
             year: "2027",
-            title: "Impact Global",
+            title: "Améliorations Continues",
             description:
-              "Notre vision est de donner voix à des millions de personnes dans le monde, transformant StoryTeller en la plateforme de référence pour la créativité et l'inspiration.",
+              "Nous développons de nouvelles fonctionnalités basées sur les retours de la communauté : système de notifications, favoris et statistiques personnelles.",
+          },
+          {
+            year: "2028",
+            title: "Extension et Personnalisation",
+            description:
+              "Nous introduisons des thèmes personnalisables, mode hors ligne et recherche avancée pour une expérience optimisée.",
+          },
+          {
+            year: "2029",
+            title: "Communauté Active",
+            description:
+              "Nous construisons un espace d'interaction grâce à un système de commentaires modéré et des fonctionnalités sociales responsables.",
+          },
+          {
+            year: "2030",
+            title: "Maturité et Stabilité",
+            description:
+              "Nous consolidons la plateforme avec des fonctionnalités matures, maintenant un équilibre entre innovation et stabilité.",
           },
         ],
         cta: {
-          title: "Faites partie de l'histoire ✨",
+          title: "Rejoignez Notre Voyage",
           description:
-            "Les histoires sont plus fortes lorsqu'elles sont partagées. Rejoignez-nous pour construire un monde rempli d'imagination, de courage et d'inspiration — une histoire à la fois.",
-          button: "S'abonner",
+            "Faites partie de notre communauté et recevez des mises à jour régulières, du contenu exclusif et l'accès aux nouvelles fonctionnalités au fur et à mesure que nous les développons.",
+          button: "S'abonner Maintenant",
+          secondaryButton: "Nous Contacter",
         },
       },
 
