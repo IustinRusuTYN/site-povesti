@@ -719,21 +719,32 @@ const resources = {
         noContent:
           "Niciun conținut suplimentar disponibil pentru această poveste.",
       },
+
       hero: {
-        title: "Citește Povești Imaginare",
+        badge: "Descoperă Povești",
+        title: "Descoperă Povești care Te Inspiră",
         subtitle:
-          "Explorează o colecție de romance, SF, fantasy și multe altele.",
+          "Explorează o colecție curată de povești captivante din diverse genuri și categorii. Găsește următoarea ta lectură favorită.",
+        alt: "Fată citind o carte",
         cta: "Explorează Poveștile",
-        alt: "Fată citind",
+        secondaryCta: "Află Mai Mult",
       },
-      featuredStories: "Povești Recomandate",
-      viewAll: "Vezi tot",
-      discoverAmazingStories: "Descoperă povești uimitoare",
-      viewAllStories: "Vezi toate poveștile",
-      adFreeTitle: "Bucură-te de o Experiență fără Reclame!",
-      adFreeDescription:
-        "Deblochează citire neîntreruptă, conținut exclusiv și o experiență mai fluidă prin upgrade la premium. Spune adio reclamelor și bun venit mai multor povești!",
-      adFreeButton: "Elimină Reclamele Acum",
+      adFree: {
+        badge: "100% Fără Reclame",
+        title: "Citește Fără Distrageri. Focalizează-te pe Povești.",
+        description:
+          "Bucură-te de o experiență de lectură pură, fără reclame intruzive, pop-up-uri sau întreruperi. Doar tu și poveștile tale preferate.",
+        benefits: ["Zero reclame", "Viteză maximă", "Privacy garantat"],
+        button: "Înregistrează-te Acum",
+        trust: "✓ Plată securizată 100% • Anulare oricând",
+      },
+
+      featuredBadge: "Povești Recomandate",
+      featuredStories: "Descoperă Povești Captivante",
+      discoverAmazingStories:
+        "Explorează colecția noastră curată de povești extraordinare",
+      viewAllStories: "Vezi Toate Poveștile",
+
       footerText: "MagicStories. Toate drepturile rezervate.",
       allStoriesTitle: "Toate Poveștile",
       noStoriesFound: "Nicio poveste găsită...",
@@ -1487,19 +1498,30 @@ const resources = {
         noContent: "No additional content available for this story.",
       },
       hero: {
-        title: "Read Imaginary Stories",
-        subtitle: "Explore a collection of romance, sci-fi, fantasy, and more.",
-        cta: "Browse Stories",
-        alt: "Reading girl",
+        badge: "Discover Stories",
+        title: "Discover Stories that Inspire You",
+        subtitle:
+          "Explore a curated collection of captivating stories from diverse genres and categories. Find your next favorite read.",
+        alt: "Girl reading a book",
+        cta: "Explore Stories",
+        secondaryCta: "Learn More",
       },
-      featuredStories: "Featured Stories",
-      viewAll: "View All",
-      discoverAmazingStories: "Discover amazing stories",
+      adFree: {
+        badge: "100% Ad-Free",
+        title: "Read Without Distractions. Focus on Stories.",
+        description:
+          "Enjoy a pure reading experience with no intrusive ads, pop-ups, or interruptions. Just you and your favorite stories.",
+        benefits: ["Zero ads", "Maximum speed", "Privacy guaranteed"],
+        button: "Sign Up Now",
+        trust: "✓ 100% Secure Payment • Cancel anytime",
+      },
+
+      featuredBadge: "Featured Stories",
+      featuredStories: "Discover Captivating Stories",
+      discoverAmazingStories:
+        "Explore our curated collection of extraordinary stories",
       viewAllStories: "View All Stories",
-      adFreeTitle: "Enjoy an Ad-Free Experience!",
-      adFreeDescription:
-        "Unlock uninterrupted reading, exclusive content, and a smoother experience by upgrading to premium. Say goodbye to ads and hello to more stories!",
-      adFreeButton: "Go Ad-Free Now",
+
       footerText: "MagicStories. All rights reserved.",
       allStoriesTitle: "All Stories",
       noStoriesFound: "No stories found...",
@@ -2241,21 +2263,36 @@ const resources = {
         noContent:
           "Aucun contenu supplémentaire disponible pour cette histoire.",
       },
+
       hero: {
-        title: "Lisez des histoires imaginaires",
+        badge: "Découvrez des Histoires",
+        title: "Découvrez des Histoires qui Vous Inspirent",
         subtitle:
-          "Découvrez une collection de romances, science-fiction, fantasy et plus.",
-        cta: "Parcourir les histoires",
-        alt: "Fille qui lit",
+          "Explorez une collection soignée d'histoires captivantes de divers genres et catégories. Trouvez votre prochaine lecture favorite.",
+        alt: "Fille lisant un livre",
+        cta: "Explorer les Histoires",
+        secondaryCta: "En Savoir Plus",
       },
-      featuredStories: "Histoires en vedette",
-      viewAll: "Voir tout",
-      discoverAmazingStories: "Découvrez des histoires incroyables",
-      viewAllStories: "Voir toutes les histoires",
-      adFreeTitle: "Profitez d'une expérience sans publicités !",
-      adFreeDescription:
-        "Débloquez une lecture ininterrompue, du contenu exclusif et une expérience plus fluide en passant à la version premium. Dites adieu aux publicités et bonjour à plus d'histoires !",
-      adFreeButton: "Profitez sans pub maintenant",
+      adFree: {
+        badge: "100% Sans Publicité",
+        title: "Lisez Sans Distractions. Concentrez-vous sur les Histoires.",
+        description:
+          "Profitez d'une expérience de lecture pure, sans publicités intrusives, pop-ups ou interruptions. Juste vous et vos histoires préférées.",
+        benefits: [
+          "Zéro publicité",
+          "Vitesse maximale",
+          "Confidentialité garantie",
+        ],
+        button: "S'inscrire Maintenant",
+        trust: "✓ Paiement 100% Sécurisé • Annulation à tout moment",
+      },
+
+      featuredBadge: "Histoires en Vedette",
+      featuredStories: "Découvrez des Histoires Captivantes",
+      discoverAmazingStories:
+        "Explorez notre collection soignée d'histoires extraordinaires",
+      viewAllStories: "Voir Toutes les Histoires",
+
       footerText: "HistoiresMagiques. Tous droits réservés.",
       allStoriesTitle: "Toutes les histoires",
       noStoriesFound: "Aucune histoire trouvée...",
