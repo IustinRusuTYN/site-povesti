@@ -15,32 +15,23 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
     return (sum / ratings.length).toFixed(1);
   };
 
-  const accessLevel = story.accessLevel || "free";
+  const accessLevel = story?.accessLevel || "free";
   const userPlan = user?.subscriptionPlan || "free";
 
   const hasAccess = () => {
     if (accessLevel === "free") return true;
-    if (accessLevel === "basic")
+    if (accessLevel === "basic") {
       return (
         isAuthenticated && (userPlan === "basic" || userPlan === "premium")
       );
+    }
     if (accessLevel === "premium") return userPlan === "premium";
     return false;
   };
 
   const canAccess = hasAccess();
-
-  const handleClick = () => {
-    if (!canAccess) {
-      if (!isAuthenticated) {
-        onRequireAuth();
-      } else {
-        onClick(story.id);
-      }
-    } else {
-      onClick(story.id);
-    }
-  };
+  const avgRating = getAverageRating(story?.ratings);
+  const badgeText = t(`accessLevels.${accessLevel}`);
 
   const badgeColors = {
     free: "bg-green-500 text-white",
@@ -48,23 +39,32 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
     premium: "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900",
   };
 
-  const badgeText = t(`accessLevels.${accessLevel}`);
-  const avgRating = getAverageRating(story.ratings);
+  const handleClick = () => {
+    if (!canAccess) {
+      if (!isAuthenticated) onRequireAuth?.();
+      else onClick?.(story?.id);
+    } else {
+      onClick?.(story?.id);
+    }
+  };
+
+  const title = t(`stories.${story?.id}.title`);
+  const excerpt = t(`stories.${story?.id}.excerpt`);
 
   return (
     <div
-      className={`group relative cursor-pointer ${
+      className={`group relative cursor-pointer h-full z-0 hover:z-10 ${
         !canAccess ? "opacity-80" : ""
       }`}
       onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
-      aria-label={`${t("story")}: ${t(`stories.${story.id}.title`)}, ${t(
-        "rating"
-      )}: ${avgRating}★, ${t("type")}: ${badgeText}`}
+      aria-label={`${t("story")}: ${title}, ${t("rating")}: ${avgRating}★, ${t(
+        "type"
+      )}: ${badgeText}`}
     >
-      {/* Access Badge - Top Right */}
+      {/* Badge */}
       <div className="absolute top-2 right-2 z-20">
         <span
           className={`px-2 py-1 text-[10px] font-bold rounded-md uppercase shadow-lg ${badgeColors[accessLevel]}`}
@@ -73,7 +73,7 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
         </span>
       </div>
 
-      {/* Lock Icon - Top Left (only if no access) */}
+      {/* Lock */}
       {!canAccess && (
         <div className="absolute top-2 left-2 z-20">
           <div className="bg-black/70 backdrop-blur-sm rounded-full p-1.5">
@@ -82,32 +82,33 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
         </div>
       )}
 
-      {/* Story Card */}
-      <StoryCard
-        title={t(`stories.${story.id}.title`)}
-        excerpt={t(`stories.${story.id}.excerpt`)}
-        image={story.image}
-        variant="compact" // 🔥 ADĂUGAT
-      />
+      <div className="h-full flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden rounded-xl">
+          <StoryCard
+            title={title}
+            excerpt={excerpt}
+            image={story?.image}
+            variant="compact"
+          />
+        </div>
 
-      {/* Footer Info - Category + Rating */}
-      <div
-        className={`mt-2 flex items-center justify-between text-xs px-1 ${
-          darkMode ? "text-gray-400" : "text-gray-600"
-        }`}
-      >
-        {/* Category */}
-        <span className="font-medium truncate flex-1">
-          {story.category || t("noCategory")}
-        </span>
+        {/* Footer (mai compact pe mobil) */}
+        <div
+          className={`mt-1 sm:mt-2 flex items-center justify-between px-1 text-[10px] sm:text-xs ${
+            darkMode ? "text-gray-400" : "text-gray-600"
+          }`}
+        >
+          <span className="font-medium truncate flex-1">
+            {story?.category || t("noCategory")}
+          </span>
 
-        {/* Rating */}
-        {avgRating !== "N/A" && (
-          <div className="flex items-center gap-1 flex-shrink-0">
-            <Star size={12} className="text-yellow-500 fill-yellow-500" />
-            <span className="font-bold">{avgRating}</span>
-          </div>
-        )}
+          {avgRating !== "N/A" && (
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <Star size={12} className="text-yellow-500 fill-yellow-500" />
+              <span className="font-bold">{avgRating}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
