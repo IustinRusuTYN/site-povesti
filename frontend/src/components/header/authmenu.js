@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+// src/components/header/authmenu.js
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authcontext";
 import { useTranslation } from "react-i18next";
@@ -8,13 +9,39 @@ export default function AuthMenu({
   showModal,
   setShowModal,
 }) {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, signOut } = useContext(AuthContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [loggingOut, setLoggingOut] = useState(false);
 
-  // UTILIZATOR AUTENTIFICAT
+  const displayName =
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    user?.email ||
+    "User";
+
+  const handleLogout = async () => {
+    if (loggingOut) return;
+
+    setLoggingOut(true);
+    try {
+      const fn = logout || signOut;
+      if (!fn) return;
+
+      const res = await fn(); // { error } or null
+      if (res?.error) {
+        console.error("Logout error:", res.error);
+        return;
+      }
+
+      navigate("/", { replace: true });
+    } finally {
+      setLoggingOut(false);
+    }
+  };
+
+  // AUTHENTICATED
   if (user) {
-    // Mobil: elemente pe coloana
     if (isMobile) {
       return (
         <div className="flex flex-col gap-2">
@@ -22,55 +49,67 @@ export default function AuthMenu({
             to="/profile"
             className="font-semibold text-blue-700 hover:underline"
           >
-            {t("welcome")}, {user.name}
+            {t("welcome")}, {displayName}
           </Link>
+
           <button
-            onClick={() => {
-              logout();
-              navigate("/");
-            }}
-            className="w-full px-3 py-1 rounded-md bg-red-600 text-white hover:bg-red-700"
+            type="button"
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className={`w-full px-3 py-1 rounded-md text-white transition-colors ${
+              loggingOut
+                ? "bg-red-600/70 cursor-not-allowed"
+                : "bg-red-600 hover:bg-red-700"
+            }`}
           >
-            {t("logout") || "Logout"}
+            {loggingOut
+              ? t("loggingOut", "Logging out...")
+              : t("logout") || "Logout"}
           </button>
         </div>
       );
     }
 
-    // Desktop: totul pe un singur rând
     return (
       <div className="flex items-center space-x-3 whitespace-nowrap">
         <Link
           to="/profile"
           className="font-semibold text-white hover:underline"
         >
-          {t("welcome")}, {user.name}
+          {t("welcome")}, {displayName}
         </Link>
+
         <button
-          onClick={() => {
-            logout();
-            navigate("/");
-          }}
-          className="px-3 py-1 rounded-md bg-red-600 text-white hover:bg-red-700"
+          type="button"
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className={`px-3 py-1 rounded-md text-white transition-colors ${
+            loggingOut
+              ? "bg-red-600/70 cursor-not-allowed"
+              : "bg-red-600 hover:bg-red-700"
+          }`}
         >
-          {t("logout") || "Logout"}
+          {loggingOut
+            ? t("loggingOut", "Logging out...")
+            : t("logout") || "Logout"}
         </button>
       </div>
     );
   }
 
-  // UTILIZATOR NEAUTENTIFICAT
+  // NOT AUTHENTICATED
   if (isMobile) {
-    // Mobil: butoane pe 2 rânduri (full width)
     return (
       <div className="flex flex-col gap-2">
         <button
+          type="button"
           onClick={() => setShowModal("signin")}
           className="w-full px-3 py-2 rounded-md border border-blue-600 text-blue-600 font-semibold hover:bg-blue-50"
         >
           {t("login")}
         </button>
         <button
+          type="button"
           onClick={() => setShowModal("signup")}
           className="w-full px-3 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700"
         >
@@ -80,16 +119,17 @@ export default function AuthMenu({
     );
   }
 
-  // Desktop: butoane pe un singur rând, lângă nav
   return (
     <div className="flex items-center space-x-2 whitespace-nowrap">
       <button
+        type="button"
         onClick={() => setShowModal("signin")}
         className="font-semibold text-white/90 hover:text-white"
       >
         {t("login")}
       </button>
       <button
+        type="button"
         onClick={() => setShowModal("signup")}
         className="px-3 py-1 rounded-md text-white bg-blue-600 hover:bg-blue-700"
       >

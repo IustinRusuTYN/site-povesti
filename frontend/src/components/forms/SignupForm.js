@@ -1,191 +1,291 @@
-import React, { useState, useEffect, useContext } from "react";
+// src/components/forms/SignUpForm.js
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/authcontext";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
-import InputField from "./InputField";
+import { ThemeContext } from "../../context/themecontext";
+import Button from "../buttons/Button";
 import { useTranslation } from "react-i18next";
+import {
+  Mail,
+  Lock,
+  User,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+} from "lucide-react";
 
-export default function SignupForm({ onClose }) {
-  const { signup, loading } = useContext(AuthContext);
+export default function SignUpForm({ onClose, onSwitchToSignIn }) {
+  const { signUp } = useContext(AuthContext);
+  const { darkMode } = useContext(ThemeContext);
   const { t } = useTranslation();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [securityAnswer, setSecurityAnswer] = useState("");
-  const [rememberMe, setRememberMe] = useState(true);
-  const [num1, setNum1] = useState(0);
-  const [num2, setNum2] = useState(0);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  useEffect(() => generateCaptcha(), []);
-
-  const generateCaptcha = () => {
-    setNum1(Math.floor(Math.random() * 10) + 1);
-    setNum2(Math.floor(Math.random() * 10) + 1);
-  };
-
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePassword = (password) =>
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
-    if (!name || !email || !password || !confirmPassword || !securityAnswer) {
-      setError("emptyFields");
+    // Validări client-side
+    if (formData.password !== formData.confirmPassword) {
+      setError(t("signUp.passwordMismatch", "Passwords don't match"));
       return;
     }
-    if (!validateEmail(email)) {
-      setError("invalidEmail");
+
+    if (formData.password.length < 6) {
+      setError(
+        t("signUp.passwordTooShort", "Password must be at least 6 characters")
+      );
       return;
     }
-    if (!validatePassword(password)) {
-      setError("invalidPassword");
+
+    if (!formData.fullName.trim()) {
+      setError(t("signUp.nameRequired", "Full name is required"));
       return;
     }
-    if (password !== confirmPassword) {
-      setError("passwordMismatch");
-      return;
-    }
-    if (parseInt(securityAnswer) !== num1 + num2) {
-      setError("securityWrong");
-      generateCaptcha();
-      return;
-    }
+
+    setLoading(true);
 
     try {
-      await signup(name, email, password, rememberMe);
-      setSuccess("success");
-      setName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setSecurityAnswer("");
-      generateCaptcha();
-      if (onClose) onClose();
+      const { data, error } = await signUp(
+        formData.email,
+        formData.password,
+        formData.fullName
+      );
+
+      if (error) {
+        // Erori comune de la Supabase
+        if (error.message.includes("already registered")) {
+          setError(t("signUp.emailExists", "This email is already registered"));
+        } else if (error.message.includes("Invalid email")) {
+          setError(t("signUp.invalidEmail", "Invalid email format"));
+        } else {
+          setError(error.message);
+        }
+      } else {
+        setSuccess(true);
+        // Închide form după 3 secunde
+        setTimeout(() => {
+          onClose();
+        }, 3000);
+      }
     } catch (err) {
-      setError("signupFailed");
-      generateCaptcha();
+      setError(t("signUp.unexpectedError", "An unexpected error occurred"));
+      console.error("Unexpected error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 rounded-lg shadow-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
+    <div
+      className={`relative w-full max-w-md p-8 rounded-3xl transition-all duration-300 ${
+        darkMode
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-2xl"
+          : "bg-gradient-to-br from-indigo-100 via-white to-indigo-200 shadow-xl"
+      }`}
+    >
+      {/* Close button */}
       <button
-        className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 font-bold text-xl"
         onClick={onClose}
-        aria-label={t("signUp.modal.closeAriaLabel")}
+        className={`absolute top-4 right-4 p-2 rounded-full transition-colors ${
+          darkMode
+            ? "hover:bg-gray-700 text-gray-400 hover:text-white"
+            : "hover:bg-gray-200 text-gray-600 hover:text-gray-900"
+        }`}
+        aria-label="Close"
       >
-        ×
+        <XCircle size={24} />
       </button>
 
-      <h2 className="text-2xl font-bold mb-4 text-center">
-        {t("signUp.modal.title")}
+      {/* Title */}
+      <h2
+        className={`text-3xl font-bold mb-6 text-center ${
+          darkMode ? "text-indigo-400" : "text-gray-800"
+        }`}
+      >
+        {t("signUp.title", "Create Account")}
       </h2>
 
-      {error && (
-        <p className="text-red-500 font-medium mb-3">
-          {t(`signUp.modal.errors.${error}`)}
-        </p>
-      )}
+      {/* Success message */}
       {success && (
-        <p className="text-green-500 font-medium mb-3">
-          {t("signUp.modal.success")}
-        </p>
+        <div className="mb-4 p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg flex items-center gap-3 animate-fadeIn">
+          <CheckCircle size={20} className="shrink-0" />
+          <div>
+            <p className="font-semibold">
+              {t("signUp.successTitle", "Account created!")}
+            </p>
+            <p className="text-sm">
+              {t(
+                "signUp.successMessage",
+                "Check your email to verify your account."
+              )}
+            </p>
+          </div>
+        </div>
       )}
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <InputField
-          type="text"
-          placeholder={t("signUp.modal.name")}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          datalistId="name-suggestions"
-          options={["Andrei", "Maria", "Ioana", "Alex", "Cristina"]}
-          required
-        />
-        <InputField
-          type="email"
-          placeholder={t("signUp.modal.email")}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          datalistId="email-suggestions"
-          options={[
-            "andrei@example.com",
-            "maria@example.com",
-            "ioana@example.com",
-            "alex@example.com",
-            "cristina@example.com",
-          ]}
-          required
-        />
-        <InputField
-          type="password"
-          placeholder={t("signUp.modal.password")}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <InputField
-          type="password"
-          placeholder={t("signUp.modal.confirmPassword")}
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-
-        <div className="flex items-center space-x-3">
-          <span className="font-semibold">
-            {num1} + {num2} = ?
-          </span>
-          <InputField
-            type="number"
-            placeholder={t("signUp.modal.securityAnswer")}
-            value={securityAnswer}
-            onChange={(e) => setSecurityAnswer(e.target.value)}
-            className="w-24"
-            required
-          />
+      {/* Error message */}
+      {error && (
+        <div className="mb-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg flex items-center gap-3 animate-fadeIn">
+          <AlertCircle size={20} className="shrink-0" />
+          <span className="text-sm">{error}</span>
         </div>
+      )}
 
-        <div className="flex items-center mt-2">
-          <input
-            type="checkbox"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-            className="mr-2"
-          />
-          <label className="text-gray-700 dark:text-gray-300 text-sm">
-            {t("signUp.modal.rememberMe")}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Full Name */}
+        <div>
+          <label
+            className={`block mb-2 font-semibold text-sm ${
+              darkMode ? "text-gray-300" : "text-gray-700"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <User size={16} />
+              {t("signUp.fullName", "Full Name")}
+            </div>
           </label>
+          <input
+            type="text"
+            required
+            disabled={loading || success}
+            value={formData.fullName}
+            onChange={(e) =>
+              setFormData({ ...formData, fullName: e.target.value })
+            }
+            className={`w-full px-4 py-3 rounded-lg transition-all ${
+              darkMode
+                ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500"
+                : "bg-white border-gray-300 text-gray-900 focus:border-indigo-500"
+            } border focus:ring-2 focus:ring-indigo-500/50 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
+            placeholder={t("signUp.fullNamePlaceholder", "John Doe")}
+          />
         </div>
 
-        <button
+        {/* Email */}
+        <div>
+          <label
+            className={`block mb-2 font-semibold text-sm ${
+              darkMode ? "text-gray-300" : "text-gray-700"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Mail size={16} />
+              {t("signUp.email", "Email")}
+            </div>
+          </label>
+          <input
+            type="email"
+            required
+            disabled={loading || success}
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            className={`w-full px-4 py-3 rounded-lg transition-all ${
+              darkMode
+                ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500"
+                : "bg-white border-gray-300 text-gray-900 focus:border-indigo-500"
+            } border focus:ring-2 focus:ring-indigo-500/50 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
+            placeholder={t("signUp.emailPlaceholder", "john@example.com")}
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <label
+            className={`block mb-2 font-semibold text-sm ${
+              darkMode ? "text-gray-300" : "text-gray-700"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Lock size={16} />
+              {t("signUp.password", "Password")}
+            </div>
+          </label>
+          <input
+            type="password"
+            required
+            minLength={6}
+            disabled={loading || success}
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+            className={`w-full px-4 py-3 rounded-lg transition-all ${
+              darkMode
+                ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500"
+                : "bg-white border-gray-300 text-gray-900 focus:border-indigo-500"
+            } border focus:ring-2 focus:ring-indigo-500/50 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
+            placeholder="••••••••"
+          />
+        </div>
+
+        {/* Confirm Password */}
+        <div>
+          <label
+            className={`block mb-2 font-semibold text-sm ${
+              darkMode ? "text-gray-300" : "text-gray-700"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Lock size={16} />
+              {t("signUp.confirmPassword", "Confirm Password")}
+            </div>
+          </label>
+          <input
+            type="password"
+            required
+            minLength={6}
+            disabled={loading || success}
+            value={formData.confirmPassword}
+            onChange={(e) =>
+              setFormData({ ...formData, confirmPassword: e.target.value })
+            }
+            className={`w-full px-4 py-3 rounded-lg transition-all ${
+              darkMode
+                ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500"
+                : "bg-white border-gray-300 text-gray-900 focus:border-indigo-500"
+            } border focus:ring-2 focus:ring-indigo-500/50 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
+            placeholder="••••••••"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <Button
           type="submit"
-          disabled={loading}
-          className={`w-full py-2 mt-2 rounded-md text-white font-semibold transition ${
-            loading
-              ? "bg-blue-300 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
-          }`}
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={loading}
+          disabled={loading || success}
         >
-          {loading ? t("signUp.modal.loading") : t("signUp.modal.submit")}
-        </button>
-
-        <div className="mt-4 flex flex-col gap-2">
-          <button className="w-full py-2 flex items-center justify-center gap-2 border border-gray-300 rounded-md hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700 transition">
-            <FcGoogle size={20} /> {t("signUp.modal.google")}
-          </button>
-          <button className="w-full py-2 flex items-center justify-center gap-2 border border-gray-300 rounded-md bg-blue-800 text-white hover:bg-blue-900 dark:border-gray-600 transition">
-            <FaFacebook size={20} /> {t("signUp.modal.facebook")}
-          </button>
-        </div>
+          {t("signUp.button", "Create Account")}
+        </Button>
       </form>
+
+      {/* Switch to Sign In */}
+      <p
+        className={`mt-6 text-center text-sm ${
+          darkMode ? "text-gray-400" : "text-gray-600"
+        }`}
+      >
+        {t("signUp.haveAccount", "Already have an account?")}{" "}
+        <button
+          onClick={onSwitchToSignIn}
+          disabled={loading}
+          className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline transition-colors disabled:opacity-50"
+        >
+          {t("signUp.signInLink", "Sign In")}
+        </button>
+      </p>
     </div>
   );
 }

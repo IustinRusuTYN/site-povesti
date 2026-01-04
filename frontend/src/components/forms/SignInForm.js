@@ -1,160 +1,196 @@
-import React, { useState, useEffect, useContext } from "react";
+// src/components/forms/SignInForm.js
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/authcontext";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
-import InputField from "./InputField";
+import { ThemeContext } from "../../context/themecontext";
+import Button from "../buttons/Button";
 import { useTranslation } from "react-i18next";
+import { Mail, Lock, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
-export default function SignInForm({ onClose, emailRef }) {
-  const { login, loading } = useContext(AuthContext);
+export default function SignInForm({ onClose, onSwitchToSignUp }) {
+  const { signIn } = useContext(AuthContext);
+  const { darkMode } = useContext(ThemeContext);
   const { t } = useTranslation();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [securityAnswer, setSecurityAnswer] = useState("");
-  const [useSecurity, setUseSecurity] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
-  const [num1, setNum1] = useState(0);
-  const [num2, setNum2] = useState(0);
-
-  useEffect(() => generateCaptcha(), []);
-
-  const generateCaptcha = () => {
-    setNum1(Math.floor(Math.random() * 10) + 1);
-    setNum2(Math.floor(Math.random() * 10) + 1);
-  };
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
-    if (!email || !password || (useSecurity && !securityAnswer)) {
-      setError("emptyFields");
-      return;
-    }
-
-    if (useSecurity && parseInt(securityAnswer) !== num1 + num2) {
-      setError("securityWrong");
-      generateCaptcha();
-      return;
-    }
+    setLoading(true);
 
     try {
-      await login(email, password, rememberMe); // 🔥 MODIFICARE AICI
-      onClose();
+      const { data, error } = await signIn(formData.email, formData.password);
+
+      if (error) {
+        // Erori comune
+        if (error.message.includes("Invalid login credentials")) {
+          setError(t("signIn.invalidCredentials", "Invalid email or password"));
+        } else if (error.message.includes("Email not confirmed")) {
+          setError(
+            t(
+              "signIn.emailNotConfirmed",
+              "Please verify your email before signing in"
+            )
+          );
+        } else {
+          setError(error.message);
+        }
+      } else {
+        setSuccess(true);
+        // Închide form după 1.5 secunde
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+      }
     } catch (err) {
-      setError("invalid");
-      generateCaptcha();
+      setError(t("signIn.unexpectedError", "An unexpected error occurred"));
+      console.error("Unexpected error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-8 rounded-xl shadow-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 relative">
+    <div
+      className={`relative w-full max-w-md p-8 rounded-3xl transition-all duration-300 ${
+        darkMode
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-2xl"
+          : "bg-gradient-to-br from-indigo-100 via-white to-indigo-200 shadow-xl"
+      }`}
+    >
+      {/* Close button */}
       <button
         onClick={onClose}
-        aria-label={t("signIn.modal.closeAriaLabel")}
-        className="absolute top-4 right-4 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white text-xl font-bold transition"
+        className={`absolute top-4 right-4 p-2 rounded-full transition-colors ${
+          darkMode
+            ? "hover:bg-gray-700 text-gray-400 hover:text-white"
+            : "hover:bg-gray-200 text-gray-600 hover:text-gray-900"
+        }`}
+        aria-label="Close"
       >
-        ×
+        <XCircle size={24} />
       </button>
 
-      <h2 className="text-3xl font-bold mb-4 text-center">
-        {t("signIn.modal.title")}
+      {/* Title */}
+      <h2
+        className={`text-3xl font-bold mb-6 text-center ${
+          darkMode ? "text-indigo-400" : "text-gray-800"
+        }`}
+      >
+        {t("signIn.title", "Welcome Back")}
       </h2>
-      <p className="text-center text-gray-500 dark:text-gray-400 mb-6">
-        {t("signIn.modal.subtitle")}
-      </p>
 
+      {/* Success message */}
+      {success && (
+        <div className="mb-4 p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg flex items-center gap-3 animate-fadeIn">
+          <CheckCircle size={20} className="shrink-0" />
+          <span className="font-semibold">
+            {t("signIn.success", "Signed in successfully!")}
+          </span>
+        </div>
+      )}
+
+      {/* Error message */}
       {error && (
-        <p className="text-red-500 text-center mb-4 font-medium">
-          {t(`signIn.modal.errors.${error}`)}
-        </p>
+        <div className="mb-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg flex items-center gap-3 animate-fadeIn">
+          <AlertCircle size={20} className="shrink-0" />
+          <span className="text-sm">{error}</span>
+        </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <InputField
-          type="email"
-          placeholder={t("signIn.modal.email")}
-          ref={emailRef}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          datalistId="email-suggestions"
-          options={[
-            "andrei@example.com",
-            "maria@example.com",
-            "ioana@example.com",
-            "alex@example.com",
-            "cristina@example.com",
-          ]}
-          required
-        />
-
-        <InputField
-          type="password"
-          placeholder={t("signIn.modal.password")}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        {useSecurity && (
-          <div className="flex items-center space-x-3">
-            <span className="font-semibold">
-              {num1} + {num2} = ?
-            </span>
-            <InputField
-              type="number"
-              placeholder={t("signIn.modal.securityAnswer")}
-              value={securityAnswer}
-              onChange={(e) => setSecurityAnswer(e.target.value)}
-              className="w-20"
-              required
-            />
-          </div>
-        )}
-
-        <div className="flex items-center justify-between">
-          <label className="flex items-center space-x-2 text-sm">
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-              className="accent-blue-500"
-            />
-            <span>{t("signIn.modal.rememberMe")}</span>
-          </label>
-          <button
-            type="button"
-            className="text-sm text-blue-500 hover:underline"
+        {/* Email */}
+        <div>
+          <label
+            className={`block mb-2 font-semibold text-sm ${
+              darkMode ? "text-gray-300" : "text-gray-700"
+            }`}
           >
-            {t("signIn.modal.forgotPassword")}
-          </button>
+            <div className="flex items-center gap-2">
+              <Mail size={16} />
+              {t("signIn.email", "Email")}
+            </div>
+          </label>
+          <input
+            type="email"
+            required
+            disabled={loading || success}
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            className={`w-full px-4 py-3 rounded-lg transition-all ${
+              darkMode
+                ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500"
+                : "bg-white border-gray-300 text-gray-900 focus:border-indigo-500"
+            } border focus:ring-2 focus:ring-indigo-500/50 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
+            placeholder={t("signIn.emailPlaceholder", "john@example.com")}
+          />
         </div>
 
-        <button
+        {/* Password */}
+        <div>
+          <label
+            className={`block mb-2 font-semibold text-sm ${
+              darkMode ? "text-gray-300" : "text-gray-700"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Lock size={16} />
+              {t("signIn.password", "Password")}
+            </div>
+          </label>
+          <input
+            type="password"
+            required
+            disabled={loading || success}
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+            className={`w-full px-4 py-3 rounded-lg transition-all ${
+              darkMode
+                ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500"
+                : "bg-white border-gray-300 text-gray-900 focus:border-indigo-500"
+            } border focus:ring-2 focus:ring-indigo-500/50 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
+            placeholder="••••••••"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <Button
           type="submit"
-          disabled={loading}
-          className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition"
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={loading}
+          disabled={loading || success}
         >
-          {loading ? t("signIn.modal.loading") : t("signIn.modal.submit")}
-        </button>
+          {t("signIn.button", "Sign In")}
+        </Button>
       </form>
 
-      <div className="flex items-center my-4">
-        <hr className="flex-1 border-gray-300 dark:border-gray-600" />
-        <span className="mx-3 text-gray-400">{t("signIn.modal.or")}</span>
-        <hr className="flex-1 border-gray-300 dark:border-gray-600" />
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <button className="flex items-center justify-center gap-2 py-3 rounded-lg border hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-          <FcGoogle size={20} /> {t("signIn.modal.google")}
+      {/* Switch to Sign Up */}
+      <p
+        className={`mt-6 text-center text-sm ${
+          darkMode ? "text-gray-400" : "text-gray-600"
+        }`}
+      >
+        {t("signIn.noAccount", "Don't have an account?")}{" "}
+        <button
+          onClick={onSwitchToSignUp}
+          disabled={loading}
+          className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline transition-colors disabled:opacity-50"
+        >
+          {t("signIn.signUpLink", "Sign Up")}
         </button>
-        <button className="flex items-center justify-center gap-2 py-3 rounded-lg border border-blue-700 bg-blue-600 text-white hover:bg-blue-700 dark:hover:bg-blue-500 transition">
-          <FaFacebook size={18} /> {t("signIn.modal.facebook")}
-        </button>
-      </div>
+      </p>
     </div>
   );
 }

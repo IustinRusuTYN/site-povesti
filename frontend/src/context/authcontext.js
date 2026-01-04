@@ -1,150 +1,330 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
+import { supabase } from "../utils/supabase";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext({
+  user: null,
+  userProfile: null,
+  loading: true,
+  isAuthenticated: false,
+  signUp: async () => ({ data: null, error: null }),
+  signIn: async () => ({ data: null, error: null }),
+  signOut: async () => ({ error: null }),
+  logout: async () => ({ error: null }),
+  updateProfile: async () => ({ data: null, error: null }),
+  refreshProfile: async () => {},
+  hasAccess: () => false,
+});
 
-const STORAGE_KEY = "app_auth_v1";
-const USERS_KEY = "app_users_v1";
+function getSupabaseAuthStorageKeys() {
+  try {
+    return Object.keys(localStorage).filter(
+      (k) => k.startsWith("sb-") && k.includes("auth-token")
+    );
+  } catch {
+    return [];
+  }
+}
+
+function clearSupabaseAuthStorage() {
+  try {
+    getSupabaseAuthStorageKeys().forEach((k) => localStorage.removeItem(k));
+  } catch {
+    // ignore
+  }
+}
+
+function withTimeout(promise, ms, label = "request") {
+  let timer;
+  const timeoutPromise = new Promise((resolve) => {
+    timer = setTimeout(() => {
+      resolve({
+        __timeout: true,
+        error: new Error(`${label} timed out after ${ms}ms`),
+      });
+    }, ms);
+  });
+
+  return Promise.race([promise, timeoutPromise]).finally(() =>
+    clearTimeout(timer)
+  );
+}
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
-  const [refreshToken, setRefreshToken] = useState(null);
+  const [user, setUser] = useState(null); // auth.users user
+  const [userProfile, setUserProfile] = useState(null); // profiles row
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Încarcă user la start
-  useEffect(() => {
+  const fetchUserProfile = async (userId) => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        setUser(parsed.user || null);
-        setAccessToken(parsed.accessToken || null);
-        setRefreshToken(parsed.refreshToken || null);
+      const res = await withTimeout(
+        supabase
+          .from("profiles")
+          .select("id, subscription_plan, role, created_at")
+          .eq("id", userId)
+          .maybeSingle(),
+        12000,
+        "fetchProfile"
+      );
+
+      if (res?.__timeout) {
+        console.warn("[auth] fetchProfile timeout");
+        setUserProfile(null);
+        return null;
       }
+
+      const { data, error } = res;
+
+      if (error) {
+        console.warn("[auth] profile fetch:", error.message);
+        setUserProfile(null);
+        return null;
+      }
+
+      setUserProfile(data || null);
+      return data || null;
     } catch (err) {
-      console.warn("Auth load failed", err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Salvează user în storage
-  const persist = (payload, remember = true) => {
-    const json = JSON.stringify(payload);
-    if (remember) localStorage.setItem(STORAGE_KEY, json);
-    else sessionStorage.setItem(STORAGE_KEY, json);
-  };
-
-  // Fake API local pentru login
-  const login = async (email, password, remember = true) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const usersRaw = localStorage.getItem(USERS_KEY) || "[]";
-      const users = JSON.parse(usersRaw);
-
-      const found = users.find((u) => u.email === email);
-
-      if (!found) throw new Error("Email-ul nu există!");
-      if (found.password !== password) throw new Error("Parolă incorectă!");
-
-      const token = Math.random().toString(36).substr(2);
-
-      // 🔹 MODIFICARE: adaugă subscriptionPlan
-      const userData = {
-        name: found.name,
-        email: found.email,
-        subscriptionPlan: found.subscriptionPlan || "free", // 🔥 IMPORTANT
-      };
-
-      setUser(userData);
-      setAccessToken(token);
-      setRefreshToken(token);
-      persist(
-        {
-          user: userData,
-          accessToken: token,
-          refreshToken: token,
-        },
-        remember
-      );
-      setLoading(false);
-      return {
-        user: userData,
-        accessToken: token,
-        refreshToken: token,
-      };
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-      throw err;
+      console.warn("[auth] profile fetch crash:", err?.message || err);
+      setUserProfile(null);
+      return null;
     }
   };
 
-  // Fake API local pentru signup
-  const signup = async (name, email, password, remember = true) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const usersRaw = localStorage.getItem(USERS_KEY) || "[]";
-      const users = JSON.parse(usersRaw);
-
-      if (users.find((u) => u.email === email))
-        throw new Error("Email deja înregistrat!");
-
-      // 🔹 MODIFICARE: adaugă subscriptionPlan implicit "free"
-      const newUser = {
-        name,
-        email,
-        password,
-        subscriptionPlan: "free", // 🔥 default free la signup
-      };
-      users.push(newUser);
-      localStorage.setItem(USERS_KEY, JSON.stringify(users));
-
-      const token = Math.random().toString(36).substr(2);
-      const userData = { name, email, subscriptionPlan: "free" };
-
-      setUser(userData);
-      setAccessToken(token);
-      setRefreshToken(token);
-      persist(
-        { user: userData, accessToken: token, refreshToken: token },
-        remember
-      );
-      setLoading(false);
-      return { user: userData, accessToken: token, refreshToken: token };
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-      throw err;
-    }
+  const refreshProfile = async () => {
+    if (!user?.id) return;
+    await fetchUserProfile(user.id);
   };
 
-  const logout = useCallback(() => {
+  const forceLocalLogout = async () => {
+    // UI instant
     setUser(null);
-    setAccessToken(null);
-    setRefreshToken(null);
-    setError(null);
-    localStorage.removeItem(STORAGE_KEY);
-    sessionStorage.removeItem(STORAGE_KEY);
+    setUserProfile(null);
+
+    // încercăm să scoatem sesiunea local (supabase-js v2)
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+    } catch {
+      // ignore
+    }
+
+    // fallback: ștergem manual token-ul
+    clearSupabaseAuthStorage();
+  };
+
+  const validateSession = async () => {
+    // 1) session din storage
+    const sessionRes = await withTimeout(
+      supabase.auth.getSession(),
+      12000,
+      "getSession"
+    );
+
+    if (sessionRes?.__timeout) {
+      console.warn("[auth] getSession timeout");
+      // Nu ținem UI blocat; considerăm neautentificat până revine
+      setUser(null);
+      setUserProfile(null);
+      return;
+    }
+
+    const sessionUser = sessionRes?.data?.session?.user ?? null;
+
+    if (!sessionUser) {
+      setUser(null);
+      setUserProfile(null);
+      return;
+    }
+
+    // 2) confirmăm userul pe server (acoperă cazul în care userul a fost șters)
+    const userRes = await withTimeout(
+      supabase.auth.getUser(),
+      12000,
+      "getUser"
+    );
+
+    if (userRes?.__timeout) {
+      console.warn("[auth] getUser timeout (keeping local session for now)");
+      // păstrăm user local, dar fără profile (ca să nu blocăm)
+      setUser(sessionUser);
+      setUserProfile(null);
+      return;
+    }
+
+    if (userRes?.error || !userRes?.data?.user) {
+      console.warn("[auth] invalid session -> force local logout");
+      await forceLocalLogout();
+      return;
+    }
+
+    setUser(userRes.data.user);
+    await fetchUserProfile(userRes.data.user.id);
+  };
+
+  useEffect(() => {
+    let mounted = true;
+
+    const init = async () => {
+      setLoading(true);
+      try {
+        await validateSession();
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    init();
+
+    const { data: sub } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        // Nu blocăm UI; doar actualizăm state.
+        if (event === "SIGNED_OUT") {
+          setUser(null);
+          setUserProfile(null);
+          setLoading(false);
+          return;
+        }
+
+        const sessionUser = session?.user ?? null;
+
+        if (!sessionUser) {
+          setUser(null);
+          setUserProfile(null);
+          setLoading(false);
+          return;
+        }
+
+        // Setăm imediat user local ca UI să se actualizeze rapid
+        setUser(sessionUser);
+        setLoading(false);
+
+        // În background: validăm user și luăm profile
+        await validateSession();
+      }
+    );
+
+    return () => {
+      mounted = false;
+      sub?.subscription?.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        accessToken,
-        loading,
-        error,
-        login,
-        signup,
-        logout,
-        isAuthenticated: !!user,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const signUp = async (email, password, fullName) => {
+    try {
+      const res = await withTimeout(
+        supabase.auth.signUp({
+          email,
+          password,
+          options: { data: fullName ? { full_name: fullName } : undefined },
+        }),
+        15000,
+        "signUp"
+      );
+
+      if (res?.__timeout) {
+        return { data: null, error: res.error };
+      }
+
+      if (res?.error) throw res.error;
+      return { data: res.data, error: null };
+    } catch (error) {
+      return { data: null, error };
+    }
+  };
+
+  const signIn = async (email, password) => {
+    try {
+      const res = await withTimeout(
+        supabase.auth.signInWithPassword({ email, password }),
+        15000,
+        "signIn"
+      );
+
+      if (res?.__timeout) {
+        return { data: null, error: res.error };
+      }
+
+      if (res?.error) throw res.error;
+      return { data: res.data, error: null };
+    } catch (error) {
+      return { data: null, error };
+    }
+  };
+
+  const signOut = async () => {
+    // Logout “garantat”:
+    // - curățăm local indiferent dacă server-side signOut reușește sau nu
+    try {
+      const res = await withTimeout(supabase.auth.signOut(), 12000, "signOut");
+
+      // chiar dacă timeout/eroare, tot curățăm local
+      await forceLocalLogout();
+
+      if (res?.__timeout) return { error: res.error };
+      if (res?.error) return { error: res.error };
+
+      return { error: null };
+    } catch (error) {
+      await forceLocalLogout();
+      return { error };
+    }
+  };
+
+  const updateProfile = async (updates) => {
+    try {
+      if (!user?.id) return { data: null, error: "No user logged in" };
+
+      // NU permitem update la subscription_plan/role din client
+      const safeUpdates = { ...updates };
+      delete safeUpdates.subscription_plan;
+      delete safeUpdates.role;
+
+      const res = await withTimeout(
+        supabase
+          .from("profiles")
+          .update(safeUpdates)
+          .eq("id", user.id)
+          .select()
+          .maybeSingle(),
+        12000,
+        "updateProfile"
+      );
+
+      if (res?.__timeout) return { data: null, error: res.error };
+
+      const { data, error } = res;
+      if (error) throw error;
+
+      setUserProfile(data || userProfile);
+      return { data, error: null };
+    } catch (error) {
+      return { data: null, error };
+    }
+  };
+
+  const hasAccess = (requiredPlan) => {
+    const plan = userProfile?.subscription_plan || "free";
+    if (requiredPlan === "free") return true;
+    if (requiredPlan === "basic") return plan === "basic" || plan === "premium";
+    if (requiredPlan === "premium") return plan === "premium";
+    return false;
+  };
+
+  const value = useMemo(
+    () => ({
+      user,
+      userProfile,
+      loading,
+      isAuthenticated: !!user,
+      signUp,
+      signIn,
+      signOut,
+      logout: signOut, // compatibil cu codul tău vechi
+      updateProfile,
+      refreshProfile,
+      hasAccess,
+    }),
+    [user, userProfile, loading]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

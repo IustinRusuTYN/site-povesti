@@ -1,3 +1,4 @@
+// src/App.js
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
@@ -9,50 +10,44 @@ import Upcoming from "./pages/upcoming";
 import SignIn from "./pages/signin";
 import SignUp from "./pages/signup";
 import ScrollToTop from "./components/scrolltotop";
-import Profile from "./pages/profile"; // 👈 import adăugat
+import Profile from "./pages/profile";
 import { ThemeProvider } from "./context/themecontext";
 import { SearchProvider } from "./context/searchcontext";
 import { LangProvider } from "./context/langcontext";
-import { AuthProvider } from "./context/authcontext"; // 👈 corectat casing
-import { UserProvider } from "./context/usercontext";
+import { AuthProvider } from "./context/authcontext";
 import PrivateRoute from "./components/privateroute";
-import i18next from "i18next";
-
-console.log("i18next loaded:", !!i18next);
 
 export default function App() {
   return (
     <LangProvider>
-      <UserProvider>
-        <AuthProvider>
-          <ThemeProvider>
-            <SearchProvider>
-              <ScrollToTop />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/story/:id" element={<Story />} />
-                <Route path="/allstories" element={<AllStories />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/subscribe" element={<Subscribe />} />
-                <Route path="/upcoming" element={<Upcoming />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
+      {/* Eliminat UserProvider - AuthContext face totul */}
+      <AuthProvider>
+        <ThemeProvider>
+          <SearchProvider>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/story/:id" element={<Story />} />
+              <Route path="/allstories" element={<AllStories />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/subscribe" element={<Subscribe />} />
+              <Route path="/upcoming" element={<Upcoming />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
 
-                {/* Rute protejate */}
-                <Route
-                  path="/profile"
-                  element={
-                    <PrivateRoute>
-                      <Profile />
-                    </PrivateRoute>
-                  }
-                />
-              </Routes>
-            </SearchProvider>
-          </ThemeProvider>
-        </AuthProvider>
-      </UserProvider>
+              {/* Rută protejată - doar una */}
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
+          </SearchProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </LangProvider>
   );
 }

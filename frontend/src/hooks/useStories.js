@@ -1,0 +1,260 @@
+// src/hooks/useStories.js
+import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  getAllStories,
+  getFeaturedStories,
+  getStoryById,
+  getStoriesByCategory,
+  searchStories,
+  getAllCategories,
+  getStoryRating,
+  getStoryComments,
+} from "../services/storiesService";
+
+/**
+ * Hook pentru toate poveștile
+ */
+export function useStories() {
+  const { i18n } = useTranslation();
+  const [stories, setStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchStories = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    const { data, error } = await getAllStories(i18n.language);
+
+    if (error) {
+      setError(error.message || "Failed to fetch stories");
+    } else {
+      setStories(data || []);
+    }
+
+    setLoading(false);
+  }, [i18n.language]);
+
+  useEffect(() => {
+    fetchStories();
+  }, [fetchStories]);
+
+  return { stories, loading, error, refetch: fetchStories };
+}
+
+/**
+ * Hook pentru poveștile featured
+ */
+export function useFeaturedStories() {
+  const { i18n } = useTranslation();
+  const [stories, setStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetch() {
+      setLoading(true);
+      const { data, error } = await getFeaturedStories(i18n.language);
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setStories(data || []);
+      }
+
+      setLoading(false);
+    }
+
+    fetch();
+  }, [i18n.language]);
+
+  return { stories, loading, error };
+}
+
+/**
+ * Hook pentru o singură poveste
+ */
+export function useStory(id) {
+  const { i18n } = useTranslation();
+  const [story, setStory] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!id) {
+      setLoading(false);
+      return;
+    }
+
+    async function fetch() {
+      setLoading(true);
+      setError(null);
+
+      const { data, error } = await getStoryById(id, i18n.language);
+
+      if (error) {
+        setError(error.message || "Story not found");
+      } else {
+        setStory(data);
+      }
+
+      setLoading(false);
+    }
+
+    fetch();
+  }, [id, i18n.language]);
+
+  return { story, loading, error };
+}
+
+/**
+ * Hook pentru povești după categorie
+ */
+export function useStoriesByCategory(categorySlug) {
+  const { i18n } = useTranslation();
+  const [stories, setStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!categorySlug || categorySlug === "all") {
+      // Fetch all stories instead
+      getAllStories(i18n.language).then(({ data, error }) => {
+        setStories(data || []);
+        setError(error?.message || null);
+        setLoading(false);
+      });
+      return;
+    }
+
+    async function fetch() {
+      setLoading(true);
+      const { data, error } = await getStoriesByCategory(
+        categorySlug,
+        i18n.language
+      );
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setStories(data || []);
+      }
+
+      setLoading(false);
+    }
+
+    fetch();
+  }, [categorySlug, i18n.language]);
+
+  return { stories, loading, error };
+}
+
+/**
+ * Hook pentru căutare
+ */
+export function useSearchStories(query) {
+  const { i18n } = useTranslation();
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!query || query.length < 2) {
+      setResults([]);
+      setLoading(false);
+      return;
+    }
+
+    const timeoutId = setTimeout(async () => {
+      setLoading(true);
+      const { data, error } = await searchStories(query, i18n.language);
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setResults(data || []);
+      }
+
+      setLoading(false);
+    }, 300); // Debounce
+
+    return () => clearTimeout(timeoutId);
+  }, [query, i18n.language]);
+
+  return { results, loading, error };
+}
+
+/**
+ * Hook pentru categorii
+ */
+export function useCategories() {
+  const { i18n } = useTranslation();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetch() {
+      const { data, error } = await getAllCategories(i18n.language);
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setCategories(data || []);
+      }
+
+      setLoading(false);
+    }
+
+    fetch();
+  }, [i18n.language]);
+
+  return { categories, loading, error };
+}
+
+/**
+ * Hook pentru rating-ul unei povești
+ */
+export function useStoryRating(storyId) {
+  const [rating, setRating] = useState({ average: 0, count: 0, ratings: [] });
+  const [loading, setLoading] = useState(true);
+
+  const fetchRating = useCallback(async () => {
+    if (!storyId) return;
+
+    const { data } = await getStoryRating(storyId);
+    if (data) {
+      setRating(data);
+    }
+    setLoading(false);
+  }, [storyId]);
+
+  useEffect(() => {
+    fetchRating();
+  }, [fetchRating]);
+
+  return { rating, loading, refetch: fetchRating };
+}
+
+/**
+ * Hook pentru comentariile unei povești
+ */
+export function useStoryComments(storyId) {
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchComments = useCallback(async () => {
+    if (!storyId) return;
+
+    const { data } = await getStoryComments(storyId);
+    setComments(data || []);
+    setLoading(false);
+  }, [storyId]);
+
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
+
+  return { comments, loading, refetch: fetchComments };
+}
