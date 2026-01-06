@@ -1,5 +1,6 @@
 // src/components/forms/SignInForm.js
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authcontext";
 import { ThemeContext } from "../../context/themecontext";
 import Button from "../buttons/Button";
@@ -10,6 +11,7 @@ export default function SignInForm({ onClose, onSwitchToSignUp }) {
   const { signIn } = useContext(AuthContext);
   const { darkMode } = useContext(ThemeContext);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -45,7 +47,11 @@ export default function SignInForm({ onClose, onSwitchToSignUp }) {
         setSuccess(true);
         // Închide form după 1.5 secunde
         setTimeout(() => {
-          onClose();
+          if (onClose) {
+            onClose();
+          } else {
+            navigate("/");
+          }
         }, 1500);
       }
     } catch (err) {
@@ -58,139 +64,164 @@ export default function SignInForm({ onClose, onSwitchToSignUp }) {
 
   return (
     <div
-      className={`relative w-full max-w-md p-8 rounded-3xl transition-all duration-300 ${
+      className={`relative w-full max-w-md p-8 rounded-3xl transition-all duration-300 border-2 ${
         darkMode
-          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-2xl"
-          : "bg-gradient-to-br from-indigo-100 via-white to-indigo-200 shadow-xl"
+          ? "bg-gray-800 border-gray-600 shadow-2xl shadow-black/50"
+          : "bg-white border-gray-200 shadow-2xl shadow-gray-500/20"
       }`}
     >
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className={`absolute top-4 right-4 p-2 rounded-full transition-colors ${
+      {/* Decorative gradient background */}
+      <div
+        className={`absolute inset-0 rounded-3xl opacity-10 ${
           darkMode
-            ? "hover:bg-gray-700 text-gray-400 hover:text-white"
-            : "hover:bg-gray-200 text-gray-600 hover:text-gray-900"
+            ? "bg-gradient-to-br from-gray-700 via-gray-700 to-gray-700"
+            : "bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-400"
         }`}
-        aria-label="Close"
-      >
-        <XCircle size={24} />
-      </button>
+      />
 
-      {/* Title */}
-      <h2
-        className={`text-3xl font-bold mb-6 text-center ${
-          darkMode ? "text-indigo-400" : "text-gray-800"
-        }`}
-      >
-        {t("signIn.title", "Welcome Back")}
-      </h2>
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Close button */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className={`absolute top-4 right-4 p-2 rounded-full transition-colors ${
+              darkMode
+                ? "hover:bg-gray-700 text-gray-400 hover:text-white"
+                : "hover:bg-gray-100 text-gray-500 hover:text-gray-700"
+            }`}
+            aria-label="Close"
+          >
+            <XCircle size={24} />
+          </button>
+        )}
 
-      {/* Success message */}
-      {success && (
-        <div className="mb-4 p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg flex items-center gap-3 animate-fadeIn">
-          <CheckCircle size={20} className="shrink-0" />
-          <span className="font-semibold">
-            {t("signIn.success", "Signed in successfully!")}
-          </span>
-        </div>
-      )}
+        {/* Title */}
+        <h2
+          className={`text-3xl font-bold mb-6 text-center ${
+            darkMode ? "text-white" : "text-gray-900"
+          }`}
+        >
+          {t("signIn.title", "Welcome Back")}
+        </h2>
 
-      {/* Error message */}
-      {error && (
-        <div className="mb-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg flex items-center gap-3 animate-fadeIn">
-          <AlertCircle size={20} className="shrink-0" />
-          <span className="text-sm">{error}</span>
-        </div>
-      )}
+        {/* Success message */}
+        {success && (
+          <div className="mb-4 p-4 bg-green-500/20 border border-green-500/30 text-green-600 dark:text-green-400 rounded-lg flex items-center gap-3 animate-fadeIn">
+            <CheckCircle size={20} className="shrink-0" />
+            <span className="font-semibold">
+              {t("signIn.success", "Signed in successfully!")}
+            </span>
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Email */}
-        <div>
-          <label
-            className={`block mb-2 font-semibold text-sm ${
-              darkMode ? "text-gray-300" : "text-gray-700"
+        {/* Error message */}
+        {error && (
+          <div className="mb-4 p-4 bg-red-500/20 border border-red-500/30 text-red-600 dark:text-red-400 rounded-lg flex items-center gap-3 animate-fadeIn">
+            <AlertCircle size={20} className="shrink-0" />
+            <span className="text-sm">{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Email */}
+          <div>
+            <label
+              className={`block mb-2 font-semibold text-sm ${
+                darkMode ? "text-indigo-500" : "text-gray-800"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Mail size={16} />
+                {t("signIn.email", "Email")}
+              </div>
+            </label>
+            <input
+              type="email"
+              required
+              disabled={loading || success}
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              className={`w-full px-4 py-3 rounded-xl transition-all border-2 ${
+                darkMode
+                  ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-400 focus:bg-gray-600"
+                  : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:bg-white"
+              } focus:ring-2 focus:ring-indigo-500/30 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
+              placeholder={t("signIn.emailPlaceholder", "john@example.com")}
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <label
+              className={`block mb-2 font-semibold text-sm ${
+                darkMode ? "text-indigo-500" : "text-gray-800"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Lock size={16} />
+                {t("signIn.password", "Password")}
+              </div>
+            </label>
+            <input
+              type="password"
+              required
+              disabled={loading || success}
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              className={`w-full px-4 py-3 rounded-xl transition-all border-2 ${
+                darkMode
+                  ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-400 focus:bg-gray-600"
+                  : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:bg-white"
+              } focus:ring-2 focus:ring-indigo-500/30 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
+              placeholder="••••••••"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            fullWidth
+            loading={loading}
+            disabled={loading || success}
+            className="mt-6"
+          >
+            {t("signIn.button", "Sign In")}
+          </Button>
+        </form>
+
+        {/* Switch to Sign Up */}
+        <p
+          className={`mt-6 text-center text-sm ${
+            darkMode ? "text-gray-300" : "text-gray-600"
+          }`}
+        >
+          {t("signIn.noAccount", "Don't have an account?")}{" "}
+          <button
+            onClick={() => {
+              if (onSwitchToSignUp) {
+                onSwitchToSignUp();
+              } else {
+                navigate("/signup");
+              }
+            }}
+            disabled={loading}
+            className={`font-semibold hover:underline transition-colors disabled:opacity-50 ${
+              darkMode
+                ? "text-indigo-400 hover:text-indigo-300"
+                : "text-indigo-600 hover:text-indigo-700"
             }`}
           >
-            <div className="flex items-center gap-2">
-              <Mail size={16} />
-              {t("signIn.email", "Email")}
-            </div>
-          </label>
-          <input
-            type="email"
-            required
-            disabled={loading || success}
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            className={`w-full px-4 py-3 rounded-lg transition-all ${
-              darkMode
-                ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500"
-                : "bg-white border-gray-300 text-gray-900 focus:border-indigo-500"
-            } border focus:ring-2 focus:ring-indigo-500/50 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
-            placeholder={t("signIn.emailPlaceholder", "john@example.com")}
-          />
-        </div>
-
-        {/* Password */}
-        <div>
-          <label
-            className={`block mb-2 font-semibold text-sm ${
-              darkMode ? "text-gray-300" : "text-gray-700"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Lock size={16} />
-              {t("signIn.password", "Password")}
-            </div>
-          </label>
-          <input
-            type="password"
-            required
-            disabled={loading || success}
-            value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-            className={`w-full px-4 py-3 rounded-lg transition-all ${
-              darkMode
-                ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500"
-                : "bg-white border-gray-300 text-gray-900 focus:border-indigo-500"
-            } border focus:ring-2 focus:ring-indigo-500/50 outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
-            placeholder="••••••••"
-          />
-        </div>
-
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          fullWidth
-          loading={loading}
-          disabled={loading || success}
-        >
-          {t("signIn.button", "Sign In")}
-        </Button>
-      </form>
-
-      {/* Switch to Sign Up */}
-      <p
-        className={`mt-6 text-center text-sm ${
-          darkMode ? "text-gray-400" : "text-gray-600"
-        }`}
-      >
-        {t("signIn.noAccount", "Don't have an account?")}{" "}
-        <button
-          onClick={onSwitchToSignUp}
-          disabled={loading}
-          className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline transition-colors disabled:opacity-50"
-        >
-          {t("signIn.signUpLink", "Sign Up")}
-        </button>
-      </p>
+            {t("signIn.signUpLink", "Sign Up")}
+          </button>
+        </p>
+      </div>
     </div>
   );
 }

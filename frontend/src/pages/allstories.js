@@ -4,82 +4,65 @@ import { useNavigate } from "react-router-dom";
 import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
 import { SearchContext } from "../context/searchcontext";
-import storiesData from "../data/stories";
-import api from "../utils/api";
-import { getStoryText } from "../utils/storyHelpers";
+import { AuthContext } from "../context/authcontext";
+import { useTranslation } from "react-i18next";
 
 import CategoryFilter from "../components/allstories/categoryfilter";
 import StoryList from "../components/allstories/storylist";
 import LoadingError from "../components/allstories/loadingerror";
 import SignInForm from "../components/forms/SignInForm";
-import { AuthContext } from "../context/authcontext";
-import { useTranslation } from "react-i18next";
+
+// ✅ IMPORT HOOK-URILE NOI
+import { useStories, useCategories } from "../hooks/useStories";
 
 export default function AllStories() {
   const { darkMode } = useContext(ThemeContext);
   const { query } = useContext(SearchContext);
   const { isAuthenticated } = useContext(AuthContext);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [stories, setStories] = useState(storiesData);
+  // ✅ FOLOSIM HOOK-URILE DIN SUPABASE
+  const { stories, loading, error } = useStories();
+  const { categories: dbCategories } = useCategories();
+
   const [filteredStories, setFilteredStories] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showSignInModal, setShowSignInModal] = useState(false);
 
+  // Construim lista de categorii
+  const categories = ["all", ...dbCategories.map((cat) => cat.name)];
+
+  // Filtrare după categorie și query de căutare
   useEffect(() => {
-    const fetchStories = async () => {
-      try {
-        const res = await api.get("/stories");
-        setStories(res.data);
-        setError(null);
-      } catch (err) {
-        console.warn(
-          "Nu am putut încărca de la backend, folosesc date locale."
-        );
-        setError(t("usingLocalData"));
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStories();
-  }, [t]);
+    if (!stories || stories.length === 0) {
+      setFilteredStories([]);
+      return;
+    }
 
-  const categories = [
-    "all",
-    ...new Set(stories.map((s) => s.category).filter(Boolean)),
-  ];
+    const filtered = stories.filter((story) => {
+      if (!story) return false;
 
-  useEffect(() => {
-    if (!stories || stories.length === 0) return;
-
-    const filtered = stories.filter((story, index) => {
-      if (!story) {
-        console.warn("Story undefined la index:", index);
-        return false;
-      }
-
+      // Filtrare după categorie
       const matchesCategory =
         categoryFilter === "all" || story.category === categoryFilter;
 
-      const { title, excerpt } = getStoryText(story, i18n.language);
-
-      const safeTitle = typeof title === "string" ? title : "";
-      const safeExcerpt = typeof excerpt === "string" ? excerpt : "";
-      const safeQuery = typeof query === "string" ? query : "";
+      // Filtrare după search query
+      const safeTitle = typeof story.title === "string" ? story.title : "";
+      const safeExcerpt =
+        typeof story.excerpt === "string" ? story.excerpt : "";
+      const safeQuery = typeof query === "string" ? query.toLowerCase() : "";
 
       const matchesQuery =
         safeQuery === "" ||
-        safeTitle.toLowerCase().includes(safeQuery.toLowerCase()) ||
-        safeExcerpt.toLowerCase().includes(safeQuery.toLowerCase());
+        safeTitle.toLowerCase().includes(safeQuery) ||
+        safeExcerpt.toLowerCase().includes(safeQuery);
 
       return matchesCategory && matchesQuery;
     });
 
     setFilteredStories(filtered);
-  }, [stories, query, categoryFilter, i18n.language]);
+  }, [stories, query, categoryFilter]);
 
   const handleStoryClick = (id) => navigate(`/story/${id}`);
   const handleRequireAuth = () => setShowSignInModal(true);
@@ -107,13 +90,15 @@ export default function AllStories() {
             >
               {t("allStoriesTitle")}
             </h1>
-            <p
-              className={`text-center text-sm ${
-                darkMode ? "text-gray-400" : "text-gray-600"
-              }`}
-            >
-              {filteredStories.length} {t("storiesFound")}
-            </p>
+            {!loading && (
+              <p
+                className={`text-center text-sm ${
+                  darkMode ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                {filteredStories.length} {t("storiesFound")}
+              </p>
+            )}
           </div>
 
           {/* Category Filter */}
@@ -128,7 +113,7 @@ export default function AllStories() {
           <LoadingError loading={loading} error={error} darkMode={darkMode} />
 
           {/* Story Grid */}
-          {!loading && filteredStories.length > 0 && (
+          {!loading && !error && filteredStories.length > 0 && (
             <StoryList
               stories={filteredStories}
               onStoryClick={handleStoryClick}
@@ -138,7 +123,7 @@ export default function AllStories() {
           )}
 
           {/* No Results */}
-          {!loading && filteredStories.length === 0 && (
+          {!loading && !error && filteredStories.length === 0 && (
             <div className="text-center py-16">
               <p
                 className={`text-lg mb-2 ${
@@ -147,15 +132,6 @@ export default function AllStories() {
               >
                 {t("noStoriesFound")}
               </p>
-              {error && (
-                <span
-                  className={`text-sm ${
-                    darkMode ? "text-gray-500" : "text-gray-500"
-                  }`}
-                >
-                  {error}
-                </span>
-              )}
             </div>
           )}
         </div>

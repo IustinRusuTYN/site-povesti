@@ -1,5 +1,6 @@
 // src/services/userDataService.js
 import { supabase } from "../utils/supabase";
+import { getStoryImage } from "../utils/imageHelper";
 
 // ============================================
 // FAVORITES
@@ -134,6 +135,12 @@ export async function toggleFavorite(userId, storyId) {
 /**
  * Obține istoricul de citire
  */
+/**
+ * Obține istoricul de citire
+ */
+/**
+ * Obține istoricul de citire
+ */
 export async function getReadingHistory(userId, language = "ro") {
   try {
     const { data, error } = await supabase
@@ -146,9 +153,14 @@ export async function getReadingHistory(userId, language = "ro") {
         story:stories(
           id,
           title_ro, title_en, title_fr,
+          excerpt_ro, excerpt_en, excerpt_fr,
           image_url,
           read_time,
-          category:categories(name)
+          access_level,
+          is_featured,
+          view_count,
+          category:categories(id, name, slug),
+          author:authors(id, name)
         )
       `
       )
@@ -158,15 +170,44 @@ export async function getReadingHistory(userId, language = "ro") {
 
     if (error) throw error;
 
-    const transformedData = data.map((item) => ({
-      id: item.story.id,
-      title: item.story[`title_${language}`] || item.story.title_ro,
-      image: item.story.image_url,
-      category: item.story.category?.name,
-      readTime: item.story.read_time,
-      lastReadAt: item.last_read_at,
-      progress: item.progress,
-    }));
+    // ✅ TRANSFORMĂM DATELE COMPLET
+    const transformedData = data
+      .map((item) => {
+        if (!item.story) {
+          console.warn("Story not found in reading history item:", item);
+          return null;
+        }
+
+        const story = item.story;
+
+        return {
+          id: story.id,
+          title: story[`title_${language}`] || story.title_ro || "Untitled",
+          excerpt:
+            story[`excerpt_${language}`] ||
+            story.excerpt_ro ||
+            "No description available",
+          image: getStoryImage(story.image_url),
+          category: story.category?.name || "Uncategorized",
+          categorySlug: story.category?.slug,
+          author: story.author?.name || "Unknown Author",
+          readTime: story.read_time || 5,
+          accessLevel: story.access_level || "free",
+          isFeatured: story.is_featured || false,
+          viewCount: story.view_count || 0,
+          lastReadAt: item.last_read_at,
+          progress: item.progress || 0,
+          // Pentru compatibilitate cu codul vechi
+          translations: {
+            ro: { title: story.title_ro, excerpt: story.excerpt_ro },
+            en: { title: story.title_en, excerpt: story.excerpt_en },
+            fr: { title: story.title_fr, excerpt: story.excerpt_fr },
+          },
+        };
+      })
+      .filter(Boolean); // Eliminăm null-urile
+
+    console.log("Transformed reading history:", transformedData); // ✅ DEBUG
 
     return { data: transformedData, error: null };
   } catch (error) {
@@ -174,7 +215,6 @@ export async function getReadingHistory(userId, language = "ro") {
     return { data: null, error };
   }
 }
-
 /**
  * Adaugă sau actualizează istoricul de citire
  */

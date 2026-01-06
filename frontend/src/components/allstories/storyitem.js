@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Lock, Star } from "lucide-react";
 
 export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
-  const { isAuthenticated, user } = useContext(AuthContext);
+  const { isAuthenticated, userProfile } = useContext(AuthContext);
   const { t } = useTranslation();
 
   const getAverageRating = (ratings) => {
@@ -16,7 +16,7 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   };
 
   const accessLevel = story?.accessLevel || "free";
-  const userPlan = user?.subscriptionPlan || "free";
+  const userPlan = userProfile?.subscription_plan || "free";
 
   const hasAccess = () => {
     if (accessLevel === "free") return true;
@@ -48,8 +48,9 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
     }
   };
 
-  const title = t(`stories.${story?.id}.title`);
-  const excerpt = t(`stories.${story?.id}.excerpt`);
+  // ✅ FOLOSIM DATELE DIN STORY, NU DIN i18next
+  const title = story?.title || "No title";
+  const excerpt = story?.excerpt || "No excerpt";
 
   return (
     <div

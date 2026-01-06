@@ -273,10 +273,19 @@ export function AuthProvider({ children }) {
     try {
       if (!user?.id) return { data: null, error: "No user logged in" };
 
-      // NU permitem update la subscription_plan/role din client
+      // ✅ DEBUG COMPLET
+      const currentAuthUser = await supabase.auth.getUser();
+      console.log("🔍 Context user.id:", user.id);
+      console.log("🔍 Auth user.id:", currentAuthUser.data.user?.id);
+      console.log("🔍 Are egale?", user.id === currentAuthUser.data.user?.id);
+      console.log("🔍 Updates:", updates);
+
       const safeUpdates = { ...updates };
       delete safeUpdates.subscription_plan;
       delete safeUpdates.role;
+
+      // ✅ TESTEAZĂ MANUAL QUERY-UL
+      console.log("🔍 Executing query with user.id:", user.id);
 
       const res = await withTimeout(
         supabase
@@ -292,11 +301,25 @@ export function AuthProvider({ children }) {
       if (res?.__timeout) return { data: null, error: res.error };
 
       const { data, error } = res;
+
+      console.log("✅ Supabase response data:", data);
+      console.log("✅ Supabase response error:", error);
+
       if (error) throw error;
 
-      setUserProfile(data || userProfile);
+      // ✅ VERIFICĂ CE S-A ACTUALIZAT EFECTIV
+      const allProfiles = await supabase
+        .from("profiles")
+        .select("id, email, full_name");
+      console.log("🔍 All profiles after update:", allProfiles.data);
+
+      if (data) {
+        setUserProfile(data);
+      }
+
       return { data, error: null };
     } catch (error) {
+      console.error("❌ Update profile error:", error);
       return { data: null, error };
     }
   };

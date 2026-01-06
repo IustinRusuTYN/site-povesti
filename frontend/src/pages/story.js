@@ -4,45 +4,87 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
 import { AuthContext } from "../context/authcontext";
-import stories from "../data/stories";
+import { useTranslation } from "react-i18next";
+
+// ✅ IMPORT HOOK-UL NOU
+import { useStory } from "../hooks/useStories";
+import { getStoryComments, addComment } from "../services/storiesService";
 
 import StoryHeader from "../components/story/storyheader";
 import StoryContent from "../components/story/storycontent";
 import StoryPagination from "../components/story/storypagination";
 import StoryComments from "../components/story/storycomments";
 import StoryNotFound from "../components/story/storynotfound";
-
-import { useTranslation } from "react-i18next";
+import { Loader2 } from "lucide-react";
 
 export default function Story() {
   const { t } = useTranslation();
   const { id } = useParams();
   const { darkMode } = useContext(ThemeContext);
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { user, userProfile, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const story = stories.find((s) => s.id === parseInt(id));
+  // ✅ FOLOSIM HOOK-UL PENTRU SUPABASE
+  const { story, loading, error } = useStory(id);
+
   const [page, setPage] = useState(0);
   const paragraphsPerPage = 3;
-  const [comments, setComments] = useState(story?.comments || []);
-  const [rating, setRating] = useState(
-    story?.ratings?.length
-      ? story.ratings.reduce((a, b) => a + b, 0) / story.ratings.length
-      : 0
-  );
-  const [votes, setVotes] = useState(story?.ratings?.length || 0);
+  const [comments, setComments] = useState([]);
+  const [rating, setRating] = useState(0);
+  const [votes, setVotes] = useState(0);
+  const [commentsLoading, setCommentsLoading] = useState(true);
 
+  // Încărcăm comentariile
+  useEffect(() => {
+    if (!story?.id) return;
+
+    const fetchComments = async () => {
+      const { data } = await getStoryComments(story.id);
+      setComments(data || []);
+      setCommentsLoading(false);
+    };
+
+    fetchComments();
+  }, [story?.id]);
+
+  // Salvăm în istoric local
+  // Salvăm în istoric Supabase + localStorage
   useEffect(() => {
     if (!story) return;
-    const saved = JSON.parse(localStorage.getItem("recentStories")) || [];
-    const updated = [story, ...saved.filter((s) => s.id !== story.id)].slice(
-      0,
-      6
-    );
-    localStorage.setItem("recentStories", JSON.stringify(updated));
-  }, [story]);
 
-  if (!story) {
+    // Salvare în localStorage (pentru compatibilitate)
+    const saved = JSON.parse(localStorage.getItem("recentStories")) || [];
+    const updated = [
+      { id: story.id, title: story.title, image: story.image },
+      ...saved.filter((s) => s.id !== story.id),
+    ].slice(0, 6);
+    localStorage.setItem("recentStories", JSON.stringify(updated));
+
+    // ✅ SALVARE ÎN SUPABASE READING_HISTORY
+    if (user?.id) {
+      import("../services/userDataService").then(({ updateReadingHistory }) => {
+        updateReadingHistory(user.id, story.id, 0).catch(console.error);
+      });
+    }
+  }, [story, user?.id]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <PageLayout>
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <Loader2
+            className={`w-12 h-12 animate-spin ${
+              darkMode ? "text-indigo-400" : "text-indigo-600"
+            }`}
+          />
+        </div>
+      </PageLayout>
+    );
+  }
+
+  // Error or not found
+  if (error || !story) {
     return (
       <PageLayout>
         <StoryNotFound onBack={() => navigate("/allstories")} />
@@ -51,26 +93,22 @@ export default function Story() {
   }
 
   const accessLevel = story.accessLevel || "free";
-  const userAccess = isAuthenticated
-    ? user?.subscriptionPlan || "free"
-    : "free"; // 🔥 MODIFICARE
+  const userAccess = userProfile?.subscription_plan || "free";
 
   const isPremium = accessLevel === "premium";
   const isBasic = accessLevel === "basic";
 
-  // Obținem conținutul traducerilor
-  let displayedContent =
-    story.content?.map((p, idx) => t(`stories.${story.id}.content.${idx}`)) ||
-    [];
+  // Conținutul poveștii (array de paragrafe)
+  let displayedContent = story.content || [];
   const totalPages = displayedContent.length
     ? Math.ceil(displayedContent.length / paragraphsPerPage)
     : 0;
 
-  // 🔹 Logica de acces corectată
+  // Logica de acces
   let canNavigatePages = true;
 
   if (accessLevel === "free") {
-    // oricine poate citi free
+    // Oricine poate citi free
     displayedContent = displayedContent.slice(
       page * paragraphsPerPage,
       (page + 1) * paragraphsPerPage
@@ -100,9 +138,42 @@ export default function Story() {
     }
   }
 
-  const handleAddComment = (comment) =>
-    setComments((prev) => [comment, ...prev]);
+  const handleAddComment = async (commentText) => {
+    if (!isAuthenticated || !user?.id) {
+      alert(
+        t("mustBeLoggedIn") || "Trebuie să fii autentificat pentru a comenta"
+      );
+      return;
+    }
+
+    const userName =
+      userProfile?.full_name || user.email?.split("@")[0] || "Anonymous";
+
+    const { data, error } = await addComment(
+      story.id,
+      user.id,
+      userName,
+      commentText
+    );
+
+    if (error) {
+      alert(t("errorAddingComment") || "Eroare la adăugarea comentariului");
+      return;
+    }
+
+    setComments((prev) => [
+      {
+        id: data.id,
+        user_name: userName,
+        content: commentText,
+        created_at: new Date().toISOString(),
+      },
+      ...prev,
+    ]);
+  };
+
   const handleRate = (newRating) => {
+    // TODO: Implementează cu Supabase în viitor
     const totalRating = rating * votes + newRating;
     const newVotes = votes + 1;
     setRating(totalRating / newVotes);
@@ -113,11 +184,7 @@ export default function Story() {
     <PageLayout>
       <section className="max-w-4xl mx-auto px-4 py-10">
         <StoryHeader
-          story={{
-            ...story,
-            title: t(`stories.${story.id}.title`),
-            excerpt: t(`stories.${story.id}.excerpt`),
-          }}
+          story={story}
           darkMode={darkMode}
           rating={rating}
           votes={votes}
@@ -136,13 +203,14 @@ export default function Story() {
                     darkMode ? "text-gray-300" : "text-gray-700"
                   }`}
                 >
-                  {t("storyBasicPreview")}
+                  {t("storyBasicPreview") ||
+                    "Aceasta este o previzualizare. Abonează-te pentru a citi mai mult!"}
                 </p>
                 <button
                   onClick={() => navigate("/subscribe")}
                   className="mt-4 px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:opacity-90 transition"
                 >
-                  {t("storyBasicButton")}
+                  {t("storyBasicButton") || "Abonare Basic"}
                 </button>
               </>
             )}
@@ -153,16 +221,17 @@ export default function Story() {
                     darkMode ? "text-yellow-400" : "text-yellow-600"
                   }`}
                 >
-                  {t("storyPremiumTitle")} 🔒
+                  {t("storyPremiumTitle") || "Conținut Premium"} 🔒
                 </h2>
                 <p className={darkMode ? "text-gray-300" : "text-gray-700"}>
-                  {t("storyPremiumDescription")}
+                  {t("storyPremiumDescription") ||
+                    "Această poveste este disponibilă doar pentru abonații Premium."}
                 </p>
                 <button
                   onClick={() => navigate("/subscribe")}
                   className="mt-4 px-5 py-2 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-lg hover:opacity-90 transition"
                 >
-                  {t("storyPremiumButton")}
+                  {t("storyPremiumButton") || "Abonare Premium"}
                 </button>
               </>
             )}
@@ -181,6 +250,7 @@ export default function Story() {
           comments={comments}
           darkMode={darkMode}
           onAddComment={handleAddComment}
+          loading={commentsLoading}
         />
 
         <div className="mt-8 text-center">
@@ -188,7 +258,7 @@ export default function Story() {
             to="/allstories"
             className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
           >
-            {t("backToAllStories")}
+            {t("backToAllStories") || "Înapoi la toate poveștile"}
           </Link>
         </div>
       </section>

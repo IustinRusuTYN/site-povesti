@@ -2,34 +2,38 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectCoverflow } from "swiper/modules";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { BookOpen, Star, ArrowRight, Sparkles } from "lucide-react";
+import { BookOpen, Star, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 import Button from "../buttons/Button";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 
-import stories from "../../data/stories";
 import { ThemeContext } from "../../context/themecontext";
+import { useFeaturedStories, useStoryRating } from "../../hooks/useStories";
+
+// Componenta pentru rating dinamic
+function StoryRating({ storyId }) {
+  const { rating, loading } = useStoryRating(storyId);
+
+  if (loading || !rating || rating.count === 0) return null;
+
+  return (
+    <div className="flex items-center gap-1">
+      <Star size={12} className="text-yellow-400 fill-yellow-400" />
+      <span className="text-yellow-400 font-bold">{rating.average}</span>
+    </div>
+  );
+}
 
 export default function FeaturedStoriesCarousel() {
   const { darkMode } = useContext(ThemeContext);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [currentStories, setCurrentStories] = useState(stories);
+  // Folosim hook-ul nou pentru featured stories din Supabase
+  const { stories, loading, error } = useFeaturedStories();
   const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const lang = i18n.language;
-    const translated = stories.map((story) => ({
-      ...story,
-      title: story.translations?.[lang]?.title || story.title,
-      excerpt: story.translations?.[lang]?.excerpt || story.excerpt,
-    }));
-    setCurrentStories(translated);
-  }, [i18n.language]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -48,12 +52,6 @@ export default function FeaturedStoriesCarousel() {
       if (element) observer.unobserve(element);
     };
   }, []);
-
-  const getAverageRating = (ratings) => {
-    if (!ratings || ratings.length === 0) return null;
-    const sum = ratings.reduce((a, b) => a + b, 0);
-    return (sum / ratings.length).toFixed(1);
-  };
 
   return (
     <section id="featured-section" className="py-12 md:py-16 px-4 md:px-6">
@@ -165,45 +163,88 @@ export default function FeaturedStoriesCarousel() {
             </p>
           </div>
 
-          {/* 3D Carousel */}
-          <div
-            className={`
-              transition-all duration-1000 delay-500
-              ${
-                visible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }
-            `}
-          >
-            <Swiper
-              modules={[Autoplay, EffectCoverflow]}
-              effect="coverflow"
-              grabCursor={true}
-              centeredSlides={true}
-              breakpoints={{
-                320: { slidesPerView: 1.2 },
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-              }}
-              coverflowEffect={{
-                rotate: 20,
-                stretch: 0,
-                depth: 150,
-                modifier: 1,
-                slideShadows: true,
-              }}
-              loop={true}
-              autoplay={{
-                delay: 3000,
-                disableOnInteraction: false,
-              }}
-              className="!pb-8"
-            >
-              {currentStories.map((story) => {
-                const avgRating = getAverageRating(story.ratings);
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center items-center py-16">
+              <Loader2
+                className={`w-12 h-12 animate-spin ${
+                  darkMode ? "text-indigo-400" : "text-indigo-600"
+                }`}
+              />
+            </div>
+          )}
 
-                return (
+          {/* Error State */}
+          {error && (
+            <div
+              className={`text-center py-8 px-4 rounded-xl ${
+                darkMode
+                  ? "bg-red-900/20 text-red-300"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              <p className="text-lg font-semibold mb-2">
+                {t("errorLoadingStories") || "Eroare la încărcarea poveștilor"}
+              </p>
+              <p className="text-sm">{error}</p>
+            </div>
+          )}
+
+          {/* No Stories State */}
+          {!loading && !error && stories.length === 0 && (
+            <div className="text-center py-16">
+              <BookOpen
+                className={`w-16 h-16 mx-auto mb-4 ${
+                  darkMode ? "text-gray-600" : "text-gray-400"
+                }`}
+              />
+              <p
+                className={`text-lg ${
+                  darkMode ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                {t("noStoriesYet") || "Nu există povești disponibile momentan"}
+              </p>
+            </div>
+          )}
+
+          {/* 3D Carousel */}
+          {!loading && !error && stories.length > 0 && (
+            <div
+              className={`
+                transition-all duration-1000 delay-500
+                ${
+                  visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }
+              `}
+            >
+              <Swiper
+                modules={[Autoplay, EffectCoverflow]}
+                effect="coverflow"
+                grabCursor={true}
+                centeredSlides={true}
+                breakpoints={{
+                  320: { slidesPerView: 1.2 },
+                  640: { slidesPerView: 2 },
+                  1024: { slidesPerView: 3 },
+                }}
+                coverflowEffect={{
+                  rotate: 20,
+                  stretch: 0,
+                  depth: 150,
+                  modifier: 1,
+                  slideShadows: true,
+                }}
+                loop={stories.length >= 3}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
+                className="!pb-8"
+              >
+                {stories.map((story) => (
                   <SwiperSlide key={story.id}>
                     <Link to={`/story/${story.id}`} className="group block">
                       {/* Card */}
@@ -223,6 +264,14 @@ export default function FeaturedStoriesCarousel() {
                               alt={story.title}
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                               loading="lazy"
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                                e.target.parentElement.innerHTML = `
+                                  <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                    <span class="text-6xl">📖</span>
+                                  </div>
+                                `;
+                              }}
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400">
@@ -247,51 +296,43 @@ export default function FeaturedStoriesCarousel() {
                               <span className="font-medium">
                                 {story.category}
                               </span>
-                              {avgRating && (
-                                <div className="flex items-center gap-1">
-                                  <Star
-                                    size={12}
-                                    className="text-yellow-400 fill-yellow-400"
-                                  />
-                                  <span className="text-yellow-400 font-bold">
-                                    {avgRating}
-                                  </span>
-                                </div>
-                              )}
+                              <StoryRating storyId={story.id} />
                             </div>
                           </div>
                         </div>
                       </div>
                     </Link>
                   </SwiperSlide>
-                );
-              })}
-            </Swiper>
-          </div>
+                ))}
+              </Swiper>
+            </div>
+          )}
 
           {/* CTA Button */}
-          <div
-            className={`
-              text-center mt-8
-              transition-all duration-1000 delay-700
-              ${
-                visible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }
-            `}
-          >
-            <Button
-              variant="primary"
-              size="lg"
-              icon={ArrowRight}
-              iconPosition="right"
-              className="transition-transform duration-300 hover:scale-105"
-              onClick={() => navigate("/allstories")}
+          {!loading && !error && stories.length > 0 && (
+            <div
+              className={`
+                text-center mt-8
+                transition-all duration-1000 delay-700
+                ${
+                  visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }
+              `}
             >
-              {t("viewAllStories")}
-            </Button>
-          </div>
+              <Button
+                variant="primary"
+                size="lg"
+                icon={ArrowRight}
+                iconPosition="right"
+                className="transition-transform duration-300 hover:scale-105"
+                onClick={() => navigate("/allstories")}
+              >
+                {t("viewAllStories")}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 // src/services/storiesService.js
 import { supabase } from "../utils/supabase";
+import { getStoryImage } from "../utils/imageHelper";
 
 /**
  * Obține toate poveștile publicate
@@ -162,8 +163,6 @@ export async function getStoriesByCategory(categorySlug, language = "ro") {
  */
 export async function searchStories(query, language = "ro") {
   try {
-    const searchField = `title_${language}`;
-
     const { data, error } = await supabase
       .from("stories")
       .select(
@@ -345,7 +344,7 @@ function transformStory(story, language = "ro", includeContent = false) {
     id: story.id,
     title: story[`title_${language}`] || story.title_ro,
     excerpt: story[`excerpt_${language}`] || story.excerpt_ro,
-    image: story.image_url,
+    image: getStoryImage(story.image_url), // ✅ FOLOSEȘTE HELPER-UL
     category: story.category?.name || "Uncategorized",
     categorySlug: story.category?.slug,
     author: story.author?.name || "Unknown",
