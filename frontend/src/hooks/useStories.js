@@ -29,6 +29,7 @@ export function useStories() {
 
     if (error) {
       setError(error.message || "Failed to fetch stories");
+      setStories([]);
     } else {
       setStories(data || []);
     }
@@ -53,12 +54,19 @@ export function useFeaturedStories() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
+
     async function fetch() {
       setLoading(true);
+      setError(null);
+
       const { data, error } = await getFeaturedStories(i18n.language);
 
+      if (!mounted) return;
+
       if (error) {
-        setError(error.message);
+        setError(error.message || "Failed to fetch featured stories");
+        setStories([]);
       } else {
         setStories(data || []);
       }
@@ -67,6 +75,9 @@ export function useFeaturedStories() {
     }
 
     fetch();
+    return () => {
+      mounted = false;
+    };
   }, [i18n.language]);
 
   return { stories, loading, error };
@@ -82,6 +93,8 @@ export function useStory(id) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
+
     if (!id) {
       setLoading(false);
       return;
@@ -93,8 +106,11 @@ export function useStory(id) {
 
       const { data, error } = await getStoryById(id, i18n.language);
 
+      if (!mounted) return;
+
       if (error) {
         setError(error.message || "Story not found");
+        setStory(null);
       } else {
         setStory(data);
       }
@@ -103,6 +119,10 @@ export function useStory(id) {
     }
 
     fetch();
+
+    return () => {
+      mounted = false;
+    };
   }, [id, i18n.language]);
 
   return { story, loading, error };
@@ -118,25 +138,22 @@ export function useStoriesByCategory(categorySlug) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!categorySlug || categorySlug === "all") {
-      // Fetch all stories instead
-      getAllStories(i18n.language).then(({ data, error }) => {
-        setStories(data || []);
-        setError(error?.message || null);
-        setLoading(false);
-      });
-      return;
-    }
+    let mounted = true;
 
     async function fetch() {
       setLoading(true);
-      const { data, error } = await getStoriesByCategory(
-        categorySlug,
-        i18n.language
-      );
+      setError(null);
+
+      const { data, error } =
+        !categorySlug || categorySlug === "all"
+          ? await getAllStories(i18n.language)
+          : await getStoriesByCategory(categorySlug, i18n.language);
+
+      if (!mounted) return;
 
       if (error) {
-        setError(error.message);
+        setError(error.message || "Failed to fetch stories");
+        setStories([]);
       } else {
         setStories(data || []);
       }
@@ -145,6 +162,10 @@ export function useStoriesByCategory(categorySlug) {
     }
 
     fetch();
+
+    return () => {
+      mounted = false;
+    };
   }, [categorySlug, i18n.language]);
 
   return { stories, loading, error };
@@ -160,26 +181,37 @@ export function useSearchStories(query) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
+
     if (!query || query.length < 2) {
       setResults([]);
       setLoading(false);
+      setError(null);
       return;
     }
 
     const timeoutId = setTimeout(async () => {
       setLoading(true);
+      setError(null);
+
       const { data, error } = await searchStories(query, i18n.language);
 
+      if (!mounted) return;
+
       if (error) {
-        setError(error.message);
+        setError(error.message || "Search failed");
+        setResults([]);
       } else {
         setResults(data || []);
       }
 
       setLoading(false);
-    }, 300); // Debounce
+    }, 300);
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      mounted = false;
+      clearTimeout(timeoutId);
+    };
   }, [query, i18n.language]);
 
   return { results, loading, error };
@@ -189,17 +221,24 @@ export function useSearchStories(query) {
  * Hook pentru categorii
  */
 export function useCategories() {
-  const { i18n } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
+
     async function fetch() {
-      const { data, error } = await getAllCategories(i18n.language);
+      setLoading(true);
+      setError(null);
+
+      const { data, error } = await getAllCategories();
+
+      if (!mounted) return;
 
       if (error) {
-        setError(error.message);
+        setError(error.message || "Failed to fetch categories");
+        setCategories([]);
       } else {
         setCategories(data || []);
       }
@@ -208,7 +247,11 @@ export function useCategories() {
     }
 
     fetch();
-  }, [i18n.language]);
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return { categories, loading, error };
 }
@@ -224,9 +267,8 @@ export function useStoryRating(storyId) {
     if (!storyId) return;
 
     const { data } = await getStoryRating(storyId);
-    if (data) {
-      setRating(data);
-    }
+    if (data) setRating(data);
+
     setLoading(false);
   }, [storyId]);
 

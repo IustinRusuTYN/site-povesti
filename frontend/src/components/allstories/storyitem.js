@@ -4,6 +4,7 @@ import StoryCard from "../storycard";
 import { AuthContext } from "../../context/authcontext";
 import { useTranslation } from "react-i18next";
 import { Lock, Star } from "lucide-react";
+import { getStoryImageSrc } from "../../utils/imageHelper";
 
 export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   const { isAuthenticated, userProfile } = useContext(AuthContext);
@@ -15,7 +16,7 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
     return (sum / ratings.length).toFixed(1);
   };
 
-  const accessLevel = story?.accessLevel || "free";
+  const accessLevel = story?.accessLevel || story?.access_level || "free";
   const userPlan = userProfile?.subscription_plan || "free";
 
   const hasAccess = () => {
@@ -30,7 +31,11 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   };
 
   const canAccess = hasAccess();
+
+  // IMPORTANT: pentru Supabase, ratingurile nu vin ca array story.ratings.
+  // Dacă vrei rating real, calculezi din tabelul ratings (am discutat).
   const avgRating = getAverageRating(story?.ratings);
+
   const badgeText = t(`accessLevels.${accessLevel}`);
 
   const badgeColors = {
@@ -40,17 +45,21 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
   };
 
   const handleClick = () => {
+    if (!story?.id) return;
+
     if (!canAccess) {
       if (!isAuthenticated) onRequireAuth?.();
-      else onClick?.(story?.id);
+      else onClick?.(story.id);
     } else {
-      onClick?.(story?.id);
+      onClick?.(story.id);
     }
   };
 
-  // ✅ FOLOSIM DATELE DIN STORY, NU DIN i18next
   const title = story?.title || "No title";
   const excerpt = story?.excerpt || "No excerpt";
+
+  // FIX: folosește helper-ul care ia image sau image_url și normalizează /images/...
+  const imageSrc = getStoryImageSrc(story);
 
   return (
     <div
@@ -61,9 +70,7 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
-      aria-label={`${t("story")}: ${title}, ${t("rating")}: ${avgRating}★, ${t(
-        "type"
-      )}: ${badgeText}`}
+      aria-label={`${t("story")}: ${title}, ${t("type")}: ${badgeText}`}
     >
       {/* Badge */}
       <div className="absolute top-2 right-2 z-20">
@@ -88,12 +95,12 @@ export default function StoryItem({ story, onClick, onRequireAuth, darkMode }) {
           <StoryCard
             title={title}
             excerpt={excerpt}
-            image={story?.image}
+            image={imageSrc}
             variant="compact"
           />
         </div>
 
-        {/* Footer (mai compact pe mobil) */}
+        {/* Footer */}
         <div
           className={`mt-1 sm:mt-2 flex items-center justify-between px-1 text-[10px] sm:text-xs ${
             darkMode ? "text-gray-400" : "text-gray-600"

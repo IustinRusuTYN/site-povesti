@@ -1,6 +1,14 @@
 // src/services/userDataService.js
 import { supabase } from "../utils/supabase";
-import { getStoryImage } from "../utils/imageHelper";
+import { publicImage } from "../utils/imageHelper";
+
+function normalizeLang(language) {
+  if (typeof language !== "string") return "ro";
+  const l = language.toLowerCase();
+  if (l.startsWith("en")) return "en";
+  if (l.startsWith("fr")) return "fr";
+  return "ro";
+}
 
 // ============================================
 // FAVORITES
@@ -11,6 +19,8 @@ import { getStoryImage } from "../utils/imageHelper";
  */
 export async function getUserFavorites(userId, language = "ro") {
   try {
+    const lang = normalizeLang(language);
+
     const { data, error } = await supabase
       .from("favorites")
       .select(
@@ -24,8 +34,7 @@ export async function getUserFavorites(userId, language = "ro") {
           image_url,
           access_level,
           read_time,
-          category:categories(name, slug),
-          author:authors(name)
+          categories(name, slug)
         )
       `
       )
@@ -34,18 +43,19 @@ export async function getUserFavorites(userId, language = "ro") {
 
     if (error) throw error;
 
-    // Transform to match expected format
-    const transformedData = data.map((fav) => ({
-      id: fav.story.id,
-      title: fav.story[`title_${language}`] || fav.story.title_ro,
-      excerpt: fav.story[`excerpt_${language}`] || fav.story.excerpt_ro,
-      image: fav.story.image_url,
-      category: fav.story.category?.name,
-      author: fav.story.author?.name,
-      accessLevel: fav.story.access_level,
-      readTime: fav.story.read_time,
-      addedAt: fav.created_at,
-    }));
+    const transformedData = (data || [])
+      .filter((fav) => fav?.story)
+      .map((fav) => ({
+        id: fav.story.id,
+        title: fav.story[`title_${lang}`] || fav.story.title_ro || "Untitled",
+        excerpt: fav.story[`excerpt_${lang}`] || fav.story.excerpt_ro || "",
+        image: publicImage(fav.story.image_url) || "/images/placeholder.png",
+        category: fav.story.categories?.name || "Uncategorized",
+        categorySlug: fav.story.categories?.slug || null,
+        accessLevel: fav.story.access_level || "free",
+        readTime: fav.story.read_time || 5,
+        addedAt: fav.created_at,
+      }));
 
     return { data: transformedData, error: null };
   } catch (error) {
@@ -135,14 +145,10 @@ export async function toggleFavorite(userId, storyId) {
 /**
  * Obține istoricul de citire
  */
-/**
- * Obține istoricul de citire
- */
-/**
- * Obține istoricul de citire
- */
 export async function getReadingHistory(userId, language = "ro") {
   try {
+    const lang = normalizeLang(language);
+
     const { data, error } = await supabase
       .from("reading_history")
       .select(
@@ -159,8 +165,7 @@ export async function getReadingHistory(userId, language = "ro") {
           access_level,
           is_featured,
           view_count,
-          category:categories(id, name, slug),
-          author:authors(id, name)
+          categories(id, name, slug)
         )
       `
       )
@@ -170,34 +175,30 @@ export async function getReadingHistory(userId, language = "ro") {
 
     if (error) throw error;
 
-    // ✅ TRANSFORMĂM DATELE COMPLET
-    const transformedData = data
+    const transformedData = (data || [])
       .map((item) => {
-        if (!item.story) {
-          console.warn("Story not found in reading history item:", item);
-          return null;
-        }
+        if (!item.story) return null;
 
         const story = item.story;
 
         return {
           id: story.id,
-          title: story[`title_${language}`] || story.title_ro || "Untitled",
+          title: story[`title_${lang}`] || story.title_ro || "Untitled",
           excerpt:
-            story[`excerpt_${language}`] ||
+            story[`excerpt_${lang}`] ||
             story.excerpt_ro ||
             "No description available",
-          image: getStoryImage(story.image_url),
-          category: story.category?.name || "Uncategorized",
-          categorySlug: story.category?.slug,
-          author: story.author?.name || "Unknown Author",
+          image: publicImage(story.image_url) || "/images/placeholder.png",
+          category: story.categories?.name || "Uncategorized",
+          categorySlug: story.categories?.slug || null,
+          author: "Site-Povești",
           readTime: story.read_time || 5,
           accessLevel: story.access_level || "free",
-          isFeatured: story.is_featured || false,
+          isFeatured: !!story.is_featured,
           viewCount: story.view_count || 0,
           lastReadAt: item.last_read_at,
           progress: item.progress || 0,
-          // Pentru compatibilitate cu codul vechi
+          // compat cu cod vechi
           translations: {
             ro: { title: story.title_ro, excerpt: story.excerpt_ro },
             en: { title: story.title_en, excerpt: story.excerpt_en },
@@ -205,9 +206,7 @@ export async function getReadingHistory(userId, language = "ro") {
           },
         };
       })
-      .filter(Boolean); // Eliminăm null-urile
-
-    console.log("Transformed reading history:", transformedData); // ✅ DEBUG
+      .filter(Boolean);
 
     return { data: transformedData, error: null };
   } catch (error) {
@@ -215,6 +214,7 @@ export async function getReadingHistory(userId, language = "ro") {
     return { data: null, error };
   }
 }
+
 /**
  * Adaugă sau actualizează istoricul de citire
  */
@@ -252,25 +252,21 @@ export async function updateReadingHistory(userId, storyId, progress = 0) {
  */
 export async function getUserStats(userId) {
   try {
-    // Count favorites
     const { count: favoritesCount } = await supabase
       .from("favorites")
       .select("*", { count: "exact", head: true })
       .eq("user_id", userId);
 
-    // Count stories read
     const { count: storiesRead } = await supabase
       .from("reading_history")
       .select("*", { count: "exact", head: true })
       .eq("user_id", userId);
 
-    // Count comments
     const { count: commentsCount } = await supabase
       .from("comments")
       .select("*", { count: "exact", head: true })
       .eq("user_id", userId);
 
-    // Count ratings given
     const { count: ratingsCount } = await supabase
       .from("ratings")
       .select("*", { count: "exact", head: true })

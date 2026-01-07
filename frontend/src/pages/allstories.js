@@ -24,6 +24,19 @@ export default function AllStories() {
 
   // ✅ FOLOSIM HOOK-URILE DIN SUPABASE
   const { stories, loading, error } = useStories();
+  useEffect(() => {
+    if (stories?.length) {
+      const s = stories[0];
+      console.log("IMAGE DEBUG STRING:", {
+        image: String(s?.image),
+        image_url: String(s?.image_url),
+        imageUrl: String(s?.imageUrl),
+        title: s?.title,
+        id: s?.id,
+      });
+      console.log("FIRST STORY JSON:", JSON.stringify(s, null, 2));
+    }
+  }, [stories]);
   const { categories: dbCategories } = useCategories();
 
   const [filteredStories, setFilteredStories] = useState([]);

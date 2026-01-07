@@ -1,50 +1,67 @@
 // src/context/searchcontext.js
-import { createContext, useState } from "react";
-import stories from "../data/stories";
+import { createContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getStoryText } from "../utils/storyHelpers";
+import { searchStories } from "../services/storiesService";
 
 export const SearchContext = createContext();
 
 export const SearchProvider = ({ children }) => {
+  const { i18n } = useTranslation();
+
   const [query, setQueryState] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const { i18n } = useTranslation();
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+
+  // ca să evităm race conditions când user tastează rapid
+  const lastRequestId = useRef(0);
 
   const setQuery = (value) => {
     const searchValue = value?.toString() || "";
     setQueryState(searchValue);
+  };
+
+  useEffect(() => {
+    const searchValue = query?.toString() || "";
 
     if (!searchValue.trim()) {
       setSuggestions([]);
+      setLoadingSuggestions(false);
       return;
     }
 
-    const lang = i18n.language || "ro";
+    // Debounce
+    const timeoutId = setTimeout(async () => {
+      const requestId = ++lastRequestId.current;
+      setLoadingSuggestions(true);
 
-    const filtered = stories.filter((story) => {
-      if (!story || !story.translations) return false;
+      const { data, error } = await searchStories(searchValue, i18n.language);
 
-      const { title, excerpt } = getStoryText(story, lang);
+      // dacă între timp a pornit alt request, ignorăm rezultatul vechi
+      if (requestId !== lastRequestId.current) return;
 
-      const safeTitle = typeof title === "string" ? title : "";
-      const safeExcerpt = typeof excerpt === "string" ? excerpt : "";
-      const safeQuery = typeof searchValue === "string" ? searchValue : "";
+      if (error) {
+        console.error("Search suggestions error:", error);
+        setSuggestions([]);
+      } else {
+        // data vine deja mapată de storiesService: title/excerpt/category/image etc
+        setSuggestions(data || []);
+      }
 
-      if (!safeTitle && !safeExcerpt) return false;
+      setLoadingSuggestions(false);
+    }, 250);
 
-      return (
-        safeQuery === "" ||
-        safeTitle.toLowerCase().includes(safeQuery.toLowerCase()) ||
-        safeExcerpt.toLowerCase().includes(safeQuery.toLowerCase())
-      );
-    });
-
-    setSuggestions(filtered);
-  };
+    return () => clearTimeout(timeoutId);
+  }, [query, i18n.language]);
 
   return (
-    <SearchContext.Provider value={{ query, setQuery, suggestions }}>
+    <SearchContext.Provider
+      value={{
+        query,
+        setQuery,
+        suggestions,
+        loadingSuggestions, // opțional: dacă vrei spinner în UI
+      }}
+    >
       {children}
     </SearchContext.Provider>
   );

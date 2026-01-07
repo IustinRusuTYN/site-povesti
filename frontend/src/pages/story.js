@@ -6,9 +6,15 @@ import { ThemeContext } from "../context/themecontext";
 import { AuthContext } from "../context/authcontext";
 import { useTranslation } from "react-i18next";
 
-// ✅ IMPORT HOOK-UL NOU
 import { useStory } from "../hooks/useStories";
-import { getStoryComments, addComment } from "../services/storiesService";
+import {
+  getStoryComments,
+  addComment,
+  deleteComment,
+  getStoryRatingSummary,
+  getMyStoryRating,
+  upsertStoryRating,
+} from "../services/storiesService";
 
 import StoryHeader from "../components/story/storyheader";
 import StoryContent from "../components/story/storycontent";
@@ -24,35 +30,71 @@ export default function Story() {
   const { user, userProfile, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // ✅ FOLOSIM HOOK-UL PENTRU SUPABASE
   const { story, loading, error } = useStory(id);
 
   const [page, setPage] = useState(0);
   const paragraphsPerPage = 3;
+
   const [comments, setComments] = useState([]);
-  const [rating, setRating] = useState(0);
-  const [votes, setVotes] = useState(0);
   const [commentsLoading, setCommentsLoading] = useState(true);
 
-  // Încărcăm comentariile
+  const [rating, setRating] = useState(0);
+  const [votes, setVotes] = useState(0);
+  const [myRating, setMyRating] = useState(null);
+  const [ratingLoading, setRatingLoading] = useState(true);
+
+  // comments
   useEffect(() => {
     if (!story?.id) return;
 
     const fetchComments = async () => {
-      const { data } = await getStoryComments(story.id);
-      setComments(data || []);
-      setCommentsLoading(false);
+      try {
+        setCommentsLoading(true);
+        const { data } = await getStoryComments(story.id);
+        setComments(data || []);
+      } finally {
+        setCommentsLoading(false);
+      }
     };
 
     fetchComments();
   }, [story?.id]);
 
-  // Salvăm în istoric local
-  // Salvăm în istoric Supabase + localStorage
+  // rating summary + myRating
+  useEffect(() => {
+    if (!story?.id) return;
+
+    const fetchRating = async () => {
+      try {
+        setRatingLoading(true);
+
+        const { data: summary } = await getStoryRatingSummary(story.id);
+        if (summary) {
+          setRating(summary.average);
+          setVotes(summary.count);
+        } else {
+          setRating(0);
+          setVotes(0);
+        }
+
+        if (user?.id) {
+          const { data: mine } = await getMyStoryRating(story.id, user.id);
+          setMyRating(mine);
+        } else {
+          setMyRating(null);
+        }
+      } finally {
+        setRatingLoading(false);
+      }
+    };
+
+    fetchRating();
+  }, [story?.id, user?.id]);
+
+  // reading history
   useEffect(() => {
     if (!story) return;
 
-    // Salvare în localStorage (pentru compatibilitate)
     const saved = JSON.parse(localStorage.getItem("recentStories")) || [];
     const updated = [
       { id: story.id, title: story.title, image: story.image },
@@ -60,7 +102,6 @@ export default function Story() {
     ].slice(0, 6);
     localStorage.setItem("recentStories", JSON.stringify(updated));
 
-    // ✅ SALVARE ÎN SUPABASE READING_HISTORY
     if (user?.id) {
       import("../services/userDataService").then(({ updateReadingHistory }) => {
         updateReadingHistory(user.id, story.id, 0).catch(console.error);
@@ -68,7 +109,6 @@ export default function Story() {
     }
   }, [story, user?.id]);
 
-  // Loading state
   if (loading) {
     return (
       <PageLayout>
@@ -83,7 +123,6 @@ export default function Story() {
     );
   }
 
-  // Error or not found
   if (error || !story) {
     return (
       <PageLayout>
@@ -94,21 +133,33 @@ export default function Story() {
 
   const accessLevel = story.accessLevel || "free";
   const userAccess = userProfile?.subscription_plan || "free";
-
   const isPremium = accessLevel === "premium";
   const isBasic = accessLevel === "basic";
 
-  // Conținutul poveștii (array de paragrafe)
-  let displayedContent = story.content || [];
+  // ✅ content din i18n dacă există, altfel din DB
+  const i18nKey = story?.i18n_key ?? story?.i18nKey ?? null;
+
+  const fromI18n =
+    i18nKey != null
+      ? t(`stories.${i18nKey}.content`, { returnObjects: true })
+      : null;
+
+  const fullContent =
+    Array.isArray(fromI18n) && fromI18n.length > 0
+      ? fromI18n
+      : Array.isArray(story.content)
+      ? story.content
+      : [];
+
+  let displayedContent = fullContent;
+
   const totalPages = displayedContent.length
     ? Math.ceil(displayedContent.length / paragraphsPerPage)
     : 0;
 
-  // Logica de acces
   let canNavigatePages = true;
 
   if (accessLevel === "free") {
-    // Oricine poate citi free
     displayedContent = displayedContent.slice(
       page * paragraphsPerPage,
       (page + 1) * paragraphsPerPage
@@ -118,7 +169,7 @@ export default function Story() {
       !isAuthenticated ||
       (userAccess !== "basic" && userAccess !== "premium")
     ) {
-      displayedContent = displayedContent.slice(0, 1); // teaser
+      displayedContent = displayedContent.slice(0, 1);
       canNavigatePages = false;
     } else {
       displayedContent = displayedContent.slice(
@@ -128,7 +179,7 @@ export default function Story() {
     }
   } else if (accessLevel === "premium") {
     if (userAccess !== "premium") {
-      displayedContent = displayedContent.slice(0, 1); // teaser
+      displayedContent = displayedContent.slice(0, 1);
       canNavigatePages = false;
     } else {
       displayedContent = displayedContent.slice(
@@ -138,10 +189,28 @@ export default function Story() {
     }
   }
 
+  const handleDeleteComment = async (commentId) => {
+    if (!isAuthenticated || !user?.id) return;
+
+    const ok = window.confirm(
+      t("comments.confirmDelete") || "Sigur vrei să ștergi comentariul?"
+    );
+    if (!ok) return;
+
+    const { error } = await deleteComment(commentId);
+    if (error) {
+      alert(t("comments.errorDelete") || "Eroare la ștergerea comentariului");
+      return;
+    }
+
+    setComments((prev) => prev.filter((c) => c.id !== commentId));
+  };
+
   const handleAddComment = async (commentText) => {
     if (!isAuthenticated || !user?.id) {
       alert(
-        t("mustBeLoggedIn") || "Trebuie să fii autentificat pentru a comenta"
+        t("comments.mustBeLoggedIn") ||
+          "Trebuie să fii autentificat pentru a comenta"
       );
       return;
     }
@@ -157,13 +226,14 @@ export default function Story() {
     );
 
     if (error) {
-      alert(t("errorAddingComment") || "Eroare la adăugarea comentariului");
+      alert(t("comments.errorAdd") || "Eroare la adăugarea comentariului");
       return;
     }
 
     setComments((prev) => [
       {
         id: data.id,
+        user_id: user.id,
         user_name: userName,
         content: commentText,
         created_at: new Date().toISOString(),
@@ -172,12 +242,34 @@ export default function Story() {
     ]);
   };
 
-  const handleRate = (newRating) => {
-    // TODO: Implementează cu Supabase în viitor
-    const totalRating = rating * votes + newRating;
-    const newVotes = votes + 1;
-    setRating(totalRating / newVotes);
-    setVotes(newVotes);
+  const handleRate = async (newRating) => {
+    if (!isAuthenticated || !user?.id) {
+      alert(
+        t("rating.loginToVote") ||
+          "Trebuie să fii autentificat pentru a da rating"
+      );
+      return;
+    }
+
+    if (myRating !== null) {
+      alert(t("rating.alreadyRated") || "Ai votat deja această poveste.");
+      return;
+    }
+
+    const { error } = await upsertStoryRating(story.id, user.id, newRating);
+
+    if (error) {
+      alert(t("rating.errorSave") || "Eroare la salvarea rating-ului");
+      return;
+    }
+
+    setMyRating(newRating);
+
+    const { data: summary } = await getStoryRatingSummary(story.id);
+    if (summary) {
+      setRating(summary.average);
+      setVotes(summary.count);
+    }
   };
 
   return (
@@ -188,12 +280,14 @@ export default function Story() {
           darkMode={darkMode}
           rating={rating}
           votes={votes}
+          myRating={myRating}
+          ratingLoading={ratingLoading}
+          isAuthenticated={isAuthenticated}
           onRate={handleRate}
         />
 
         <StoryContent content={displayedContent} darkMode={darkMode} />
 
-        {/* Teaser / blocare pentru Basic sau Premium */}
         {!canNavigatePages && (
           <div className="mt-6 text-center p-6 border-t border-gray-300 dark:border-gray-700">
             {isBasic && (userAccess === "free" || !isAuthenticated) && (
@@ -250,7 +344,9 @@ export default function Story() {
           comments={comments}
           darkMode={darkMode}
           onAddComment={handleAddComment}
+          onDeleteComment={handleDeleteComment}
           loading={commentsLoading}
+          currentUserId={user?.id}
         />
 
         <div className="mt-8 text-center">
