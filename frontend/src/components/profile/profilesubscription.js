@@ -3,20 +3,68 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-export default function ProfileSubscription({ darkMode }) {
+export default function ProfileSubscription({ darkMode, userProfile }) {
   const { t, i18n } = useTranslation();
 
-  // În viitor poți înlocui cu date reale din backend / context
-  const currentPlan = {
-    name: "Premium",
-    price: "49.99",
-    renewDate: "2024-12-31",
-    status: "active", // "active", "canceled", etc.
-    paymentMethod: t("profile.subscription.paymentValue"), // ex: "Card bancar" / "Credit card"
-  };
+  const localeMap = { ro: "ro-RO", en: "en-GB", fr: "fr-FR" };
+  const locale = localeMap[i18n.language] || i18n.language || "en-GB";
+
+  // plan real din profil (supabase)
+  const planId = userProfile?.subscription_plan || "free"; // free/basic/premium
+  const planLabel = t(`profile.plan.${planId}`, planId);
+
+  // prețuri din traduceri (subscribePage.plans)
+  const plans = t("subscribePage.plans", {
+    returnObjects: true,
+    defaultValue: [],
+  });
+  const planObj = Array.isArray(plans)
+    ? plans.find((p) => p.id === planId)
+    : null;
+
+  const yearlyPriceNumber = planId === "free" ? 0 : planObj?.yearly ?? null;
+
+  const yearlyPrice =
+    yearlyPriceNumber === null
+      ? t("common.na", "N/A")
+      : new Intl.NumberFormat(locale, {
+          style: "currency",
+          currency: "EUR",
+        }).format(yearlyPriceNumber);
+
+  // status (dacă nu ai coloană în profiles, estimăm)
+  const status =
+    userProfile?.subscription_status ||
+    (planId === "free" ? "inactive" : "active");
+
+  const statusText =
+    status === "active"
+      ? t("profile.subscription.statusActive", "Active")
+      : status === "canceled"
+      ? t("profile.subscription.statusCanceled", "Canceled")
+      : t("profile.subscription.statusInactive", "Inactive");
+
+  const statusClass =
+    status === "active"
+      ? "bg-green-500"
+      : status === "canceled"
+      ? "bg-red-500"
+      : "bg-gray-500";
+
+  // renew date (dacă nu ai coloană reală încă, va fi N/A)
+  const renewDateRaw =
+    userProfile?.renew_date ||
+    userProfile?.subscription_renew_date ||
+    userProfile?.renewDate ||
+    null;
+
+  const renewDateText = renewDateRaw
+    ? new Date(renewDateRaw).toLocaleDateString(locale)
+    : t("common.na", "N/A");
+
+  const paymentMethod = t("profile.subscription.paymentValue", "Credit card");
 
   const handleUnsubscribe = () => {
-    // Aici vei apela API în varianta reală
     alert(t("profile.subscription.alertUnsubscribed"));
   };
 
@@ -29,67 +77,62 @@ export default function ProfileSubscription({ darkMode }) {
 
   return (
     <div className="space-y-6">
-      {/* Card principal abonament */}
       <div className={`p-6 rounded-xl shadow-lg ${cardBg}`}>
-        {/* Titlu + plan */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          {/* Stânga: nume plan + preț */}
+          {/* Stânga */}
           <div>
             <p className={`text-sm ${textMuted} mb-1`}>
-              {t("profile.subscription.currentPlan")}
+              {t("profile.subscription.currentPlan", "Current plan")}
             </p>
-            <h2 className={`text-2xl font-bold ${textMain}`}>
-              {currentPlan.name}
-            </h2>
+
+            <h2 className={`text-2xl font-bold ${textMain}`}>{planLabel}</h2>
 
             <div className="mt-3">
               <p className={`text-sm ${textMuted}`}>
-                {t("profile.subscription.price")}
+                {t("profile.subscription.price", "Price")}
               </p>
               <p className={`text-xl font-semibold ${textMain}`}>
-                {currentPlan.price} RON / {t("profile.subscription.year")}
+                {yearlyPrice} / {t("profile.subscription.year", "year")}
               </p>
             </div>
           </div>
 
-          {/* Dreapta: status + reînnoire + metodă de plată */}
+          {/* Dreapta */}
           <div className="w-full md:w-auto">
             <div className="flex flex-wrap items-center gap-2 mb-3">
               <span className={`text-sm ${textMuted}`}>
-                {t("profile.subscription.statusLabel")}:
+                {t("profile.subscription.statusLabel", "Subscription status")}:
               </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-500 text-white text-xs font-semibold">
-                {t("profile.subscription.statusActive")}
+              <span
+                className={`inline-flex items-center px-3 py-1 rounded-full ${statusClass} text-white text-xs font-semibold`}
+              >
+                {statusText}
               </span>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-1">
               <div>
                 <p className={`text-xs ${textMuted}`}>
-                  {t("profile.subscription.renewDate")}
+                  {t("profile.subscription.renewDate", "Renewal date")}
                 </p>
                 <p className={`text-sm font-medium ${textMain}`}>
-                  {new Date(currentPlan.renewDate).toLocaleDateString(
-                    i18n.language
-                  )}
+                  {renewDateText}
                 </p>
               </div>
 
               <div>
                 <p className={`text-xs ${textMuted}`}>
-                  {t("profile.subscription.paymentMethod")}
+                  {t("profile.subscription.paymentMethod", "Payment method")}
                 </p>
                 <p className={`text-sm font-medium ${textMain}`}>
-                  {currentPlan.paymentMethod}
+                  {paymentMethod}
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Butoane acțiuni */}
         <div className="mt-5 flex flex-wrap gap-3">
-          {/* Buton schimbă planul -> pagina de subscribe */}
           <Link
             to="/subscribe"
             className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
@@ -98,10 +141,9 @@ export default function ProfileSubscription({ darkMode }) {
                 : "bg-white/80 border-purple-200 text-purple-700 hover:bg-white"
             }`}
           >
-            {t("profile.subscription.manageSubscription")}
+            {t("profile.subscription.manageSubscription", "Change plan")}
           </Link>
 
-          {/* Buton dezabonare (simulare) */}
           <button
             type="button"
             onClick={handleUnsubscribe}
@@ -111,7 +153,7 @@ export default function ProfileSubscription({ darkMode }) {
                 : "bg-red-50 text-red-600 hover:bg-red-100"
             }`}
           >
-            {t("profile.subscription.unsubscribe")}
+            {t("profile.subscription.unsubscribe", "Unsubscribe")}
           </button>
         </div>
       </div>

@@ -19,6 +19,44 @@ import ProfileSubscription from "../components/profile/profilesubscription";
 import ProfileSettings from "../components/profile/profilesettings";
 import { Loader2 } from "lucide-react";
 
+// -------------------- helpers pentru recomandări stabile --------------------
+function hashString(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function mulberry32(seed) {
+  return function () {
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function seededShuffle(arr, seedStr) {
+  const rand = mulberry32(hashString(seedStr));
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getWeekKey() {
+  const d = new Date();
+  const oneJan = new Date(d.getFullYear(), 0, 1);
+  const day = Math.floor((d - oneJan) / 86400000);
+  const week = Math.ceil((day + oneJan.getDay() + 1) / 7);
+  return `${d.getFullYear()}-W${week}`;
+}
+// --------------------------------------------------------------------------
+
 export default function Profile() {
   const { darkMode } = useContext(ThemeContext);
   const {
@@ -29,45 +67,48 @@ export default function Profile() {
   } = useContext(AuthContext);
   const { t, i18n } = useTranslation();
 
-  // ✅ HOOK PENTRU FAVORITE DIN SUPABASE
-  const { favorites, loading: favoritesLoading } = useFavorites();
+  const { favorites } = useFavorites();
 
-  // ✅ STATE PENTRU DATE DIN SUPABASE
   const [recentStories, setRecentStories] = useState([]);
-  const [recommended, setRecommended] = useState([]);
+  const [recommended, setRecommended] = useState([]); // ✅ LIPSEA la tine
+  const [recSeed, setRecSeed] = useState(null);
+
   const [userStats, setUserStats] = useState({
     favorites: 0,
     storiesRead: 0,
     comments: 0,
     ratings: 0,
   });
+
   const [activeTab, setActiveTab] = useState("info");
   const [tabLoading, setTabLoading] = useState({
     recent: false,
     rec: false,
     stats: false,
   });
+
   const [error, setError] = useState(null);
 
-  // ✅ ÎNCĂRCĂM STATISTICILE O SINGURĂ DATĂ
+  // ✅ ÎNCĂRCĂM STATISTICILE
   const loadUserStats = useCallback(async () => {
-    if (!user?.id || userStats.storiesRead > 0) return; // Nu reîncărcăm dacă avem deja date
+    if (!user?.id) return;
 
     try {
       const { data: stats, error: statsError } = await getUserStats(user.id);
       if (statsError) {
         console.warn("Stats error:", statsError);
-      } else if (stats) {
-        setUserStats(stats);
+        return;
       }
-    } catch (error) {
-      console.error("Error loading stats:", error);
+      if (stats) setUserStats(stats);
+    } catch (e) {
+      console.error("Error loading stats:", e);
     }
-  }, [user?.id, userStats.storiesRead]);
+  }, [user?.id]);
 
-  // ✅ ÎNCĂRCĂM ISTORICUL DOAR CÂND E NECESAR
+  // ✅ ÎNCĂRCĂM ISTORICUL (recent)
   const loadRecentStories = useCallback(async () => {
-    if (!user?.id || recentStories.length > 0) return; // Nu reîncărcăm dacă avem deja date
+    if (!user?.id) return;
+    if (recentStories.length > 0) return; // cache local
 
     setTabLoading((prev) => ({ ...prev, recent: true }));
     try {
@@ -75,50 +116,67 @@ export default function Profile() {
         user.id,
         i18n.language
       );
+
       if (historyError) {
         console.warn("History error:", historyError);
-      } else if (history) {
-        setRecentStories(history);
+        return;
       }
-    } catch (error) {
-      console.error("Error loading recent stories:", error);
+
+      if (history) setRecentStories(history);
+    } catch (e) {
+      console.error("Error loading recent stories:", e);
     } finally {
       setTabLoading((prev) => ({ ...prev, recent: false }));
     }
   }, [user?.id, i18n.language, recentStories.length]);
 
-  // ✅ ÎNCĂRCĂM RECOMANDĂRILE DOAR CÂND E NECESAR
+  // ✅ RECOMANDĂRI STABILE (nu se schimbă la schimbarea limbii)
   const loadRecommended = useCallback(async () => {
-    if (recommended.length > 0) return; // Nu reîncărcăm dacă avem deja date
+    // dacă deja avem recomandări pentru seed-ul curent, nu refacem
+    const seed = `${user?.id || "guest"}-${getWeekKey()}`;
+    if (recSeed === seed && recommended.length > 0) return;
 
     setTabLoading((prev) => ({ ...prev, rec: true }));
+
     try {
+      // IMPORTANT:
+      // Nu mai legăm recomandările de limbă (altfel re-fetch + re-shuffle).
+      // Titlurile/excerpt-urile sunt traduse în componentă folosind storyNumber.
       const { data: allStories, error: storiesError } = await getAllStories(
-        i18n.language
+        "ro"
       );
+
       if (storiesError) {
         console.warn("Stories error:", storiesError);
-      } else if (allStories && allStories.length > 0) {
-        const shuffled = [...allStories]
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 8);
-        setRecommended(shuffled);
+        return;
       }
-    } catch (error) {
-      console.error("Error loading recommended stories:", error);
+
+      if (!allStories || allStories.length === 0) return;
+
+      setRecSeed(seed);
+
+      // stabilizăm ordinea de bază înainte de shuffle
+      const base = [...allStories].sort(
+        (a, b) =>
+          (a.storyNumber || a.story_number || 0) -
+          (b.storyNumber || b.story_number || 0)
+      );
+
+      const picked = seededShuffle(base, seed).slice(0, 8);
+      setRecommended(picked);
+    } catch (e) {
+      console.error("Error loading recommended stories:", e);
     } finally {
       setTabLoading((prev) => ({ ...prev, rec: false }));
     }
-  }, [i18n.language, recommended.length]);
+  }, [user?.id, recSeed, recommended.length]);
 
-  // ✅ ÎNCĂRCĂM STATISTICILE LA ÎNCEPUT
+  // ✅ stats la început
   useEffect(() => {
-    if (!authLoading && user?.id) {
-      loadUserStats();
-    }
+    if (!authLoading && user?.id) loadUserStats();
   }, [authLoading, user?.id, loadUserStats]);
 
-  // ✅ ÎNCĂRCĂM DATELE PENTRU TAB-UL ACTIV
+  // ✅ încărcăm ce trebuie când schimbăm tab-ul
   useEffect(() => {
     if (authLoading || !user?.id) return;
 
@@ -134,7 +192,7 @@ export default function Profile() {
     }
   }, [activeTab, authLoading, user?.id, loadRecentStories, loadRecommended]);
 
-  // ✅ LOADING STATE PENTRU AUTH
+  // LOADING AUTH
   if (authLoading) {
     return (
       <PageLayout>
@@ -149,7 +207,7 @@ export default function Profile() {
     );
   }
 
-  // ✅ ERROR STATE
+  // ERROR
   if (error) {
     return (
       <PageLayout>
@@ -185,7 +243,6 @@ export default function Profile() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4">
-          {/* Header */}
           <h1
             className={`text-3xl md:text-4xl font-bold mb-2 ${
               darkMode ? "text-white" : "text-gray-900"
@@ -197,14 +254,12 @@ export default function Profile() {
             {t("profile.subtitle", "Manage your account and preferences")}
           </p>
 
-          {/* Tabs */}
           <ProfileTabs
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             darkMode={darkMode}
           />
 
-          {/* Content */}
           {activeTab === "info" && (
             <ProfileInfo
               darkMode={darkMode}
@@ -213,6 +268,7 @@ export default function Profile() {
               logout={signOut}
             />
           )}
+
           {activeTab === "stats" && (
             <ProfileStats
               darkMode={darkMode}
@@ -222,6 +278,7 @@ export default function Profile() {
               favoritesCount={favorites.length}
             />
           )}
+
           {activeTab === "recent" && (
             <ProfileRecent
               darkMode={darkMode}
@@ -229,6 +286,7 @@ export default function Profile() {
               loading={tabLoading.recent}
             />
           )}
+
           {activeTab === "rec" && (
             <ProfileRecommended
               darkMode={darkMode}
@@ -236,12 +294,14 @@ export default function Profile() {
               loading={tabLoading.rec}
             />
           )}
+
           {activeTab === "subscription" && (
             <ProfileSubscription
               darkMode={darkMode}
               userProfile={userProfile}
             />
           )}
+
           {activeTab === "settings" && (
             <ProfileSettings
               darkMode={darkMode}

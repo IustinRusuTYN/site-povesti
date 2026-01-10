@@ -29,7 +29,8 @@ function pickLocalized(row, base, lang) {
 }
 
 const STORY_SELECT = `
-  id,
+   id,
+  story_number,
   i18n_key,
   title_ro, title_en, title_fr,
   excerpt_ro, excerpt_en, excerpt_fr,
@@ -68,6 +69,10 @@ function mapStory(row, language) {
 
   return {
     id: row.id,
+
+    // ✅ cheia pe care o folosești în ProfileRecent / ProfileRecommended pentru traduceri
+    storyNumber: row?.story_number ?? null,
+    story_number: row?.story_number ?? null, // (opțional, compat)
 
     i18n_key: row?.i18n_key ?? null,
 

@@ -1,7 +1,7 @@
-// src/components/profile/profileinfo.js
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks/useAuth";
+import { supabase } from "../../utils/supabase";
 import {
   Camera,
   Mail,
@@ -12,20 +12,24 @@ import {
 } from "lucide-react";
 
 export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { updateProfile } = useAuth();
+
+  const fileInputRef = useRef(null);
 
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     full_name: userProfile?.full_name || user?.email?.split("@")[0] || "",
     bio: userProfile?.bio || "",
   });
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    // Actualizează formData când userProfile se schimbă
     setFormData({
       full_name: userProfile?.full_name || user?.email?.split("@")[0] || "",
       bio: userProfile?.bio || "",
@@ -43,38 +47,24 @@ export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
     setSuccess("");
 
     try {
-      // ✅ DOAR TRIMITEM CÂMPURILE CARE EXISTĂ ÎN TABELA PROFILES
       const updateData = {
         full_name: formData.full_name.trim(),
+        bio: formData.bio.trim(), // trimitem și gol (ca să poți șterge bio-ul)
       };
-
-      // ✅ ADĂUGĂM BIO DOAR DACĂ EXISTĂ COLOANA (după ce ai rulat SQL-ul)
-      if (formData.bio.trim()) {
-        updateData.bio = formData.bio.trim();
-      }
 
       const { data, error } = await updateProfile(updateData);
 
       if (error) {
-        console.error("Update error:", error);
         setError(
           error.message || t("profile.updateError", "Failed to update profile")
         );
       } else {
         setSuccess(t("profile.updateSuccess", "Profile updated successfully!"));
         setIsEditing(false);
-
-        // ✅ ACTUALIZĂM LOCAL STATE CU DATELE NOI
-        if (data) {
-          // authContext se ocupă de actualizare automat
-          console.log("Profile updated successfully:", data);
-        }
-
-        // Ascunde mesajul de succes după 3 secunde
         setTimeout(() => setSuccess(""), 3000);
+        console.log("Profile updated:", data);
       }
     } catch (err) {
-      console.error("Unexpected error:", err);
       setError(t("profile.updateError", "Failed to update profile"));
     } finally {
       setLoading(false);
@@ -102,34 +92,85 @@ export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
+    if (!dateString) return t("common.na", "N/A");
     try {
-      return new Date(dateString).toLocaleDateString("ro-RO", {
+      return new Date(dateString).toLocaleDateString(i18n.language || "ro", {
         year: "numeric",
         month: "long",
         day: "numeric",
       });
     } catch {
-      return "N/A";
+      return t("common.na", "N/A");
     }
   };
 
   const getSubscriptionBadge = () => {
     const plan = userProfile?.subscription_plan || "free";
     const badges = {
-      free: { text: "Free", color: "bg-gray-500" },
-      basic: { text: "Basic", color: "bg-blue-500" },
+      free: {
+        text: t("profile.plan.free", "Free"),
+        color: "bg-gray-500",
+      },
+      basic: {
+        text: t("profile.plan.basic", "Basic"),
+        color: "bg-blue-500",
+      },
       premium: {
-        text: "Premium",
+        text: t("profile.plan.premium", "Premium"),
         color: "bg-gradient-to-r from-yellow-400 to-orange-500",
       },
     };
     return badges[plan] || badges.free;
   };
 
+  const handlePickAvatar = () => {
+    if (!user?.id) {
+      setError("Trebuie să fii logat.");
+      return;
+    }
+    fileInputRef.current?.click();
+  };
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !user?.id) return;
+
+    setAvatarLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      // upload în bucket-ul "avatars"
+      const ext = file.name.split(".").pop();
+      const filePath = `${user.id}/${Date.now()}.${ext}`;
+
+      const uploadRes = await supabase.storage
+        .from("avatars")
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadRes.error) throw uploadRes.error;
+
+      const pub = supabase.storage.from("avatars").getPublicUrl(filePath);
+      const publicUrl = pub?.data?.publicUrl;
+
+      if (!publicUrl) throw new Error("Nu am putut obține public URL.");
+
+      const { error } = await updateProfile({ avatar_url: publicUrl });
+      if (error) throw error;
+
+      setSuccess(t("profile.updateSuccess", "Profile updated successfully!"));
+      setTimeout(() => setSuccess(""), 3000);
+    } catch (err) {
+      setError(err.message || "Avatar upload failed");
+    } finally {
+      setAvatarLoading(false);
+      // ca să poți încărca aceeași poză de 2 ori la rând
+      e.target.value = "";
+    }
+  };
+
   return (
     <div className="space-y-6">
-      {/* Mesaje de feedback */}
       {error && (
         <div className="p-4 bg-red-500/20 border border-red-500/30 text-red-600 dark:text-red-400 rounded-lg flex items-center gap-3">
           <AlertCircle size={20} className="shrink-0" />
@@ -144,7 +185,6 @@ export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
         </div>
       )}
 
-      {/* Card Principal */}
       <div
         className={`rounded-xl p-6 ${
           darkMode ? "bg-gray-800" : "bg-white"
@@ -153,15 +193,35 @@ export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
         <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
           {/* Avatar */}
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
-              {getInitials()}
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 overflow-hidden">
+              {userProfile?.avatar_url ? (
+                <img
+                  src={userProfile.avatar_url}
+                  alt="avatar"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                getInitials()
+              )}
             </div>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarChange}
+              disabled={avatarLoading}
+            />
+
             <button
+              onClick={handlePickAvatar}
+              disabled={avatarLoading}
               className={`absolute bottom-0 right-0 p-2 rounded-full ${
                 darkMode
                   ? "bg-gray-700 hover:bg-gray-600"
                   : "bg-gray-200 hover:bg-gray-300"
-              } transition-colors`}
+              } transition-colors disabled:opacity-50`}
               title={t("profile.changeAvatar", "Change Avatar")}
             >
               <Camera
@@ -201,6 +261,7 @@ export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
                     disabled={loading}
                   />
                 </div>
+
                 <div>
                   <label
                     className={`block text-sm font-medium mb-2 ${
@@ -322,7 +383,7 @@ export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
                   onClick={() => setIsEditing(true)}
                   className="px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg transition-all"
                 >
-                  {t("profile.edit", "Edit Profile")}
+                  {t("profile.editProfile", "Edit Profile")}
                 </button>
                 <button
                   onClick={logout}
@@ -370,7 +431,7 @@ export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
                 darkMode ? "text-gray-300" : "text-gray-600"
               }`}
             >
-              <span>{t("profile.subscription", "Subscription")}:</span>
+              <span>{t("profile.subscriptionLabel", "Subscription")}:</span>
               <span className="font-medium capitalize">
                 {userProfile?.subscription_plan || "free"}
               </span>
@@ -397,7 +458,11 @@ export default function ProfileInfo({ darkMode, user, userProfile, logout }) {
               }`}
             >
               <span>{t("profile.theme", "Theme")}:</span>
-              <span className="font-medium">{darkMode ? "Dark" : "Light"}</span>
+              <span className="font-medium">
+                {darkMode
+                  ? t("common.dark", "Dark")
+                  : t("common.light", "Light")}
+              </span>
             </div>
             <div
               className={`flex justify-between ${

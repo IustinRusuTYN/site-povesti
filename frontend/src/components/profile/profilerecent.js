@@ -1,13 +1,14 @@
-// src/components/profile/profilerecent.js
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Clock, BookOpen, Loader2, User } from "lucide-react";
 
 export default function ProfileRecent({ darkMode, stories, loading }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  // Loading state
+  const localeMap = { ro: "ro-RO", en: "en-GB", fr: "fr-FR" };
+  const locale = localeMap[i18n.language] || i18n.language || "en-GB";
+
   if (loading) {
     return (
       <div
@@ -24,7 +25,6 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
     );
   }
 
-  // Empty state
   if (!stories || stories.length === 0) {
     return (
       <div
@@ -71,17 +71,34 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
         >
           {t("profile.recentStories", "Recently Read")}
         </h2>
+
         <span
           className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}
         >
-          {stories.length} {t("profile.stories", "stories")}
+          {t("profile.storiesCount", "{{count}} stories", {
+            count: stories.length,
+          })}
         </span>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {stories.map((story) => {
-          // ✅ DEBUG - să vedem ce primim
-          console.log("Rendering story:", story);
+          const storyKey = story.storyNumber;
+
+          const localizedTitle = t(`stories.${storyKey}.title`, {
+            defaultValue: story.title || t("common.story", "Story"),
+          });
+
+          const localizedExcerpt = t(`stories.${storyKey}.excerpt`, {
+            defaultValue: story.excerpt || "",
+          });
+
+          const accessLabel = story.accessLevel
+            ? t(
+                `accessLevels.${story.accessLevel}`,
+                story.accessLevel
+              ).toUpperCase()
+            : null;
 
           return (
             <Link
@@ -95,16 +112,17 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
                 {story.image ? (
                   <img
                     src={story.image}
-                    alt={story.title || "Story"}
+                    alt={localizedTitle}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.target.style.display = "none";
-                      e.target.nextElementSibling.style.display = "flex";
+                      if (e.target.nextElementSibling) {
+                        e.target.nextElementSibling.style.display = "flex";
+                      }
                     }}
                   />
                 ) : null}
 
-                {/* Fallback pentru imagini lipsă */}
                 <div
                   className={`w-full h-full flex items-center justify-center ${
                     darkMode ? "bg-gray-700" : "bg-gray-200"
@@ -113,14 +131,12 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
                   <span className="text-4xl">📖</span>
                 </div>
 
-                {/* ✅ CATEGORY BADGE */}
-                {story.category && story.category !== "Uncategorized" && (
+                {story.category && (
                   <div className="absolute top-2 left-2 px-3 py-1 bg-black/70 backdrop-blur-sm rounded-full text-white text-xs font-medium">
                     {story.category}
                   </div>
                 )}
 
-                {/* ✅ ACCESS LEVEL BADGE */}
                 {story.accessLevel && story.accessLevel !== "free" && (
                   <div
                     className={`absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-bold ${
@@ -131,11 +147,10 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
                         : "bg-gray-500"
                     }`}
                   >
-                    {story.accessLevel.toUpperCase()}
+                    {accessLabel}
                   </div>
                 )}
 
-                {/* ✅ PROGRESS BAR */}
                 {story.progress && story.progress > 0 && (
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/30">
                     <div
@@ -147,25 +162,22 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
               </div>
 
               <div className="p-4">
-                {/* ✅ TITLE */}
                 <h3
                   className={`font-bold text-lg mb-2 line-clamp-2 ${
                     darkMode ? "text-white" : "text-gray-900"
                   }`}
                 >
-                  {story.title}
+                  {localizedTitle}
                 </h3>
 
-                {/* ✅ EXCERPT/DESCRIPTION */}
                 <p
                   className={`text-sm mb-3 line-clamp-2 ${
                     darkMode ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  {story.excerpt}
+                  {localizedExcerpt}
                 </p>
 
-                {/* ✅ META INFO */}
                 <div className="flex items-center gap-4 text-xs mb-3">
                   {story.readTime && (
                     <div
@@ -174,7 +186,9 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
                       }`}
                     >
                       <Clock size={12} />
-                      <span>{story.readTime} min</span>
+                      <span>
+                        {story.readTime} {t("common.minutesShort", "min")}
+                      </span>
                     </div>
                   )}
 
@@ -190,12 +204,8 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
                   )}
 
                   {story.lastReadAt && (
-                    <div
-                      className={`${
-                        darkMode ? "text-gray-500" : "text-gray-500"
-                      }`}
-                    >
-                      {new Date(story.lastReadAt).toLocaleDateString("ro-RO", {
+                    <div className="text-gray-500">
+                      {new Date(story.lastReadAt).toLocaleDateString(locale, {
                         month: "short",
                         day: "numeric",
                       })}
@@ -203,7 +213,6 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
                   )}
                 </div>
 
-                {/* ✅ PROGRESS BAR DETAILED */}
                 {story.progress !== undefined && story.progress > 0 && (
                   <div className="mb-2">
                     <div className="flex justify-between text-xs mb-1">
@@ -231,12 +240,7 @@ export default function ProfileRecent({ darkMode, stories, loading }) {
                   </div>
                 )}
 
-                {/* ✅ FOOTER */}
-                <div
-                  className={`flex justify-between items-center text-xs ${
-                    darkMode ? "text-gray-500" : "text-gray-500"
-                  }`}
-                >
+                <div className="flex justify-between items-center text-xs text-gray-500">
                   <span>{story.category}</span>
                   {story.progress === 100 && (
                     <span className="text-green-500 font-medium">

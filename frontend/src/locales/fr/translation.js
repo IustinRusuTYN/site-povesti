@@ -8,6 +8,13 @@ const fr = {
     search: {
       placeholder: "Rechercher une histoire...",
     },
+    common: {
+      na: "N/A",
+      dark: "Sombre",
+      light: "Clair",
+      minutesShort: "min",
+      story: "Histoire",
+    },
 
     rating: {
       averageLabel: "Note moyenne :",
@@ -337,16 +344,63 @@ const fr = {
     },
 
     profile: {
-      title: "Mon Profil",
-      subtitle: "Gérez votre compte et vos préférences",
+      title: "Mon profil",
+
+      // ProfileInfo extra keys
+      fullName: "Nom complet",
+      bio: "Bio",
+      saving: "Enregistrement...",
+      editProfile: "Modifier le profil",
+      changeAvatar: "Changer la photo",
+
+      memberSince: "Membre depuis",
+      admin: "Administrateur",
+      user: "Utilisateur",
+
+      accountDetails: "Détails du compte",
+      preferences: "Préférences",
+      language: "Langue",
+      subscriptionLabel: "Abonnement",
+      theme: "Thème",
+      notifications: "Notifications",
+      enabled: "Activé",
+
+      nameRequired: "Le nom est obligatoire",
+      updateError: "Impossible de mettre à jour le profil",
+      updateSuccess: "Profil mis à jour avec succès !",
+
+      accountInfo: "Informations du compte",
+      readingProgress: "Progrès de lecture",
+      totalProgress: "Total d'histoires lues",
+      goal: "Objectif : {{count}} histoires",
+      weekActivityTooltip: "{{count}} histoires lues",
+
+      startReading: "Commencez à lire des histoires pour les voir ici",
+      storiesCount: "{{count}} histoires",
+      progress: "Progression",
+      completed: "Terminée",
+
+      noRecommendations: "Aucune recommandation disponible",
+      untitledStory: "Histoire sans titre",
+      noDescription: "Aucune description disponible",
+      unknownAuthor: "Inconnu",
+
+      plan: {
+        free: "Gratuit",
+        basic: "Basique",
+        premium: "Premium",
+      },
+
       tabs: {
-        info: "Info",
+        info: "Infos",
         stats: "Statistiques",
         recent: "Récents",
         recommended: "Recommandés",
         subscription: "Abonnement",
         settings: "Paramètres",
       },
+
+      subtitle: "Gérez votre compte et vos préférences",
       namePlaceholder: "Votre nom",
       bioPlaceholder: "Parlez-nous de vous...",
       defaultName: "Utilisateur",
@@ -355,14 +409,19 @@ const fr = {
       save: "Enregistrer",
       cancel: "Annuler",
       logout: "Déconnexion",
+
       stats: {
-        storiesRead: "Lues",
+        comments: "Commentaires",
+        ratings: "Évaluations",
+        storiesRead: "Lus",
         favorites: "Favoris",
         timeSpent: "Temps",
         streak: "Série",
       },
+
       weekActivity: "Activité hebdomadaire",
       favoriteCategories: "Catégories préférées",
+
       days: {
         mon: "Lun",
         tue: "Mar",
@@ -372,35 +431,39 @@ const fr = {
         sat: "Sam",
         sun: "Dim",
       },
+
       categories: {
         drama: "Drame",
         comedy: "Comédie",
         horror: "Horreur",
         adventure: "Aventure",
       },
+
       recent: {
         noStories: "Aucune histoire récente",
       },
+
       noRecentStories: "Aucune histoire récente",
       exploreStories: "Explorer les histoires",
       recentStories: "Histoires récentes",
       clearHistory: "Effacer l'historique",
-      recommendedForYou: "Recommandé pour vous",
+      recommendedForYou: "Recommandées pour vous",
+
       subscription: {
-        // Chei folosite în ProfileSubscription
-        currentPlan: "Plan actuel",
+        statusCanceled: "Annulé",
+        statusInactive: "Inactif",
+        currentPlan: "Forfait actuel",
         price: "Prix",
         year: "an",
         statusLabel: "Statut de l'abonnement",
         statusActive: "Actif",
         renewDate: "Date de renouvellement",
-        paymentMethod: "Méthode de paiement",
+        paymentMethod: "Moyen de paiement",
         paymentValue: "Carte bancaire",
-        manageSubscription: "Changer de plan",
+        manageSubscription: "Changer de forfait",
         unsubscribe: "Se désabonner",
-        alertUnsubscribed: "Vous vous êtes désabonné avec succès",
+        alertUnsubscribed: "Désabonnement effectué avec succès",
 
-        // Chei suplimentare (dacă le mai folosești în altă parte)
         plans: {
           features: {
             freeStories: "Histoires gratuites",
@@ -413,19 +476,24 @@ const fr = {
             fiveAccounts: "Jusqu'à 5 comptes",
             parental: "Contrôle parental",
             storiesFound: "histoires trouvées",
-            noCategory: "Aucune catégorie",
+            noCategory: "Sans catégorie",
           },
         },
       },
+
       settings: {
         notifications: "Notifications",
-        emailNotif: "Notifications email",
+        emailNotif: "Notifications par e-mail",
         pushNotif: "Notifications push",
         language: "Langue",
         dangerZone: "Zone dangereuse",
         deleteAccount: "Supprimer le compte",
         confirmDelete:
           "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+        toggleEmail: "Activer/désactiver les notifications e-mail",
+        togglePush: "Activer/désactiver les notifications push",
+        deleteNotImplemented:
+          "La suppression du compte n'est pas encore implémentée",
       },
     },
 

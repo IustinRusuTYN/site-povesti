@@ -8,6 +8,13 @@ const en = {
     search: {
       placeholder: "Search for a story...",
     },
+    common: {
+      na: "N/A",
+      dark: "Dark",
+      light: "Light",
+      minutesShort: "min",
+      story: "Story",
+    },
 
     rating: {
       averageLabel: "Average rating:",
@@ -132,6 +139,51 @@ const en = {
     profile: {
       // Păstrează ce ai deja
       title: "My Profile",
+      // ProfileInfo extra keys
+      fullName: "Full Name",
+      bio: "Bio",
+      saving: "Saving...",
+      editProfile: "Edit Profile",
+      changeAvatar: "Change photo",
+
+      memberSince: "Member since",
+      admin: "Administrator",
+      user: "User",
+
+      accountDetails: "Account Details",
+      preferences: "Preferences",
+      language: "Language",
+      subscriptionLabel: "Subscription",
+      theme: "Theme",
+      notifications: "Notifications",
+      enabled: "Enabled",
+
+      nameRequired: "Name is required",
+      updateError: "Failed to update profile",
+      updateSuccess: "Profile updated successfully!",
+
+      accountInfo: "Account Information",
+      readingProgress: "Reading Progress",
+      totalProgress: "Total Stories Read",
+      goal: "Goal: {{count}} stories",
+      weekActivityTooltip: "{{count}} stories read",
+
+      startReading: "Start reading stories to see them here",
+      storiesCount: "{{count}} stories",
+      progress: "Progress",
+      completed: "Completed",
+
+      noRecommendations: "No recommendations available",
+      untitledStory: "Untitled Story",
+      noDescription: "No description available",
+      unknownAuthor: "Unknown",
+
+      // plan badge texts
+      plan: {
+        free: "Free",
+        basic: "Basic",
+        premium: "Premium",
+      },
       tabs: {
         info: "Info",
         stats: "Stats", // ⭐ NOU
@@ -153,6 +205,8 @@ const en = {
       logout: "Logout",
 
       stats: {
+        comments: "Comments",
+        ratings: "Ratings",
         storiesRead: "Read",
         favorites: "Favorites",
         timeSpent: "Time",
@@ -192,6 +246,8 @@ const en = {
       // Subscription (extinde ce ai deja)
       subscription: {
         // Chei folosite în ProfileSubscription
+        statusCanceled: "Canceled",
+        statusInactive: "Inactive",
         currentPlan: "Current plan",
         price: "Price",
         year: "year",
@@ -231,6 +287,9 @@ const en = {
         deleteAccount: "Delete Account",
         confirmDelete:
           "Are you sure you want to delete your account? This action is irreversible.",
+        toggleEmail: "Toggle email notifications",
+        togglePush: "Toggle push notifications",
+        deleteNotImplemented: "Delete account is not implemented yet",
       },
     },
 

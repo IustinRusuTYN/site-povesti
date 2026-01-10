@@ -157,16 +157,17 @@ export async function getReadingHistory(userId, language = "ro") {
         last_read_at,
         progress,
         story:stories(
-          id,
-          title_ro, title_en, title_fr,
-          excerpt_ro, excerpt_en, excerpt_fr,
-          image_url,
-          read_time,
-          access_level,
-          is_featured,
-          view_count,
-          categories(id, name, slug)
-        )
+  id,
+  story_number,
+  title_ro, title_en, title_fr,
+  excerpt_ro, excerpt_en, excerpt_fr,
+  image_url,
+  read_time,
+  access_level,
+  is_featured,
+  view_count,
+  categories(id, name, slug)
+)
       `
       )
       .eq("user_id", userId)
@@ -183,6 +184,7 @@ export async function getReadingHistory(userId, language = "ro") {
 
         return {
           id: story.id,
+          storyNumber: story.story_number || null, // <-- ADAUGĂ ASTA
           title: story[`title_${lang}`] || story.title_ro || "Untitled",
           excerpt:
             story[`excerpt_${lang}`] ||

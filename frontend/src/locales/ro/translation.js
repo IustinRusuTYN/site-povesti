@@ -11,6 +11,14 @@ const ro = {
       placeholder: "Caută o poveste...",
     },
 
+    common: {
+      na: "N/A",
+      dark: "Întunecat",
+      light: "Luminos",
+      minutesShort: "min",
+      story: "Poveste",
+    },
+
     // RATING (nou, organizat)
     rating: {
       averageLabel: "Rating mediu:",
@@ -136,6 +144,51 @@ const ro = {
     profile: {
       title: "Profilul Meu",
       subtitle: "Gestionează-ți contul și preferințele",
+      // lipsesc în ProfileInfo / Profile page
+      errorTitle: "Eroare la încărcarea profilului",
+      retry: "Reîncearcă",
+
+      fullName: "Nume complet",
+      bio: "Descriere",
+      saving: "Se salvează...",
+      editProfile: "Editează profilul",
+      changeAvatar: "Schimbă poza",
+      memberSince: "Membru din",
+      admin: "Administrator",
+      user: "Utilizator",
+      accountDetails: "Detalii cont",
+      preferences: "Preferințe",
+      language: "Limbă",
+      subscription: "Abonament",
+      theme: "Temă",
+      notifications: "Notificări",
+      enabled: "Activat",
+
+      nameRequired: "Numele este obligatoriu",
+      updateError: "Nu s-a putut actualiza profilul",
+      updateSuccess: "Profil actualizat cu succes!",
+
+      accountInfo: "Informații cont",
+      readingProgress: "Progres lectură",
+      totalProgress: "Total povești citite",
+      goal: "Obiectiv: {{count}} povești",
+      weekActivityTooltip: "{{count}} povești citite",
+
+      startReading: "Începe să citești povești ca să le vezi aici",
+      storiesCount: "{{count}} povești",
+      progress: "Progres",
+      completed: "Finalizată",
+
+      noRecommendations: "Nu există recomandări momentan",
+      untitledStory: "Poveste fără titlu",
+      noDescription: "Nu există descriere disponibilă",
+      unknownAuthor: "Necunoscut",
+
+      plan: {
+        free: "Gratuit",
+        basic: "Basic",
+        premium: "Premium",
+      },
       tabs: {
         info: "Informații",
         stats: "Statistici",
@@ -153,6 +206,8 @@ const ro = {
       cancel: "Anulează",
       logout: "Deconectare",
       stats: {
+        comments: "Comentarii",
+        ratings: "Evaluări",
         storiesRead: "Citite",
         favorites: "Favorite",
         timeSpent: "Timp",
@@ -182,6 +237,8 @@ const ro = {
       clearHistory: "Șterge Istoricul",
       recommendedForYou: "Recomandate pentru Tine",
       subscription: {
+        statusCanceled: "Anulat",
+        statusInactive: "Inactiv",
         currentPlan: "Plan curent",
         price: "Preț",
         year: "an",
@@ -218,6 +275,9 @@ const ro = {
         deleteAccount: "Șterge Contul",
         confirmDelete:
           "Ești sigur că vrei să ștergi contul? Această acțiune este ireversibilă.",
+        toggleEmail: "Activează/dezactivează notificările pe email",
+        togglePush: "Activează/dezactivează notificările push",
+        deleteNotImplemented: "Ștergerea contului nu este implementată încă",
       },
     },
 
@@ -781,7 +841,5 @@ const ro = {
     subscribeNow: "Abonează-te acum",
   },
 };
-// IMPORTANT: păstrează obiectul stories, hero, aboutPage, upcomingPage etc.
-// (poți muta stories ulterior în fișiere separate dacă vrei)
 
 export default ro;

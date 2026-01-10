@@ -8,11 +8,11 @@ export default function ProfileStats({
   user,
   userProfile,
   stats,
-  favoritesCount,
+  favoritesCount = 0,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  // ✅ STATISTICI REALE DIN SUPABASE
+  // ✅ STATISTICI REALE
   const realStats = [
     {
       icon: BookOpen,
@@ -23,8 +23,8 @@ export default function ProfileStats({
     {
       icon: Heart,
       label: t("profile.stats.favorites", "Favorites"),
-      value: favoritesCount || 0,
-      color: "red",
+      value: favoritesCount,
+      color: "pink",
     },
     {
       icon: MessageCircle,
@@ -40,7 +40,7 @@ export default function ProfileStats({
     },
   ];
 
-  // ✅ ACTIVITATE SĂPTĂMÂNALĂ (MOCK - poate fi implementată mai târziu)
+  // ✅ ACTIVITATE SĂPTĂMÂNALĂ (MOCK)
   const weekActivity = [
     {
       day: t("profile.days.mon", "Mon"),
@@ -74,21 +74,26 @@ export default function ProfileStats({
 
   const maxCount = Math.max(...weekActivity.map((d) => d.count));
 
+  const plan = userProfile?.subscription_plan || "free";
+  const planLabel = t(`profile.plan.${plan}`, plan);
+
   // ✅ INFORMAȚII CONT
   const accountInfo = [
     {
       label: t("profile.memberSince", "Member Since"),
       value: userProfile?.created_at
-        ? new Date(userProfile.created_at).toLocaleDateString()
-        : "N/A",
+        ? new Date(userProfile.created_at).toLocaleDateString(
+            i18n.language || "ro"
+          )
+        : t("common.na", "N/A"),
     },
     {
-      label: t("profile.subscription", "Subscription"),
-      value: userProfile?.subscription_plan || "free",
+      label: t("profile.subscriptionLabel", "Subscription"),
+      value: planLabel,
     },
     {
       label: t("profile.language", "Language"),
-      value: userProfile?.preferred_language || "ro",
+      value: (userProfile?.preferred_language || "ro").toUpperCase(),
     },
   ];
 
@@ -192,7 +197,13 @@ export default function ProfileStats({
                     height: `${(day.count / maxCount) * 100}%`,
                     minHeight: "10px",
                   }}
-                  title={`${day.count} stories read`}
+                  title={t(
+                    "profile.weekActivityTooltip",
+                    "{{count}} stories read",
+                    {
+                      count: day.count,
+                    }
+                  )}
                 />
               </div>
               <span
@@ -229,7 +240,6 @@ export default function ProfileStats({
         </h3>
 
         <div className="space-y-4">
-          {/* Progres general */}
           <div>
             <div className="flex justify-between mb-2">
               <span className={darkMode ? "text-gray-300" : "text-gray-700"}>
@@ -243,6 +253,7 @@ export default function ProfileStats({
                 {stats?.storiesRead || 0}
               </span>
             </div>
+
             <div
               className={`h-3 rounded-full ${
                 darkMode ? "bg-gray-700" : "bg-gray-200"
@@ -258,12 +269,13 @@ export default function ProfileStats({
                 }}
               />
             </div>
+
             <div
               className={`text-xs mt-1 ${
                 darkMode ? "text-gray-400" : "text-gray-600"
               }`}
             >
-              {t("profile.goal", "Goal: 20 stories")}
+              {t("profile.goal", "Goal: {{count}} stories", { count: 20 })}
             </div>
           </div>
         </div>

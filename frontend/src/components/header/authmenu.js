@@ -9,15 +9,16 @@ export default function AuthMenu({
   showModal,
   setShowModal,
 }) {
-  const { user, logout, signOut } = useContext(AuthContext);
+  const { user, userProfile, logout, signOut } = useContext(AuthContext);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [loggingOut, setLoggingOut] = useState(false);
 
   const displayName =
+    userProfile?.full_name ||
     user?.user_metadata?.full_name ||
     user?.user_metadata?.name ||
-    user?.email ||
+    user?.email?.split("@")[0] ||
     "User";
 
   const handleLogout = async () => {

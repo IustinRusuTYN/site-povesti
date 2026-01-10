@@ -2,12 +2,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { BookOpen, Star, Clock, Loader2 } from "lucide-react";
+import { BookOpen, Clock, Loader2, User } from "lucide-react";
 
 export default function ProfileRecommended({ darkMode, stories, loading }) {
   const { t } = useTranslation();
 
-  // Loading state
   if (loading) {
     return (
       <div
@@ -24,7 +23,6 @@ export default function ProfileRecommended({ darkMode, stories, loading }) {
     );
   }
 
-  // Empty state
   if (!stories || stories.length === 0) {
     return (
       <div
@@ -65,99 +63,122 @@ export default function ProfileRecommended({ darkMode, stories, loading }) {
       </h2>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {stories.map((story) => (
-          <Link
-            key={story.id}
-            to={`/story/${story.id}`}
-            className={`block rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all ${
-              darkMode ? "bg-gray-800" : "bg-white"
-            }`}
-          >
-            <div className="relative h-48">
-              {story.image ? (
-                <img
-                  src={story.image}
-                  alt={story.title || "Story"}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                    e.target.parentElement.innerHTML = `
-                      <div class="w-full h-full flex items-center justify-center ${
-                        darkMode ? "bg-gray-700" : "bg-gray-200"
-                      }">
-                        <span class="text-4xl">📖</span>
-                      </div>
-                    `;
-                  }}
-                />
-              ) : (
+        {stories.map((story) => {
+          // IMPORTANT: storyNumber trebuie să vină din DB (stories.story_number)
+          const storyKey = story.storyNumber ?? story.story_number ?? null;
+
+          const localizedTitle = storyKey
+            ? t(`stories.${storyKey}.title`, {
+                defaultValue:
+                  story.title || t("profile.untitledStory", "Untitled Story"),
+              })
+            : story.title || t("profile.untitledStory", "Untitled Story");
+
+          const localizedExcerpt = storyKey
+            ? t(`stories.${storyKey}.excerpt`, {
+                defaultValue:
+                  story.excerpt ||
+                  t("profile.noDescription", "No description available"),
+              })
+            : story.excerpt ||
+              t("profile.noDescription", "No description available");
+
+          const accessLabel = story.accessLevel
+            ? t(
+                `accessLevels.${story.accessLevel}`,
+                story.accessLevel
+              ).toUpperCase()
+            : null;
+
+          return (
+            <Link
+              key={story.id}
+              to={`/story/${story.id}`}
+              className={`block rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all ${
+                darkMode ? "bg-gray-800" : "bg-white"
+              }`}
+            >
+              <div className="relative h-48">
+                {story.image ? (
+                  <img
+                    src={story.image}
+                    alt={localizedTitle}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      if (e.target.nextElementSibling) {
+                        e.target.nextElementSibling.style.display = "flex";
+                      }
+                    }}
+                  />
+                ) : null}
+
+                {/* fallback */}
                 <div
-                  className={`w-full h-full flex items-center justify-center ${
+                  className={`w-full h-full items-center justify-center ${
                     darkMode ? "bg-gray-700" : "bg-gray-200"
-                  }`}
+                  } ${story.image ? "hidden" : "flex"}`}
                 >
                   <span className="text-4xl">📖</span>
                 </div>
-              )}
 
-              {story.category && (
-                <div className="absolute top-2 left-2 px-3 py-1 bg-black/70 backdrop-blur-sm rounded-full text-white text-xs font-medium">
-                  {story.category}
-                </div>
-              )}
+                {story.category && (
+                  <div className="absolute top-2 left-2 px-3 py-1 bg-black/70 backdrop-blur-sm rounded-full text-white text-xs font-medium">
+                    {story.category}
+                  </div>
+                )}
 
-              {story.accessLevel && story.accessLevel !== "free" && (
-                <div
-                  className={`absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-bold ${
-                    story.accessLevel === "premium"
-                      ? "bg-gradient-to-r from-yellow-400 to-orange-500"
-                      : "bg-blue-500"
+                {story.accessLevel && story.accessLevel !== "free" && (
+                  <div
+                    className={`absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-bold ${
+                      story.accessLevel === "premium"
+                        ? "bg-gradient-to-r from-yellow-400 to-orange-500"
+                        : story.accessLevel === "basic"
+                        ? "bg-blue-500"
+                        : "bg-gray-500"
+                    }`}
+                  >
+                    {accessLabel}
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4">
+                <h3
+                  className={`font-bold text-lg mb-2 line-clamp-2 ${
+                    darkMode ? "text-white" : "text-gray-900"
                   }`}
                 >
-                  {story.accessLevel.toUpperCase()}
-                </div>
-              )}
-            </div>
+                  {localizedTitle}
+                </h3>
 
-            <div className="p-4">
-              <h3
-                className={`font-bold text-lg mb-2 line-clamp-2 ${
-                  darkMode ? "text-white" : "text-gray-900"
-                }`}
-              >
-                {story.title || t("profile.untitledStory", "Untitled Story")}
-              </h3>
-
-              <p
-                className={`text-sm mb-3 line-clamp-2 ${
-                  darkMode ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                {story.excerpt ||
-                  t("profile.noDescription", "No description available")}
-              </p>
-
-              <div className="flex items-center justify-between text-xs">
-                <div
-                  className={`flex items-center gap-1 ${
-                    darkMode ? "text-gray-500" : "text-gray-500"
+                <p
+                  className={`text-sm mb-3 line-clamp-2 ${
+                    darkMode ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  <span>{story.author || "Unknown"}</span>
-                </div>
+                  {localizedExcerpt}
+                </p>
 
-                <div
-                  className={`flex items-center gap-1 ${
-                    darkMode ? "text-gray-500" : "text-gray-500"
-                  }`}
-                >
-                  <Clock size={12} />
-                  <span>{story.readTime || 5} min</span>
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-1 text-gray-500">
+                    <User size={12} />
+                    <span>
+                      {story.author || t("profile.unknownAuthor", "Unknown")}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-gray-500">
+                    <Clock size={12} />
+                    <span>
+                      {story.readTime || 5} {t("common.minutesShort", "min")}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

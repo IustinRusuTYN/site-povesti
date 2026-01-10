@@ -15,6 +15,26 @@ export const AuthContext = createContext({
   hasAccess: () => false,
 });
 
+const NETWORK_TIMEOUT_MS = 15000;
+
+// ---------- timeout helper (nu blochează UI infinit) ----------
+function withTimeout(promise, ms, label = "request") {
+  let timer;
+  const timeoutPromise = new Promise((resolve) => {
+    timer = setTimeout(() => {
+      resolve({
+        __timeout: true,
+        error: new Error(`${label} timed out after ${ms}ms`),
+      });
+    }, ms);
+  });
+
+  return Promise.race([promise, timeoutPromise]).finally(() =>
+    clearTimeout(timer)
+  );
+}
+
+// ---------- supabase auth local storage cleanup ----------
 function getSupabaseAuthStorageKeys() {
   try {
     return Object.keys(localStorage).filter(
@@ -33,60 +53,113 @@ function clearSupabaseAuthStorage() {
   }
 }
 
-function withTimeout(promise, ms, label = "request") {
-  let timer;
-  const timeoutPromise = new Promise((resolve) => {
-    timer = setTimeout(() => {
-      resolve({
-        __timeout: true,
-        error: new Error(`${label} timed out after ${ms}ms`),
-      });
-    }, ms);
-  });
+// ---------- profile cache (ca să apară instant după refresh) ----------
+const PROFILE_CACHE_PREFIX = "profile_cache_v1_";
+const profileCacheKey = (userId) => `${PROFILE_CACHE_PREFIX}${userId}`;
 
-  return Promise.race([promise, timeoutPromise]).finally(() =>
-    clearTimeout(timer)
-  );
+function readCachedProfile(userId) {
+  try {
+    const raw = localStorage.getItem(profileCacheKey(userId));
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedProfile(userId, profile) {
+  try {
+    localStorage.setItem(profileCacheKey(userId), JSON.stringify(profile));
+  } catch {
+    // ignore
+  }
+}
+
+function clearAllProfileCache() {
+  try {
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith(PROFILE_CACHE_PREFIX))
+      .forEach((k) => localStorage.removeItem(k));
+  } catch {
+    // ignore
+  }
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null); // auth.users user
-  const [userProfile, setUserProfile] = useState(null); // profiles row
+  const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Fetch profil cu timeout, dar IMPORTANT: la timeout NU setăm profile null
   const fetchUserProfile = async (userId) => {
+    const res = await withTimeout(
+      supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
+      NETWORK_TIMEOUT_MS,
+      "fetchProfile"
+    );
+
+    if (res?.__timeout) {
+      console.warn("[auth] fetchProfile timeout");
+      return { data: null, error: res.error };
+    }
+
+    const { data, error } = res;
+    if (error) return { data: null, error };
+
+    if (data) {
+      setUserProfile(data);
+      writeCachedProfile(userId, data);
+    }
+
+    return { data: data || null, error: null };
+  };
+
+  const ensureProfileRow = async (sessionUser) => {
     try {
+      if (!sessionUser?.id) return { data: null, error: null };
+
+      const fallbackName =
+        sessionUser.user_metadata?.full_name ||
+        sessionUser.email?.split("@")[0] ||
+        "User";
+
       const res = await withTimeout(
         supabase
           .from("profiles")
-          .select("id, subscription_plan, role, created_at")
-          .eq("id", userId)
-          .maybeSingle(),
-        12000,
-        "fetchProfile"
+          .upsert(
+            {
+              id: sessionUser.id,
+              full_name: fallbackName,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "id" }
+          )
+          .select("*")
+          .single(),
+        NETWORK_TIMEOUT_MS,
+        "ensureProfileRow"
       );
 
-      if (res?.__timeout) {
-        console.warn("[auth] fetchProfile timeout");
-        setUserProfile(null);
-        return null;
-      }
+      if (res?.__timeout) return { data: null, error: res.error };
 
-      const { data, error } = res;
+      if (res.error) return { data: null, error: res.error };
 
-      if (error) {
-        console.warn("[auth] profile fetch:", error.message);
-        setUserProfile(null);
-        return null;
-      }
-
-      setUserProfile(data || null);
-      return data || null;
-    } catch (err) {
-      console.warn("[auth] profile fetch crash:", err?.message || err);
-      setUserProfile(null);
-      return null;
+      setUserProfile(res.data);
+      writeCachedProfile(sessionUser.id, res.data);
+      return { data: res.data, error: null };
+    } catch (e) {
+      return { data: null, error: e };
     }
+  };
+
+  // NU blocăm UI: sincronizăm în background
+  const syncProfileInBackground = (sessionUser) => {
+    (async () => {
+      const { data } = await fetchUserProfile(sessionUser.id);
+      if (!data) {
+        await ensureProfileRow(sessionUser);
+      }
+    })();
   };
 
   const refreshProfile = async () => {
@@ -95,68 +168,17 @@ export function AuthProvider({ children }) {
   };
 
   const forceLocalLogout = async () => {
-    // UI instant
     setUser(null);
     setUserProfile(null);
 
-    // încercăm să scoatem sesiunea local (supabase-js v2)
     try {
       await supabase.auth.signOut({ scope: "local" });
     } catch {
       // ignore
     }
 
-    // fallback: ștergem manual token-ul
     clearSupabaseAuthStorage();
-  };
-
-  const validateSession = async () => {
-    // 1) session din storage
-    const sessionRes = await withTimeout(
-      supabase.auth.getSession(),
-      12000,
-      "getSession"
-    );
-
-    if (sessionRes?.__timeout) {
-      console.warn("[auth] getSession timeout");
-      // Nu ținem UI blocat; considerăm neautentificat până revine
-      setUser(null);
-      setUserProfile(null);
-      return;
-    }
-
-    const sessionUser = sessionRes?.data?.session?.user ?? null;
-
-    if (!sessionUser) {
-      setUser(null);
-      setUserProfile(null);
-      return;
-    }
-
-    // 2) confirmăm userul pe server (acoperă cazul în care userul a fost șters)
-    const userRes = await withTimeout(
-      supabase.auth.getUser(),
-      12000,
-      "getUser"
-    );
-
-    if (userRes?.__timeout) {
-      console.warn("[auth] getUser timeout (keeping local session for now)");
-      // păstrăm user local, dar fără profile (ca să nu blocăm)
-      setUser(sessionUser);
-      setUserProfile(null);
-      return;
-    }
-
-    if (userRes?.error || !userRes?.data?.user) {
-      console.warn("[auth] invalid session -> force local logout");
-      await forceLocalLogout();
-      return;
-    }
-
-    setUser(userRes.data.user);
-    await fetchUserProfile(userRes.data.user.id);
+    clearAllProfileCache();
   };
 
   useEffect(() => {
@@ -165,7 +187,27 @@ export function AuthProvider({ children }) {
     const init = async () => {
       setLoading(true);
       try {
-        await validateSession();
+        // getSession e local; nu-l mai punem în timeout
+        const sessionRes = await supabase.auth.getSession();
+        const sessionUser = sessionRes?.data?.session?.user ?? null;
+
+        if (!mounted) return;
+
+        if (!sessionUser) {
+          setUser(null);
+          setUserProfile(null);
+          return;
+        }
+
+        // 1) user imediat
+        setUser(sessionUser);
+
+        // 2) profil imediat din cache (instant)
+        const cached = readCachedProfile(sessionUser.id);
+        if (cached) setUserProfile(cached);
+
+        // 3) DB în background (nu blocăm UI)
+        syncProfileInBackground(sessionUser);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -175,7 +217,8 @@ export function AuthProvider({ children }) {
 
     const { data: sub } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        // Nu blocăm UI; doar actualizăm state.
+        if (!mounted) return;
+
         if (event === "SIGNED_OUT") {
           setUser(null);
           setUserProfile(null);
@@ -192,12 +235,13 @@ export function AuthProvider({ children }) {
           return;
         }
 
-        // Setăm imediat user local ca UI să se actualizeze rapid
         setUser(sessionUser);
-        setLoading(false);
 
-        // În background: validăm user și luăm profile
-        await validateSession();
+        const cached = readCachedProfile(sessionUser.id);
+        if (cached) setUserProfile(cached);
+
+        setLoading(false);
+        syncProfileInBackground(sessionUser);
       }
     );
 
@@ -205,7 +249,6 @@ export function AuthProvider({ children }) {
       mounted = false;
       sub?.subscription?.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const signUp = async (email, password, fullName) => {
@@ -216,15 +259,19 @@ export function AuthProvider({ children }) {
           password,
           options: { data: fullName ? { full_name: fullName } : undefined },
         }),
-        15000,
+        NETWORK_TIMEOUT_MS,
         "signUp"
       );
 
-      if (res?.__timeout) {
-        return { data: null, error: res.error };
+      if (res?.__timeout) return { data: null, error: res.error };
+      if (res?.error) throw res.error;
+
+      const newUser = res.data?.user;
+      if (newUser?.id) {
+        // nu blocăm UI, dar încercăm să creăm profilul
+        ensureProfileRow(newUser);
       }
 
-      if (res?.error) throw res.error;
       return { data: res.data, error: null };
     } catch (error) {
       return { data: null, error };
@@ -235,91 +282,64 @@ export function AuthProvider({ children }) {
     try {
       const res = await withTimeout(
         supabase.auth.signInWithPassword({ email, password }),
-        15000,
+        NETWORK_TIMEOUT_MS,
         "signIn"
       );
 
-      if (res?.__timeout) {
-        return { data: null, error: res.error };
-      }
-
+      if (res?.__timeout) return { data: null, error: res.error };
       if (res?.error) throw res.error;
+
       return { data: res.data, error: null };
     } catch (error) {
       return { data: null, error };
     }
   };
 
+  // IMPORTANT: logout instant local, server-side în background
   const signOut = async () => {
-    // Logout “garantat”:
-    // - curățăm local indiferent dacă server-side signOut reușește sau nu
-    try {
-      const res = await withTimeout(supabase.auth.signOut(), 12000, "signOut");
+    await forceLocalLogout();
 
-      // chiar dacă timeout/eroare, tot curățăm local
-      await forceLocalLogout();
+    // încercare server-side fără să blocăm
+    supabase.auth.signOut().catch(() => {});
 
-      if (res?.__timeout) return { error: res.error };
-      if (res?.error) return { error: res.error };
-
-      return { error: null };
-    } catch (error) {
-      await forceLocalLogout();
-      return { error };
-    }
+    return { error: null };
   };
 
   const updateProfile = async (updates) => {
     try {
-      if (!user?.id) return { data: null, error: "No user logged in" };
-
-      // ✅ DEBUG COMPLET
-      const currentAuthUser = await supabase.auth.getUser();
-      console.log("🔍 Context user.id:", user.id);
-      console.log("🔍 Auth user.id:", currentAuthUser.data.user?.id);
-      console.log("🔍 Are egale?", user.id === currentAuthUser.data.user?.id);
-      console.log("🔍 Updates:", updates);
+      if (!user?.id)
+        return { data: null, error: { message: "No user logged in" } };
 
       const safeUpdates = { ...updates };
       delete safeUpdates.subscription_plan;
       delete safeUpdates.role;
 
-      // ✅ TESTEAZĂ MANUAL QUERY-UL
-      console.log("🔍 Executing query with user.id:", user.id);
+      const payload = {
+        id: user.id,
+        ...safeUpdates,
+        updated_at: new Date().toISOString(),
+      };
 
       const res = await withTimeout(
         supabase
           .from("profiles")
-          .update(safeUpdates)
-          .eq("id", user.id)
-          .select()
-          .maybeSingle(),
-        12000,
+          .upsert(payload, { onConflict: "id" })
+          .select("*")
+          .single(),
+        NETWORK_TIMEOUT_MS,
         "updateProfile"
       );
 
       if (res?.__timeout) return { data: null, error: res.error };
 
       const { data, error } = res;
-
-      console.log("✅ Supabase response data:", data);
-      console.log("✅ Supabase response error:", error);
-
       if (error) throw error;
 
-      // ✅ VERIFICĂ CE S-A ACTUALIZAT EFECTIV
-      const allProfiles = await supabase
-        .from("profiles")
-        .select("id, email, full_name");
-      console.log("🔍 All profiles after update:", allProfiles.data);
-
-      if (data) {
-        setUserProfile(data);
-      }
+      setUserProfile(data);
+      writeCachedProfile(user.id, data);
 
       return { data, error: null };
     } catch (error) {
-      console.error("❌ Update profile error:", error);
       return { data: null, error };
     }
   };
@@ -341,7 +361,7 @@ export function AuthProvider({ children }) {
       signUp,
       signIn,
       signOut,
-      logout: signOut, // compatibil cu codul tău vechi
+      logout: signOut,
       updateProfile,
       refreshProfile,
       hasAccess,
