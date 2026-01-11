@@ -3,6 +3,7 @@ import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
 import { AuthContext } from "../context/authcontext";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../utils/supabase";
 
 import BillingToggle from "../components/subscribe/billingToggle";
 import PlanCard from "../components/subscribe/planCard";
@@ -22,9 +23,45 @@ export default function Subscribe() {
   // Preluăm planurile pentru limba curentă (returnObjects: true ca să fie array)
   const plans = t("subscribePage.plans", { returnObjects: true });
 
-  const handleSubscribe = (planId) => {
+  const handleSubscribe = async (planId) => {
     if (!user) return navigate("/signin");
-    alert(t("subscribePage.alertSubscribed", { planId, billing }));
+
+    const { data: sessionRes, error: sessionErr } =
+      await supabase.auth.getSession();
+    const session = sessionRes?.session;
+
+    if (sessionErr || !session?.access_token) {
+      console.error("No session:", sessionErr);
+      return navigate("/signin");
+    }
+
+    const url = `${process.env.REACT_APP_SUPABASE_URL}/functions/v1/create-checkout-session`;
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: process.env.REACT_APP_SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({ planId, billing }),
+    });
+
+    const json = await res.json();
+
+    if (!res.ok) {
+      console.error("Function error status:", res.status);
+      console.error("Function error body:", json);
+      alert(json?.error || "Payment init failed");
+      return;
+    }
+
+    if (json?.url) {
+      window.location.href = json.url;
+    } else {
+      console.error("No url returned:", json);
+      alert("Payment init failed");
+    }
   };
 
   return (

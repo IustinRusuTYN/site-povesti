@@ -246,6 +246,7 @@ const en = {
       // Subscription (extinde ce ai deja)
       subscription: {
         // Chei folosite în ProfileSubscription
+        month: "month",
         statusCanceled: "Canceled",
         statusInactive: "Inactive",
         currentPlan: "Current plan",

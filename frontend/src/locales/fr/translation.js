@@ -450,6 +450,7 @@ const fr = {
       recommendedForYou: "Recommandées pour vous",
 
       subscription: {
+        month: "mois",
         statusCanceled: "Annulé",
         statusInactive: "Inactif",
         currentPlan: "Forfait actuel",

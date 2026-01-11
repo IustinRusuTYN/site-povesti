@@ -237,6 +237,7 @@ const ro = {
       clearHistory: "Șterge Istoricul",
       recommendedForYou: "Recomandate pentru Tine",
       subscription: {
+        month: "lună",
         statusCanceled: "Anulat",
         statusInactive: "Inactiv",
         currentPlan: "Plan curent",
