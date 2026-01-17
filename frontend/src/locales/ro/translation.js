@@ -48,11 +48,16 @@ const ro = {
 
     // (Păstrez cheile tale vechi — nu le ating)
     subscribePage: {
+      alreadyOnPlan: "Ai deja acest plan activ.",
       billing: { monthly: "Lunar", yearly: "Anual" },
       planCard: {
         recommended: "Recomandat",
         goPremium: "Alege Premium",
         chooseBasic: "Alege Basic",
+        currentPlan: "Plan curent",
+        upgrade: "Upgrade",
+        downgrade: "Downgrade",
+        manage: "Gestionează",
         disclaimer:
           "Prețurile sunt pentru abonament lunar/anual și pot fi modificate.",
       },
@@ -122,19 +127,19 @@ const ro = {
       },
       trust: {
         safePayments: {
-          title: "Plăți securizate",
+          title: "Checkout securizat cu Stripe",
           description:
-            "Procesăm plățile prin Stripe. Datele cardului nu sunt niciodată stocate pe serverele noastre.",
+            "Plăți criptate, standarde PCI. Nu stocăm și nu avem acces la datele cardului tău.",
         },
         cancelAnytime: {
-          title: "Anulează oricând",
+          title: "Anulezi oricând, fără stres",
           description:
-            "Oprește reînnoirea din profilul tău, fără taxe ascunse.",
+            "Oprești reînnoirea direct din cont, în câteva secunde. Fără taxe ascunse, fără întrebări.",
         },
         supportRefund: {
-          title: "Suport & rambursare",
+          title: "Suport rapid & garanție de satisfacție",
           description:
-            "Suport prioritar pentru Premium și rambursări în 30 de zile.",
+            "Premium primește prioritate la suport. Dacă nu e pentru tine, ai opțiuni de rambursare conform politicii noastre.",
         },
       },
       alertSubscribed:
@@ -606,10 +611,10 @@ const ro = {
         },
         {
           icon: "🔍",
-          title: "Căutare Avansată",
+          title: "Căutare & filtre avansate",
           date: "T3 2027",
           description:
-            "Filtrare inteligentă după categorie, dată, autor și cuvinte cheie pentru găsirea rapidă a conținutului.",
+            "Găsești rapid ce ai chef: după gen, stare, tropi, lungime, nivel de intensitate și tip de final (happy/tragic/twist).",
         },
       ],
       timelineTitle: "Planul Nostru de Dezvoltare 🗺️",
@@ -700,9 +705,9 @@ const ro = {
       infoCards: [
         {
           icon: "📚",
-          title: "Conținut Selectat cu Grijă",
+          title: "Povești selectate cu grijă",
           description:
-            "Articole atent alese și verificate, care acoperă subiecte relevante din tehnologie, știință, cultură și societate.",
+            "Publicăm ficțiune aleasă atent și revizuită pentru coerență, ritm și emoție.",
         },
         {
           icon: "🎯",
@@ -806,7 +811,7 @@ const ro = {
       "Explorează colecția noastră curată de povești extraordinare",
     viewAllStories: "Vezi Toate Poveștile",
 
-    footerText: "MagicStories. Toate drepturile rezervate.",
+    footerText: " VelvetTales. Toate drepturile rezervate.",
     allStoriesTitle: "Toate Poveștile",
     noStoriesFound: "Nicio poveste găsită...",
     usingLocalData: "Se folosesc date locale.",

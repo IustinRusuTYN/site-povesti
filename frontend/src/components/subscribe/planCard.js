@@ -3,8 +3,44 @@ import Button from "../buttons/Button";
 import PriceDisplay from "./priceDisplay";
 import { useTranslation } from "react-i18next";
 
-export default function PlanCard({ plan, billing, darkMode, onSubscribe }) {
+export default function PlanCard({
+  plan,
+  billing,
+  darkMode,
+  onSubscribe,
+  currentPlanId = "free",
+  hasActiveSubscription = false,
+}) {
   const { t } = useTranslation();
+
+  const isCurrent = hasActiveSubscription && currentPlanId === plan.id;
+  const isPremium = plan.id === "premium";
+  const isBasic = plan.id === "basic";
+
+  // Text buton în funcție de situație (fără să stricăm stilul)
+  let buttonText;
+
+  if (isCurrent) {
+    buttonText = t("subscribePage.planCard.currentPlan", "Current plan");
+  } else if (hasActiveSubscription) {
+    if (currentPlanId === "basic" && isPremium) {
+      buttonText = t("subscribePage.planCard.upgrade", "Upgrade");
+    } else if (currentPlanId === "premium" && isBasic) {
+      buttonText = t("subscribePage.planCard.downgrade", "Downgrade");
+    } else {
+      buttonText = t("subscribePage.planCard.manage", "Manage");
+    }
+  } else {
+    // fără abonament activ -> default ca înainte
+    buttonText = isPremium
+      ? t("subscribePage.planCard.goPremium", "Choose Premium")
+      : t("subscribePage.planCard.chooseBasic", "Choose Basic");
+  }
+
+  const handleClick = () => {
+    if (isCurrent) return; // nu facem nimic dacă e planul curent
+    onSubscribe(plan.id);
+  };
 
   return (
     <article
@@ -47,14 +83,13 @@ export default function PlanCard({ plan, billing, darkMode, onSubscribe }) {
 
       <Button
         variant={plan.recommended ? "secondary" : "primary"}
-        onClick={() => onSubscribe(plan.id)}
+        onClick={handleClick}
+        disabled={isCurrent}
         className={`w-full py-3 font-semibold ${
           plan.recommended ? "bg-yellow-400 text-black hover:bg-yellow-500" : ""
-        }`}
+        } ${isCurrent ? "opacity-60 cursor-not-allowed" : ""}`}
       >
-        {plan.recommended
-          ? t("subscribePage.planCard.goPremium")
-          : t("subscribePage.planCard.chooseBasic")}
+        {buttonText}
       </Button>
 
       <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">

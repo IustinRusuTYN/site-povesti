@@ -41,6 +41,7 @@ const en = {
     },
 
     subscribePage: {
+      alreadyOnPlan: "You already have this plan.",
       billing: {
         monthly: "Monthly",
         yearly: "Yearly",
@@ -49,6 +50,10 @@ const en = {
         recommended: "Recommended",
         goPremium: "Choose Premium",
         chooseBasic: "Choose Basic",
+        currentPlan: "Current plan",
+        upgrade: "Upgrade",
+        downgrade: "Downgrade",
+        manage: "Manage",
         disclaimer:
           "Prices are for monthly/yearly subscription and may change.",
       },
@@ -118,17 +123,19 @@ const en = {
       },
       trust: {
         safePayments: {
-          title: "Secure payments",
+          title: "Secure checkout with Stripe",
           description:
-            "We process payments via Stripe. Card data is never stored on our servers.",
+            "Encrypted payments, PCI-compliant. We never store or have access to your card details.",
         },
         cancelAnytime: {
-          title: "Cancel anytime",
-          description: "Stop renewal from your profile, no hidden fees.",
+          title: "Cancel anytime, no hassle",
+          description:
+            "Stop renewal from your account in seconds. No hidden fees, no questions asked.",
         },
         supportRefund: {
-          title: "Support & refund",
-          description: "Priority support for Premium and 30-day refunds.",
+          title: "Fast support & satisfaction guarantee",
+          description:
+            "Premium gets priority support. If it’s not for you, refund options are available under our policy.",
         },
       },
       alertSubscribed:
@@ -619,10 +626,10 @@ const en = {
         },
         {
           icon: "🔍",
-          title: "Advanced Search",
+          title: "Advanced search & filters",
           date: "Q3 2027",
           description:
-            "Smart filtering by category, date, author and keywords for quick content discovery.",
+            "Find exactly what you’re in the mood for—by genre, vibe, tropes, length, intensity level, and ending type (happy/tragedy/twist).",
         },
       ],
       timelineTitle: "Our Development Roadmap 🗺️",
@@ -713,9 +720,9 @@ const en = {
       infoCards: [
         {
           icon: "📚",
-          title: "Carefully Selected Content",
+          title: "Carefully selected stories",
           description:
-            "Thoughtfully chosen and verified articles covering relevant topics in technology, science, culture and society.",
+            "We publish fiction carefully selected and revised for consistency, pacing, and emotional impact.",
         },
         {
           icon: "🎯",
@@ -817,7 +824,7 @@ const en = {
       "Explore our curated collection of extraordinary stories",
     viewAllStories: "View All Stories",
 
-    footerText: "MagicStories. All rights reserved.",
+    footerText: "VelvetTales. All rights reserved.",
     allStoriesTitle: "All Stories",
     noStoriesFound: "No stories found...",
     usingLocalData: "Using local data.",

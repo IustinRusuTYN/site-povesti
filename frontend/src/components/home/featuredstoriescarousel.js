@@ -1,5 +1,5 @@
 // src/components/home/featuredstoriescarousel.js
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectCoverflow } from "swiper/modules";
 import { useNavigate, Link } from "react-router-dom";
@@ -11,6 +11,7 @@ import "swiper/css/effect-coverflow";
 
 import { ThemeContext } from "../../context/themecontext";
 import { useFeaturedStories, useStoryRating } from "../../hooks/useStories";
+import { getStoryImageSrc } from "../../utils/imageHelper";
 
 // Componenta pentru rating dinamic
 function StoryRating({ storyId }) {
@@ -31,16 +32,13 @@ export default function FeaturedStoriesCarousel() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  // Folosim hook-ul nou pentru featured stories din Supabase
   const { stories, loading, error } = useFeaturedStories();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-        }
+        if (entry.isIntersecting) setVisible(true);
       },
       { threshold: 0.2 }
     );
@@ -52,6 +50,29 @@ export default function FeaturedStoriesCarousel() {
       if (element) observer.unobserve(element);
     };
   }, []);
+
+  // ✅ 1) Elimină duplicate (după id) + ✅ 2) Randomizează ordinea
+  const carouselStories = useMemo(() => {
+    const list = Array.isArray(stories) ? stories : [];
+
+    // dedupe
+    const map = new Map();
+    for (const s of list) {
+      if (s?.id && !map.has(s.id)) map.set(s.id, s);
+    }
+    const unique = Array.from(map.values());
+
+    // shuffle (Fisher–Yates)
+    for (let i = unique.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [unique[i], unique[j]] = [unique[j], unique[i]];
+    }
+
+    return unique;
+  }, [stories]);
+
+  // ✅ Loop doar dacă ai destule povești ca să nu pară repetitiv (mai ales pe desktop cu 3 slides)
+  const canLoop = carouselStories.length >= 7;
 
   return (
     <section id="featured-section" className="py-12 md:py-16 px-4 md:px-6">
@@ -191,7 +212,7 @@ export default function FeaturedStoriesCarousel() {
           )}
 
           {/* No Stories State */}
-          {!loading && !error && stories.length === 0 && (
+          {!loading && !error && carouselStories.length === 0 && (
             <div className="text-center py-16">
               <BookOpen
                 className={`w-16 h-16 mx-auto mb-4 ${
@@ -209,7 +230,7 @@ export default function FeaturedStoriesCarousel() {
           )}
 
           {/* 3D Carousel */}
-          {!loading && !error && stories.length > 0 && (
+          {!loading && !error && carouselStories.length > 0 && (
             <div
               className={`
                 transition-all duration-1000 delay-500
@@ -221,6 +242,7 @@ export default function FeaturedStoriesCarousel() {
               `}
             >
               <Swiper
+                key={carouselStories.map((s) => s.id).join("-")} // reinit când se schimbă lista
                 modules={[Autoplay, EffectCoverflow]}
                 effect="coverflow"
                 grabCursor={true}
@@ -237,79 +259,81 @@ export default function FeaturedStoriesCarousel() {
                   modifier: 1,
                   slideShadows: true,
                 }}
-                loop={stories.length >= 3}
+                loop={canLoop}
                 autoplay={{
                   delay: 3000,
                   disableOnInteraction: false,
                 }}
                 className="!pb-8"
               >
-                {stories.map((story) => (
-                  <SwiperSlide key={story.id}>
-                    <Link to={`/story/${story.id}`} className="group block">
-                      {/* Card */}
-                      <div
-                        className={`
-                          relative rounded-2xl overflow-hidden shadow-xl
-                          transition-all duration-300
-                          group-hover:scale-105 group-hover:shadow-2xl
-                          ${darkMode ? "bg-gray-800" : "bg-white"}
-                        `}
-                      >
-                        {/* Image */}
-                        <div className="relative w-full h-64 overflow-hidden bg-gray-200 dark:bg-gray-700">
-                          {story.image ? (
-                            <img
-                              src={story.image}
-                              alt={story.title}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                              loading="lazy"
-                              onError={(e) => {
-                                e.target.style.display = "none";
-                                e.target.parentElement.innerHTML = `
-                                  <div class="w-full h-full flex items-center justify-center text-gray-400">
-                                    <span class="text-6xl">📖</span>
-                                  </div>
-                                `;
-                              }}
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400">
-                              <span className="text-6xl">📖</span>
-                            </div>
-                          )}
+                {carouselStories.map((story) => {
+                  const imageSrc = getStoryImageSrc(story);
+                  const categoryLabel =
+                    story?.category ||
+                    story?.genre ||
+                    story?.category_name ||
+                    story?.category?.name ||
+                    "";
 
-                          {/* Dark Gradient Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                  return (
+                    <SwiperSlide key={story.id}>
+                      <Link to={`/story/${story.id}`} className="group block">
+                        {/* Card */}
+                        <div
+                          className={`
+                            relative rounded-2xl overflow-hidden shadow-xl
+                            transition-all duration-300
+                            group-hover:scale-105 group-hover:shadow-2xl
+                            ${darkMode ? "bg-gray-800" : "bg-white"}
+                          `}
+                        >
+                          {/* Image */}
+                          <div className="relative w-full h-64 overflow-hidden bg-gray-200 dark:bg-gray-700">
+                            {imageSrc ? (
+                              <img
+                                src={imageSrc}
+                                alt={story.title}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                <span className="text-6xl">📖</span>
+                              </div>
+                            )}
 
-                          {/* Content Overlay */}
-                          <div className="absolute bottom-0 left-0 right-0 p-4">
-                            <h4 className="text-white font-bold text-lg mb-1 line-clamp-2">
-                              {story.title}
-                            </h4>
-                            <p className="text-gray-300 text-sm line-clamp-2 mb-2">
-                              {story.excerpt}
-                            </p>
+                            {/* Dark Gradient Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-                            {/* Meta Info */}
-                            <div className="flex items-center gap-3 text-xs text-gray-400">
-                              <span className="font-medium">
-                                {story.category}
-                              </span>
-                              <StoryRating storyId={story.id} />
+                            {/* Content Overlay */}
+                            <div className="absolute bottom-0 left-0 right-0 p-4">
+                              <h4 className="text-white font-bold text-lg mb-1 line-clamp-2">
+                                {story.title}
+                              </h4>
+                              <p className="text-gray-300 text-sm line-clamp-2 mb-2">
+                                {story.excerpt}
+                              </p>
+
+                              {/* Meta Info */}
+                              <div className="flex items-center gap-3 text-xs text-gray-400">
+                                <span className="font-medium">
+                                  {categoryLabel}
+                                </span>
+                                <StoryRating storyId={story.id} />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  </SwiperSlide>
-                ))}
+                      </Link>
+                    </SwiperSlide>
+                  );
+                })}
               </Swiper>
             </div>
           )}
 
           {/* CTA Button */}
-          {!loading && !error && stories.length > 0 && (
+          {!loading && !error && carouselStories.length > 0 && (
             <div
               className={`
                 text-center mt-8

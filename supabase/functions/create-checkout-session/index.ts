@@ -8,6 +8,13 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+function isActiveLike(status: string | null | undefined) {
+  // statusuri care înseamnă "există o subscripție" => nu mai facem checkout nou
+  return ["active", "trialing", "past_due", "unpaid", "incomplete"].includes(
+    String(status || "").toLowerCase(),
+  );
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -26,11 +33,25 @@ serve(async (req) => {
 
     const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" });
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      global: { headers: { Authorization: req.headers.get("Authorization")! } },
+    // 1) Authorization header (obligatoriu)
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: "Missing Authorization header" }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    // 2) Supabase client "as user" (RLS OK)
+    const supabaseAsUser = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: { headers: { Authorization: authHeader } },
     });
 
-    const { data: authData, error: authErr } = await supabase.auth.getUser();
+    const { data: authData, error: authErr } = await supabaseAsUser.auth
+      .getUser();
     if (authErr || !authData?.user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
@@ -39,6 +60,8 @@ serve(async (req) => {
     }
 
     const user = authData.user;
+
+    // 3) body
     const { planId, billing } = await req.json();
 
     if (!["basic", "premium"].includes(planId)) {
@@ -62,15 +85,79 @@ serve(async (req) => {
       ? PRICE_PREMIUM_MONTHLY
       : PRICE_PREMIUM_YEARLY;
 
-    // refolosim customer dacă există
-    const { data: profile } = await supabase
+    // 4) citim profilul ca să vedem dacă userul are deja abonament
+    const { data: profile, error: profErr } = await supabaseAsUser
       .from("profiles")
-      .select("id, stripe_customer_id")
+      .select(
+        "id, stripe_customer_id, stripe_subscription_id, subscription_status, subscription_plan",
+      )
       .eq("id", user.id)
       .maybeSingle();
 
-    let customerId = profile?.stripe_customer_id || null;
+    if (profErr) throw profErr;
 
+    let customerId = profile?.stripe_customer_id || null;
+    let subscriptionId = profile?.stripe_subscription_id || null;
+
+    // 5) dacă avem customer dar nu avem subscription_id în DB, încercăm să-l luăm din Stripe
+    if (customerId && !subscriptionId) {
+      const subs = await stripe.subscriptions.list({
+        customer: customerId,
+        status: "all",
+        limit: 10,
+      });
+
+      // luăm prima activă/trialing/past_due etc.
+      const activeSub = subs.data.find((s) => isActiveLike(s.status));
+      if (activeSub) {
+        subscriptionId = activeSub.id;
+
+        // salvăm în DB ca să fie stabil pe viitor
+        await supabaseAsUser
+          .from("profiles")
+          .update({ stripe_subscription_id: subscriptionId })
+          .eq("id", user.id);
+      }
+    }
+
+    const hasActiveSubscription = customerId && subscriptionId &&
+      isActiveLike(profile?.subscription_status);
+
+    // 6) dacă deja are un abonament activ:
+    // - dacă încearcă să plătească același plan -> refuzăm (nu mai plătește de 2 ori)
+    // - dacă vrea alt plan -> îl trimitem în Stripe Portal (upgrade/downgrade)
+    if (hasActiveSubscription) {
+      const currentPlan = profile?.subscription_plan || "free";
+
+      if (currentPlan === planId) {
+        return new Response(
+          JSON.stringify({ error: "Already subscribed to this plan" }),
+          {
+            status: 409,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      const portalSession = await stripe.billingPortal.sessions.create({
+        customer: customerId!,
+        return_url: `${SITE_URL}/profile?portal=return`,
+        flow_data: {
+          type: "subscription_update",
+          subscription_update: { subscription: subscriptionId! },
+        },
+      });
+
+      return new Response(
+        JSON.stringify({ url: portalSession.url, mode: "portal" }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    // 7) dacă nu are customer, îl creăm
     if (!customerId) {
       const customer = await stripe.customers.create({
         email: user.email ?? undefined,
@@ -78,26 +165,30 @@ serve(async (req) => {
       });
       customerId = customer.id;
 
-      await supabase
+      await supabaseAsUser
         .from("profiles")
         .upsert({ id: user.id, stripe_customer_id: customerId }, {
           onConflict: "id",
         });
     }
 
+    // 8) checkout nou (DOAR dacă nu are deja subscription activ)
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
-      customer: customerId,
+      customer: customerId!,
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${SITE_URL}/profile?checkout=success`,
       cancel_url: `${SITE_URL}/subscribe?checkout=cancel`,
       metadata: { user_id: user.id, plan_id: planId, billing },
     });
 
-    return new Response(JSON.stringify({ url: session.url }), {
-      status: 200,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ url: session.url, mode: "checkout" }),
+      {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   } catch (e) {
     return new Response(
       JSON.stringify({ error: e.message || "Server error" }),

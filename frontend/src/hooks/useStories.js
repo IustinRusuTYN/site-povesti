@@ -14,8 +14,11 @@ import {
 
 /**
  * Hook pentru toate poveștile
+ * includeRatings = true -> atașează avg_rating și rating_count pentru fiecare story
  */
-export function useStories() {
+export function useStories(options = {}) {
+  const { includeRatings = false } = options;
+
   const { i18n } = useTranslation();
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,12 +33,54 @@ export function useStories() {
     if (error) {
       setError(error.message || "Failed to fetch stories");
       setStories([]);
-    } else {
-      setStories(data || []);
+      setLoading(false);
+      return;
     }
 
+    const baseStories = data || [];
+    setStories(baseStories);
     setLoading(false);
-  }, [i18n.language]);
+
+    // IMPORTANT: ratings pe listă (fără să blochezi afișarea)
+    if (!includeRatings || baseStories.length === 0) return;
+
+    try {
+      // Facem request-uri pe bucăți ca să nu "îngropăm" Supabase
+      const chunkSize = 25;
+      const enriched = [];
+
+      for (let i = 0; i < baseStories.length; i += chunkSize) {
+        const chunk = baseStories.slice(i, i + chunkSize);
+
+        const results = await Promise.allSettled(
+          chunk.map((s) =>
+            s?.id ? getStoryRating(s.id) : Promise.resolve({ data: null })
+          )
+        );
+
+        chunk.forEach((s, idx) => {
+          const res = results[idx];
+          const ratingData =
+            res.status === "fulfilled" ? res.value?.data : null;
+
+          const avg =
+            typeof ratingData?.average === "number" ? ratingData.average : 0;
+          const count =
+            typeof ratingData?.count === "number" ? ratingData.count : 0;
+
+          enriched.push({
+            ...s,
+            avg_rating: count > 0 ? Number(avg.toFixed(1)) : null,
+            rating_count: count,
+          });
+        });
+      }
+
+      setStories(enriched);
+    } catch {
+      // dacă pică rating-ul, rămâi măcar cu lista de stories (nu stricăm pagina)
+    }
+  }, [i18n.language, includeRatings]);
 
   useEffect(() => {
     fetchStories();
@@ -45,13 +90,35 @@ export function useStories() {
 }
 
 /**
- * Hook pentru poveștile featured
+ * Hook pentru poveștile featured (pool mai mare + random la fiecare refresh)
+ * - ia featured
+ * - dacă sunt prea puține, completează din toate poveștile
+ * - alege random ~12 (fără duplicate)
  */
 export function useFeaturedStories() {
   const { i18n } = useTranslation();
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const DESIRED_COUNT = 12;
+
+  const shuffle = (arr) => {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  const uniqueById = (arr) => {
+    const map = new Map();
+    for (const s of arr || []) {
+      if (s?.id && !map.has(s.id)) map.set(s.id, s);
+    }
+    return Array.from(map.values());
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -60,17 +127,42 @@ export function useFeaturedStories() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await getFeaturedStories(i18n.language);
-
+      // 1) featured
+      const featuredRes = await getFeaturedStories(i18n.language);
       if (!mounted) return;
 
-      if (error) {
-        setError(error.message || "Failed to fetch featured stories");
+      if (featuredRes?.error) {
+        setError(
+          featuredRes.error.message || "Failed to fetch featured stories"
+        );
         setStories([]);
-      } else {
-        setStories(data || []);
+        setLoading(false);
+        return;
       }
 
+      let pool = Array.isArray(featuredRes?.data) ? featuredRes.data : [];
+
+      // 2) dacă featured sunt puține, completează din toate
+      if (pool.length < DESIRED_COUNT) {
+        const allRes = await getAllStories(i18n.language);
+        if (!mounted) return;
+
+        if (!allRes?.error && Array.isArray(allRes?.data)) {
+          pool = uniqueById([...pool, ...allRes.data]);
+        } else {
+          pool = uniqueById(pool);
+        }
+      } else {
+        pool = uniqueById(pool);
+      }
+
+      // 3) randomizează și ia 12
+      const random12 = shuffle(pool).slice(
+        0,
+        Math.min(DESIRED_COUNT, pool.length)
+      );
+
+      setStories(random12);
       setLoading(false);
     }
 

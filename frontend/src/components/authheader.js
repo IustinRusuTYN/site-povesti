@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/logo/bnk.svg";
+import logo from "../assets/logo/velvetlogo-rb.svg";
 import { ThemeContext } from "../context/themecontext";
 import { Sun, Moon } from "lucide-react";
 

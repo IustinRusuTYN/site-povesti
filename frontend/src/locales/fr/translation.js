@@ -41,6 +41,7 @@ const fr = {
     },
 
     subscribePage: {
+      alreadyOnPlan: "Vous avez déjà ce forfait.",
       billing: {
         monthly: "Mensuel",
         yearly: "Annuel",
@@ -49,6 +50,10 @@ const fr = {
         recommended: "Recommandé",
         goPremium: "Choisir Premium",
         chooseBasic: "Choisir Basic",
+        currentPlan: "Forfait actuel",
+        upgrade: "Passer à Premium",
+        downgrade: "Rétrograder",
+        manage: "Gérer",
         disclaimer:
           "Les prix sont pour un abonnement mensuel/annuel et peuvent changer.",
       },
@@ -118,19 +123,19 @@ const fr = {
       },
       trust: {
         safePayments: {
-          title: "Paiements sécurisés",
+          title: "Paiement sécurisé avec Stripe",
           description:
-            "Nous traitons les paiements via Stripe. Les données de la carte ne sont jamais stockées sur nos serveurs.",
+            "Paiements chiffrés, conforme PCI. Nous ne stockons pas et n’avons jamais accès aux données de votre carte.",
         },
         cancelAnytime: {
-          title: "Annulation à tout moment",
+          title: "Annulez à tout moment, sans prise de tête",
           description:
-            "Arrêtez le renouvellement depuis votre profil, sans frais cachés.",
+            "Arrêtez le renouvellement depuis votre compte en quelques secondes. Aucun frais caché, aucune question.",
         },
         supportRefund: {
-          title: "Support & remboursement",
+          title: "Support rapide & garantie de satisfaction",
           description:
-            "Support prioritaire pour Premium et remboursement sous 30 jours.",
+            "Le Premium bénéficie d’un support prioritaire. Si ce n’est pas pour vous, des options de remboursement sont disponibles selon notre politique.",
         },
       },
       alertSubscribed:
@@ -184,10 +189,10 @@ const fr = {
         },
         {
           icon: "🔍",
-          title: "Recherche Avancée",
+          title: "Recherche & filtres avancés",
           date: "T3 2027",
           description:
-            "Filtrage intelligent par catégorie, date, auteur et mots-clés pour une découverte rapide du contenu.",
+            "Trouvez rapidement ce dont vous avez envie : par genre, ambiance, tropes, longueur, niveau d’intensité et type de fin (heureuse/tragique/twist).",
         },
       ],
       timelineTitle: "Notre Feuille de Route de Développement 🗺️",
@@ -278,9 +283,9 @@ const fr = {
       infoCards: [
         {
           icon: "📚",
-          title: "Contenu Soigneusement Sélectionné",
+          title: "Histoires sélectionnées avec soin",
           description:
-            "Articles soigneusement choisis et vérifiés, couvrant des sujets pertinents en technologie, science, culture et société.",
+            "Nous publions de la fiction sélectionnée avec soin et révisée pour la cohérence, le rythme et l’impact émotionnel.",
         },
         {
           icon: "🎯",
@@ -820,7 +825,7 @@ const fr = {
       "Explorez notre collection soignée d'histoires extraordinaires",
     viewAllStories: "Voir Toutes les Histoires",
 
-    footerText: "HistoiresMagiques. Tous droits réservés.",
+    footerText: "VelvetTales. Tous droits réservés.",
     allStoriesTitle: "Toutes les histoires",
     noStoriesFound: "Aucune histoire trouvée...",
     usingLocalData: "Utilisation des données locales.",

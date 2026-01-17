@@ -23,9 +23,7 @@ serve(async (req) => {
     const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
     const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get(
-      "SUPABASE_SERVICE_ROLE_KEY",
-    )!;
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SERVICE_ROLE_KEY")!;
 
     const env = {
       PRICE_BASIC_MONTHLY: Deno.env.get("PRICE_BASIC_MONTHLY")!,
@@ -89,15 +87,41 @@ serve(async (req) => {
       const sub = event.data.object as any;
 
       const customerId = sub.customer as string;
-      const customer = (await stripe.customers.retrieve(customerId)) as any;
 
-      const userId = customer?.metadata?.supabase_user_id;
-      if (!userId) return new Response("ok", { status: 200 });
+      // 1) încercăm întâi din customer.metadata (dacă există)
+      let userId: string | null = null;
+      try {
+        const customer = (await stripe.customers.retrieve(customerId)) as any;
+        userId = customer?.metadata?.supabase_user_id || null;
+      } catch {
+        // ignorăm, vom folosi fallback DB
+      }
+
+      // 2) fallback sigur: căutăm userul după stripe_customer_id în profiles
+      if (!userId) {
+        const { data: prof, error: profErr } = await admin
+          .from("profiles")
+          .select("id")
+          .eq("stripe_customer_id", customerId)
+          .maybeSingle();
+
+        if (profErr) throw profErr;
+        userId = prof?.id || null;
+      }
+
+      if (!userId) {
+        // nu blocăm Stripe (altfel va retrimite la nesfârșit)
+        return new Response("ok", { status: 200 });
+      }
 
       const priceId = sub.items?.data?.[0]?.price?.id;
       const mapped = priceId
         ? mapFromPrice(priceId, env)
         : { plan: "free", billing: null };
+
+      const renew = sub.current_period_end
+        ? new Date(sub.current_period_end * 1000).toISOString()
+        : null;
 
       const finalPlan = sub.status === "active" || sub.status === "trialing"
         ? mapped.plan
@@ -110,6 +134,7 @@ serve(async (req) => {
           subscription_billing: finalPlan === "free" ? null : mapped.billing,
           subscription_status: sub.status,
           subscription_renew_date: renew,
+          stripe_subscription_id: sub.id, // important: păstrăm subscription id actual
         })
         .eq("id", userId);
 

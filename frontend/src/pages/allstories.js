@@ -23,7 +23,7 @@ export default function AllStories() {
   const navigate = useNavigate();
 
   // ✅ FOLOSIM HOOK-URILE DIN SUPABASE
-  const { stories, loading, error } = useStories();
+  const { stories, loading, error } = useStories({ includeRatings: true });
   useEffect(() => {
     if (stories?.length) {
       const s = stories[0];

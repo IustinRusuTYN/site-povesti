@@ -1,5 +1,6 @@
 // src/pages/profile.js
 import React, { useContext, useState, useEffect, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import PageLayout from "../components/pagelayout";
 import { ThemeContext } from "../context/themecontext";
 import { AuthContext } from "../context/authcontext";
@@ -63,14 +64,18 @@ export default function Profile() {
     user,
     userProfile,
     signOut,
+    refreshProfile, // ✅ FIX: îl luăm din context
     loading: authLoading,
   } = useContext(AuthContext);
+
   const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { favorites } = useFavorites();
 
   const [recentStories, setRecentStories] = useState([]);
-  const [recommended, setRecommended] = useState([]); // ✅ LIPSEA la tine
+  const [recommended, setRecommended] = useState([]);
   const [recSeed, setRecSeed] = useState(null);
 
   const [userStats, setUserStats] = useState({
@@ -132,16 +137,13 @@ export default function Profile() {
 
   // ✅ RECOMANDĂRI STABILE (nu se schimbă la schimbarea limbii)
   const loadRecommended = useCallback(async () => {
-    // dacă deja avem recomandări pentru seed-ul curent, nu refacem
     const seed = `${user?.id || "guest"}-${getWeekKey()}`;
     if (recSeed === seed && recommended.length > 0) return;
 
     setTabLoading((prev) => ({ ...prev, rec: true }));
 
     try {
-      // IMPORTANT:
-      // Nu mai legăm recomandările de limbă (altfel re-fetch + re-shuffle).
-      // Titlurile/excerpt-urile sunt traduse în componentă folosind storyNumber.
+      // recomandările nu depind de limbă; traducerea se face în componentă prin storyNumber
       const { data: allStories, error: storiesError } = await getAllStories(
         "ro"
       );
@@ -155,7 +157,6 @@ export default function Profile() {
 
       setRecSeed(seed);
 
-      // stabilizăm ordinea de bază înainte de shuffle
       const base = [...allStories].sort(
         (a, b) =>
           (a.storyNumber || a.story_number || 0) -
@@ -175,6 +176,41 @@ export default function Profile() {
   useEffect(() => {
     if (!authLoading && user?.id) loadUserStats();
   }, [authLoading, user?.id, loadUserStats]);
+
+  // ✅ refresh automat după Stripe checkout / portal return
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const fromCheckout = params.get("checkout") === "success";
+    const fromPortal = params.get("portal") === "return";
+
+    if (!fromCheckout && !fromPortal) return;
+    if (!user?.id) return;
+
+    let cancelled = false;
+
+    const run = async () => {
+      // webhook-ul poate veni cu întârziere => încercăm de câteva ori
+      for (let i = 0; i < 4; i++) {
+        if (cancelled) return;
+
+        if (typeof refreshProfile === "function") {
+          await refreshProfile();
+        }
+
+        await new Promise((r) => setTimeout(r, i === 0 ? 300 : 800));
+      }
+
+      if (!cancelled) {
+        navigate("/profile", { replace: true });
+      }
+    };
+
+    run();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [location.search, user?.id, refreshProfile, navigate]);
 
   // ✅ încărcăm ce trebuie când schimbăm tab-ul
   useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Search as SearchIcon } from "lucide-react";
-import logo from "../../assets/logo/bnk.svg";
+import logo from "../../assets/logo/velvetlogo-rb.svg";
 
 import NavLinks from "./navlinks";
 import SearchBar from "./Hsearchbar";
@@ -51,10 +51,10 @@ export default function Header() {
           <Link
             to="/"
             className="flex items-center space-x-2 flex-shrink-0"
-            aria-label="StoryTeller - Home"
+            aria-label=" VelvetTales - Home"
           >
-            <img src={logo} alt="StoryTeller Logo" className="h-8 w-8" />
-            <span className="font-bold text-xl">StoryTeller</span>
+            <img src={logo} alt="VelvetTales" className="h-10 w-auto sm:h-12" />
+            <span className="font-bold text-xl">VelvetTales</span>
           </Link>
 
           {/* Nav + acțiuni (desktop) */}
