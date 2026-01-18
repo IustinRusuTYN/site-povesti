@@ -994,6 +994,13 @@ const en = {
     footerContactLink: "Contact us",
     footerRights: "All rights reserved.",
     footerMadeForReaders: "Made for real readers.",
+    reading: "Reading",
+    chapter: "Chapter",
+    chapterShort: "Ch",
+    upcomingChapter: "Upcoming chapter",
+    upcomingChapterTitle: "Upcoming chapter",
+    upcomingChapterDesc:
+      "This chapter will be added soon. Come back for the continuation.",
     allStoriesTitle: "All Stories",
     noStoriesFound: "No stories found...",
     usingLocalData: "Using local data.",

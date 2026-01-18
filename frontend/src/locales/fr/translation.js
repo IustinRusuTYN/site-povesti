@@ -998,6 +998,13 @@ const fr = {
     footerContactLink: "Nous contacter",
     footerRights: "Tous droits réservés.",
     footerMadeForReaders: "Pensé pour les vrais lecteurs.",
+    reading: "Lecture",
+    chapter: "Chapitre",
+    chapterShort: "Ch",
+    upcomingChapter: "Chapitre à venir",
+    upcomingChapterTitle: "Chapitre à venir",
+    upcomingChapterDesc:
+      "Ce chapitre sera ajouté bientôt. Revenez pour la suite.",
 
     allStoriesTitle: "Toutes les histoires",
     noStoriesFound: "Aucune histoire trouvée...",

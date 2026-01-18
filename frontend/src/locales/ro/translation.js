@@ -497,24 +497,59 @@ const ro = {
 
     stories: {
       1: {
-        title: "Sub Luna Albastră",
+        title: "PAGINA 47",
         excerpt:
-          "O tânără descoperă un portal spre o lume ascunsă care apare doar în nopțile de lună albastră.",
-        content: [
-          "Ana simțise mereu că există ceva dincolo de lumea pe care o cunoștea...",
-          "Pădurea de la marginea satului era fermecată în lumina lunii albastre...",
-          "Pe măsură ce se aventura printre copaci, o strălucire albastră apăru în depărtare...",
-          "Se trezi într-o lume de vis, cu câmpii nesfârșite presărate cu flori argintii...",
-          "Curând, Ana întâlni o creatură delicată cu aripi translucide și ochi luminoși...",
-          "Ana învăță repede că fiecare colț al acestui tărâm ascundea o lecție...",
-          "Într-o noapte, lângă un foc argintiu, Ana întâlni un tânăr misterios...",
-          "Pe măsură ce zilele treceau, Ana descoperi secretele acestui tărâm...",
-          "Totuși, portalul începu să se închidă încet, și Ana știa că trebuie să se întoarcă...",
-          "Când Ana păși din nou pe pământul familiar al satului, luna albastră dispăru...",
-          "Ani mai târziu, Ana descoperi că portalul se deschide doar când luna albastră apare...",
+          "Maya vine la Paris pentru un contract scurt și o regulă simplă: să nu se atașeze de nimeni. Într-un anticariat, o carte cu o dedicație către „M.” și numărul 47 îi cade în mâini ca un semn prea exact ca să fie întâmplare. Iar bărbatul care pretinde că volumul îi aparține pare să știe mai multe despre mama ei dispărută decât ar trebui.",
+
+        // ✅ NEW: capitole
+        chapters: [
+          {
+            title: "a",
+            content: [],
+          },
+          {
+            title: "Capitolul 2 — Numele care nu se rostește",
+            content: [
+              "Zilele următoare, Ana încercă să trăiască normal, dar nopțile îi miroseau a fum argintiu și a flori reci.",
+              "În vitraliul ferestrei, lumina se rupea exact ca în portal, iar asta o făcea să își țină respirația fără să vrea.",
+              "Când luna albastră reveni, pădurea păru să o cheme pe nume, cu foșnetul frunzelor și cu tăceri lungi.",
+              "De data asta, Ana nu alergă—merse încet, ca și cum ar fi știut deja că orice grabă se plătește în acel loc.",
+              "Portalul o aștepta, iar dincolo de el, tânărul misterios era acolo, ca o promisiune nerostită.",
+              "Nu îi spuse numele din prima; își feri privirea și își ținu mâinile ocupate cu lemnele focului, ca să nu o atingă.",
+              "Ana observă un semn mic pe încheietura lui—o urmă subțire, ca un simbol ars, pe care îl ascundea instinctiv.",
+              "«Ai mai fost aici», îi spuse ea, iar el răspunse: «Am rămas aici când altcineva a plecat.»",
+              "Tărâmul începuse să se schimbe: florile argintii păreau mai puține, iar cerul avea fisuri fine, aproape invizibile.",
+              "El îi mărturisi doar o parte: portalul nu se deschidea pentru oricine—ci pentru cei care pierduseră ceva fără să își dea seama.",
+              "Când Ana se apropie, focul argintiu se stinse brusc, ca și cum ar fi fost suflat de o gură nevăzută.",
+              "Din întuneric, o voce rosti numele lui pe care el nu voia să-l audă, iar pământul de sub ei se crăpă într-o linie albastră.",
+            ],
+          },
+          {
+            title: "Capitolul 3 — Prețul întoarcerii",
+            content: [
+              "Ana își simți stomacul strângându-se, pentru că tărâmul nu se mai comporta ca o poveste, ci ca o capcană care se trezește.",
+              "Tânărul o trase instinctiv spre el, nu ca un gest romantic, ci ca un reflex de supraviețuire.",
+              "Crăpătura albastră se lărgi, iar în aer se simți un miros de ploaie rece, de parcă două lumi se frecau una de alta.",
+              "El îi spuse în sfârșit numele—dar atât de încet încât părea o rugăciune, nu o prezentare.",
+              "Ana nu repetă numele; îl păstră în piept, ca pe un secret pe care nu-l dai nimănui, nici măcar aerului.",
+              "Adevărul ieși la suprafață în bucăți: portalul nu era o ușă, ci o balanță; la fiecare trecere, ceva rămânea în urmă.",
+              "Ana își aminti brusc o pierdere veche, mică, pe care o minimizase ani la rând—și înțelese de ce fusese aleasă.",
+              "Tânărul recunoscu și el: nu o întâlnise întâmplător; o așteptase, pentru că o văzuse în semne cu mult înainte.",
+              "Când mâinile lor se atinseseră, simbolul de pe încheietura lui se lumină, iar tărâmul reacționă ca la o cheie potrivită.",
+              "Portalul se deschise larg, dar nu spre sat—ci spre un loc necunoscut, ca și cum ar fi cerut un pas înainte, nu o retragere.",
+              "Ana înțelese că alegerea nu era «să plec» sau «să rămân», ci «ce sunt dispusă să devin» pentru a-l salva pe el și lumea asta.",
+              "Și când făcu un pas, auzi din nou șoapta de la finalul primei nopți—dar de data asta îi rosti numele ei, ca și cum cineva o cunoscuse dintotdeauna.",
+            ],
+          },
         ],
-        comments: ["Poveste frumoasă!", "M-a ținut în suspans!"],
+
+        // ✅ opțional (pentru viitor, dacă vrei să afișezi un mesaj în UI)
+        upcoming: {
+          title: "Capitolul 4 — În curând",
+          description: "Continuarea va fi adăugată în curând.",
+        },
       },
+
       2: {
         title: "Fata din Pădurea Fermecată",
         excerpt: "O poveste magică despre o fată care descoperă un secret.",
@@ -983,6 +1018,13 @@ const ro = {
     footerContactLink: "Contactează-ne",
     footerRights: "Toate drepturile rezervate.",
     footerMadeForReaders: "Creat pentru citit pe bune.",
+    reading: "Lectură",
+    chapter: "Capitol",
+    chapterShort: "Cap",
+    upcomingChapter: "Capitol în curând",
+    upcomingChapterTitle: "Capitol în curând",
+    upcomingChapterDesc:
+      "Acest capitol va fi adăugat în curând. Revino pentru continuare.",
 
     allStoriesTitle: "Toate Poveștile",
     noStoriesFound: "Nicio poveste găsită...",
