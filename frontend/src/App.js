@@ -17,10 +17,15 @@ import { LangProvider } from "./context/langcontext";
 import { AuthProvider } from "./context/authcontext";
 import PrivateRoute from "./components/privateroute";
 
+// ✅ paginile noi (asigură-te că fișierele există exact cu aceste nume)
+import Contact from "./pages/contact";
+import Terms from "./pages/terms";
+import Privacy from "./pages/privacy";
+import Cookies from "./pages/cookies";
+
 export default function App() {
   return (
     <LangProvider>
-      {/* Eliminat UserProvider - AuthContext face totul */}
       <AuthProvider>
         <ThemeProvider>
           <SearchProvider>
@@ -35,7 +40,13 @@ export default function App() {
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
 
-              {/* Rută protejată - doar una */}
+              {/* ✅ pagini footer */}
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/cookies" element={<Cookies />} />
+
+              {/* Rută protejată */}
               <Route
                 path="/profile"
                 element={

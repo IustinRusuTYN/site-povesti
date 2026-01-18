@@ -13,6 +13,8 @@ export default function SignInForm({ onClose, onSwitchToSignUp }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const LOGO_SRC = "/android-chrome-192x192.png"; // <- schimbă aici dacă vrei alt fișier (ex: "/brand-icon.png")
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -30,7 +32,6 @@ export default function SignInForm({ onClose, onSwitchToSignUp }) {
       const { data, error } = await signIn(formData.email, formData.password);
 
       if (error) {
-        // Erori comune
         if (error.message.includes("Invalid login credentials")) {
           setError(t("signIn.invalidCredentials", "Invalid email or password"));
         } else if (error.message.includes("Email not confirmed")) {
@@ -45,7 +46,6 @@ export default function SignInForm({ onClose, onSwitchToSignUp }) {
         }
       } else {
         setSuccess(true);
-        // Închide form după 1.5 secunde
         setTimeout(() => {
           if (onClose) {
             onClose();
@@ -95,6 +95,24 @@ export default function SignInForm({ onClose, onSwitchToSignUp }) {
             <XCircle size={24} />
           </button>
         )}
+
+        {/* ✅ Brand Icon */}
+        <div className="flex justify-center mb-4">
+          <div
+            className={`rounded-full p-1 ring-1 ${
+              darkMode
+                ? "bg-white/10 ring-white/10"
+                : "bg-gray-50 ring-black/10"
+            }`}
+          >
+            <img
+              src={LOGO_SRC}
+              alt="VelvetTales"
+              className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-contain"
+              loading="lazy"
+            />
+          </div>
+        </div>
 
         {/* Title */}
         <h2

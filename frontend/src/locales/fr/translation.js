@@ -348,6 +348,165 @@ const fr = {
       },
     },
 
+    contact: {
+      title: "Contact",
+      authRequiredTitle: "Connexion requise",
+      authRequiredBody:
+        "Pour nous envoyer un message, veuillez vous connecter ou créer un compte.",
+      signIn: "Se connecter",
+      signUp: "Créer un compte",
+      sending: "Envoi en cours...",
+      sentOk:
+        "Votre message a été envoyé. Nous vous répondrons dès que possible.",
+      sentError:
+        "Impossible d’envoyer le message. Réessayez ou envoyez-nous un email.",
+      subtitle:
+        "Une question, un problème ou un retour ? Écris-nous et nous répondrons dès que possible.",
+      emailLabel: "Email support",
+      formTitle: "Envoyer un message",
+      send: "Envoyer",
+      emailSubject: "Nouveau message",
+      note18:
+        "Note : ce site contient du contenu 18+. Si vous signalez un problème, merci d’inclure des détails utiles (lien, titre, capture).",
+      form: {
+        name: "Nom",
+        email: "Email",
+        message: "Message",
+        namePlaceholder: "Votre nom",
+        emailPlaceholder: "nom@exemple.com",
+        messagePlaceholder: "Écrivez votre message ici...",
+      },
+    },
+    terms: {
+      title: "Conditions d’utilisation",
+      subtitle:
+        "Ces conditions décrivent les règles d’utilisation de VelvetTales.",
+      sections: [
+        {
+          title: "1) Éligibilité (18+)",
+          body: "La plateforme est destinée uniquement aux personnes âgées de 18 ans ou plus.",
+          bullets: [
+            "En utilisant le site, vous confirmez avoir 18+.",
+            "Si vous avez moins de 18 ans, merci de quitter le site.",
+          ],
+        },
+        {
+          title: "2) Comptes et accès",
+          body: "Certaines fonctionnalités peuvent nécessiter un compte et/ou un abonnement.",
+          bullets: [
+            "Vous êtes responsable de la sécurité de votre compte.",
+            "Nous pouvons restreindre l’accès en cas d’abus ou de violation.",
+          ],
+        },
+        {
+          title: "3) Contenu et utilisation acceptable",
+          body: "Toutes les histoires sont fictives. Il est interdit d’utiliser le site pour du spam, des attaques ou des activités illégales.",
+          bullets: [
+            "Ne publiez pas de données personnelles dans les commentaires.",
+            "Respectez les règles de la communauté.",
+          ],
+        },
+        {
+          title: "4) Abonnements, paiements et résiliation",
+          body: "Si vous choisissez un plan payant, les paiements sont traités par des prestataires tiers et la résiliation est disponible depuis votre compte.",
+          bullets: [
+            "Les avantages des plans peuvent évoluer.",
+            "Tout remboursement suit la politique publiée sur le site.",
+          ],
+        },
+        {
+          title: "5) Commentaires et notes",
+          body: "Les commentaires et les notes doivent respecter les règles de la plateforme et la loi applicable.",
+          bullets: [
+            "Nous nous réservons le droit de modérer.",
+            "Un contenu abusif peut entraîner une suspension.",
+          ],
+        },
+        {
+          title: "6) Limitation de responsabilité",
+          body: "Vous utilisez le site à vos risques. Nous ne garantissons pas une disponibilité continue ni l’absence d’erreurs.",
+          bullets: [],
+        },
+        {
+          title: "7) Contact",
+          body: "Pour toute question, utilisez la page Contact.",
+          bullets: [],
+        },
+      ],
+    },
+    privacy: {
+      title: "Politique de confidentialité",
+      subtitle:
+        "Voici un résumé clair des données collectées et de leur utilisation.",
+      sections: [
+        {
+          title: "1) Données collectées",
+          body: "Nous pouvons collecter des données de compte et des données techniques nécessaires au fonctionnement.",
+          bullets: [
+            "Email et profil (si vous créez un compte).",
+            "Données d’usage (préférences, progression, interactions).",
+          ],
+        },
+        {
+          title: "2) Utilisation des données",
+          body: "Nous utilisons les données pour l’authentification, la personnalisation, le support et l’amélioration du service.",
+          bullets: [
+            "Pour fournir l’accès aux fonctionnalités et abonnements.",
+            "Pour prévenir la fraude et les abus.",
+          ],
+        },
+        {
+          title: "3) Prestataires tiers",
+          body: "Nous pouvons utiliser des prestataires tiers pour les paiements et l’infrastructure.",
+          bullets: [
+            "Paiements : Stripe (si vous utilisez des abonnements).",
+            "Infrastructure : services d’hébergement / base de données.",
+          ],
+        },
+        {
+          title: "4) Vos droits",
+          body: "Vous pouvez demander l’accès, la correction ou la suppression de vos données, dans les limites légales.",
+          bullets: [
+            "Contactez-nous pour toute demande liée aux données.",
+            "Certaines données peuvent être conservées pour des obligations légales.",
+          ],
+        },
+      ],
+    },
+    cookies: {
+      title: "Politique de cookies",
+      subtitle:
+        "Nous utilisons des cookies pour les fonctionnalités, l’analyse et une meilleure expérience.",
+      sections: [
+        {
+          title: "1) Qu’est-ce qu’un cookie",
+          body: "Les cookies sont de petits fichiers stockés dans votre navigateur pour mémoriser des préférences.",
+          bullets: [],
+        },
+        {
+          title: "2) Types de cookies",
+          body: "Nous pouvons utiliser des cookies essentiels, de préférences et d’analyse.",
+          bullets: [
+            "Essentiels : connexion, réglages.",
+            "Préférences : thème dark/light, langue.",
+            "Analyse : statistiques anonymisées (si activées).",
+          ],
+        },
+        {
+          title: "3) Les contrôler",
+          body: "Vous pouvez gérer les cookies dans les paramètres de votre navigateur.",
+          bullets: [
+            "Vous pouvez supprimer les cookies.",
+            "Vous pouvez bloquer les cookies (certaines fonctions peuvent être affectées).",
+          ],
+        },
+      ],
+    },
+    legal: {
+      templateNote:
+        "Note : ce texte est un modèle informatif et ne constitue pas un avis juridique.",
+    },
+
     profile: {
       title: "Mon profil",
 
@@ -826,6 +985,20 @@ const fr = {
     viewAllStories: "Voir Toutes les Histoires",
 
     footerText: "VelvetTales. Tous droits réservés.",
+    footerDisclaimer: "Contenu 18+. Toutes les histoires sont fictives.",
+    footerLinksTitle: "Liens",
+    footerAllStories: "Toutes les histoires",
+    footerPlans: "Offres",
+    footerContact: "Contact",
+    footerLegalTitle: "Légal",
+    footerTerms: "Conditions",
+    footerPrivacy: "Confidentialité",
+    footerCookies: "Cookies",
+    footerFollow: "Suivez-nous",
+    footerContactLink: "Nous contacter",
+    footerRights: "Tous droits réservés.",
+    footerMadeForReaders: "Pensé pour les vrais lecteurs.",
+
     allStoriesTitle: "Toutes les histoires",
     noStoriesFound: "Aucune histoire trouvée...",
     usingLocalData: "Utilisation des données locales.",

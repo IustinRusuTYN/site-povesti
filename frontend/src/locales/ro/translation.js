@@ -146,6 +146,164 @@ const ro = {
         "Te-ai abonat la {{planId}} ({{billing}}) — flux demo. Este necesară integrarea backend.",
     },
 
+    contact: {
+      title: "Contact",
+      authRequiredTitle: "Autentificare necesară",
+      authRequiredBody:
+        "Pentru a ne trimite un mesaj, te rugăm să te autentifici sau să îți creezi un cont.",
+      signIn: "Autentificare",
+      signUp: "Creează cont",
+      sending: "Se trimite...",
+      sentOk: "Mesajul a fost trimis. Îți răspundem cât de repede putem.",
+      sentError:
+        "Nu am putut trimite mesajul. Încearcă din nou sau scrie-ne pe email.",
+      subtitle:
+        "Ai o întrebare, o problemă sau vrei să ne trimiți feedback? Scrie-ne și revenim cât de repede putem.",
+      emailLabel: "Email suport",
+      formTitle: "Trimite-ne un mesaj",
+      send: "Trimite",
+      emailSubject: "Mesaj nou",
+      note18:
+        "Notă: Conținutul de pe site este destinat persoanelor 18+. Te rugăm să incluzi detalii relevante (link, titlu poveste, captură) dacă raportezi o problemă.",
+      form: {
+        name: "Nume",
+        email: "Email",
+        message: "Mesaj",
+        namePlaceholder: "Numele tău",
+        emailPlaceholder: "nume@exemplu.com",
+        messagePlaceholder: "Scrie mesajul tău aici...",
+      },
+    },
+    terms: {
+      title: "Termeni și condiții",
+      subtitle:
+        "Acești termeni descriu regulile de utilizare ale platformei VelvetTales.",
+      sections: [
+        {
+          title: "1) Eligibilitate (18+)",
+          body: "Platforma este destinată exclusiv persoanelor care au împlinit 18 ani.",
+          bullets: [
+            "Prin utilizarea site-ului confirmi că ai 18+.",
+            "Dacă nu ai 18+, te rugăm să părăsești site-ul.",
+          ],
+        },
+        {
+          title: "2) Conturi și acces",
+          body: "Unele funcții pot necesita autentificare și/sau abonament.",
+          bullets: [
+            "Ești responsabil pentru securitatea contului.",
+            "Putem restricționa accesul în caz de abuz sau încălcări.",
+          ],
+        },
+        {
+          title: "3) Conținut și utilizare",
+          body: "Toate poveștile sunt ficțiune. Este interzisă folosirea site-ului pentru spam, atacuri sau activități ilegale.",
+          bullets: [
+            "Nu publica date personale în comentarii.",
+            "Respectă regulile comunității și bunul simț.",
+          ],
+        },
+        {
+          title: "4) Abonamente, plăți și anulare",
+          body: "Dacă alegi un plan plătit, plățile sunt procesate prin furnizori terți, iar anularea se poate face din cont.",
+          bullets: [
+            "Beneficiile planurilor pot fi actualizate în timp.",
+            "Orice rambursare urmează politica publicată pe site.",
+          ],
+        },
+        {
+          title: "5) Comentarii și rating",
+          body: "Comentariile și rating-urile trebuie să respecte regulile platformei și legislația aplicabilă.",
+          bullets: [
+            "Ne rezervăm dreptul de a modera conținutul.",
+            "Conținutul abuziv poate duce la suspendare.",
+          ],
+        },
+        {
+          title: "6) Limitarea răspunderii",
+          body: "Folosirea site-ului se face pe propria răspundere. Nu garantăm disponibilitatea neîntreruptă sau absența erorilor.",
+          bullets: [],
+        },
+        {
+          title: "7) Contact",
+          body: "Pentru întrebări legate de termeni, ne poți contacta din pagina Contact.",
+          bullets: [],
+        },
+      ],
+    },
+    privacy: {
+      title: "Politica de confidențialitate",
+      subtitle:
+        "Aici explicăm ce date colectăm și cum le folosim, pe scurt și clar.",
+      sections: [
+        {
+          title: "1) Ce date colectăm",
+          body: "Putem colecta date de cont și date tehnice necesare funcționării platformei.",
+          bullets: [
+            "Email și date de profil (dacă îți creezi cont).",
+            "Date de utilizare (ex: preferințe, progres, interacțiuni).",
+          ],
+        },
+        {
+          title: "2) Cum folosim datele",
+          body: "Folosim datele pentru autentificare, personalizare, suport și îmbunătățirea serviciului.",
+          bullets: [
+            "Pentru a-ți oferi acces la funcții și abonamente.",
+            "Pentru prevenirea fraudei și abuzului.",
+          ],
+        },
+        {
+          title: "3) Furnizori terți",
+          body: "Putem folosi furnizori terți pentru plăți și infrastructură.",
+          bullets: [
+            "Plăți: Stripe (dacă folosești abonamente).",
+            "Infrastructură: servicii de hosting / baze de date.",
+          ],
+        },
+        {
+          title: "4) Drepturile tale",
+          body: "Poți solicita acces, rectificare sau ștergerea datelor, în limitele legii.",
+          bullets: [
+            "Ne poți contacta pentru solicitări legate de date.",
+            "Unele date pot fi păstrate pentru obligații legale.",
+          ],
+        },
+      ],
+    },
+    cookies: {
+      title: "Politica de cookies",
+      subtitle:
+        "Folosim cookies pentru funcționalitate, analiză și o experiență mai bună.",
+      sections: [
+        {
+          title: "1) Ce sunt cookies",
+          body: "Cookies sunt fișiere mici stocate în browser pentru a reține preferințe și setări.",
+          bullets: [],
+        },
+        {
+          title: "2) Tipuri de cookies",
+          body: "Putem folosi cookies necesare, de preferințe și de analiză.",
+          bullets: [
+            "Necesar: login, setări.",
+            "Preferințe: tema dark/light, limbă.",
+            "Analiză: statistici anonimizate (dacă activezi).",
+          ],
+        },
+        {
+          title: "3) Cum le controlezi",
+          body: "Poți gestiona cookies din setările browserului tău.",
+          bullets: [
+            "Poți șterge cookies.",
+            "Poți bloca cookies (unele funcții pot fi afectate).",
+          ],
+        },
+      ],
+    },
+    legal: {
+      templateNote:
+        "Notă: acest text este un șablon informativ și nu reprezintă consultanță juridică.",
+    },
+
     profile: {
       title: "Profilul Meu",
       subtitle: "Gestionează-ți contul și preferințele",
@@ -164,7 +322,7 @@ const ro = {
       accountDetails: "Detalii cont",
       preferences: "Preferințe",
       language: "Limbă",
-      subscription: "Abonament",
+      subscriptionLabel: "Abonament",
       theme: "Temă",
       notifications: "Notificări",
       enabled: "Activat",
@@ -811,7 +969,21 @@ const ro = {
       "Explorează colecția noastră curată de povești extraordinare",
     viewAllStories: "Vezi Toate Poveștile",
 
-    footerText: " VelvetTales. Toate drepturile rezervate.",
+    footerText: "VelvetTales. Toate drepturile rezervate.",
+    footerDisclaimer: "Conținut 18+. Toate poveștile sunt ficțiune.",
+    footerLinksTitle: "Linkuri",
+    footerAllStories: "Toate poveștile",
+    footerPlans: "Planuri",
+    footerContact: "Contact",
+    footerLegalTitle: "Legal",
+    footerTerms: "Termeni",
+    footerPrivacy: "Confidențialitate",
+    footerCookies: "Cookies",
+    footerFollow: "Urmărește-ne",
+    footerContactLink: "Contactează-ne",
+    footerRights: "Toate drepturile rezervate.",
+    footerMadeForReaders: "Creat pentru citit pe bune.",
+
     allStoriesTitle: "Toate Poveștile",
     noStoriesFound: "Nicio poveste găsită...",
     usingLocalData: "Se folosesc date locale.",

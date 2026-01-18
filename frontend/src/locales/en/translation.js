@@ -142,6 +142,162 @@ const en = {
         "You have subscribed to {{planId}} ({{billing}}) — demo flow. Backend integration needed.",
     },
 
+    contact: {
+      title: "Contact",
+      authRequiredTitle: "Sign-in required",
+      authRequiredBody:
+        "To send us a message, please sign in or create an account.",
+      signIn: "Sign In",
+      signUp: "Sign Up",
+      sending: "Sending...",
+      sentOk: "Your message was sent. We’ll reply as soon as we can.",
+      sentError: "We couldn’t send your message. Please try again or email us.",
+      subtitle:
+        "Have a question, an issue, or feedback? Message us and we’ll get back as soon as we can.",
+      emailLabel: "Support email",
+      formTitle: "Send us a message",
+      send: "Send",
+      emailSubject: "New message",
+      note18:
+        "Note: This site contains 18+ content. If you report an issue, please include relevant details (link, story title, screenshot).",
+      form: {
+        name: "Name",
+        email: "Email",
+        message: "Message",
+        namePlaceholder: "Your name",
+        emailPlaceholder: "name@example.com",
+        messagePlaceholder: "Write your message here...",
+      },
+    },
+    terms: {
+      title: "Terms & Conditions",
+      subtitle: "These terms describe the rules for using VelvetTales.",
+      sections: [
+        {
+          title: "1) Eligibility (18+)",
+          body: "The platform is intended only for users who are 18 years old or older.",
+          bullets: [
+            "By using the site you confirm you are 18+.",
+            "If you are under 18, please leave the site.",
+          ],
+        },
+        {
+          title: "2) Accounts & access",
+          body: "Some features may require an account and/or a subscription.",
+          bullets: [
+            "You are responsible for your account security.",
+            "We may restrict access in case of abuse or violations.",
+          ],
+        },
+        {
+          title: "3) Content & acceptable use",
+          body: "All stories are fiction. You must not use the site for spam, attacks, or illegal activities.",
+          bullets: [
+            "Do not post personal data in comments.",
+            "Follow community rules and basic respect.",
+          ],
+        },
+        {
+          title: "4) Subscriptions, payments & cancellation",
+          body: "If you choose a paid plan, payments are processed by third-party providers and cancellation is available from your account.",
+          bullets: [
+            "Plan benefits may change over time.",
+            "Any refund follows the policy published on the site.",
+          ],
+        },
+        {
+          title: "5) Comments & ratings",
+          body: "Comments and ratings must follow platform rules and applicable law.",
+          bullets: [
+            "We reserve the right to moderate content.",
+            "Abusive content may lead to suspension.",
+          ],
+        },
+        {
+          title: "6) Limitation of liability",
+          body: "You use the site at your own risk. We do not guarantee uninterrupted availability or error-free operation.",
+          bullets: [],
+        },
+        {
+          title: "7) Contact",
+          body: "For questions about these terms, please use the Contact page.",
+          bullets: [],
+        },
+      ],
+    },
+    privacy: {
+      title: "Privacy Policy",
+      subtitle:
+        "Here’s a clear summary of what data we collect and how we use it.",
+      sections: [
+        {
+          title: "1) What we collect",
+          body: "We may collect account data and technical data needed to run the platform.",
+          bullets: [
+            "Email and profile details (if you create an account).",
+            "Usage data (e.g., preferences, progress, interactions).",
+          ],
+        },
+        {
+          title: "2) How we use data",
+          body: "We use data for authentication, personalization, support, and improving the service.",
+          bullets: [
+            "To provide access to features and subscriptions.",
+            "To prevent fraud and abuse.",
+          ],
+        },
+        {
+          title: "3) Third-party providers",
+          body: "We may use third parties for payments and infrastructure.",
+          bullets: [
+            "Payments: Stripe (if you use subscriptions).",
+            "Infrastructure: hosting / database services.",
+          ],
+        },
+        {
+          title: "4) Your rights",
+          body: "You may request access, correction, or deletion of your data, within legal limits.",
+          bullets: [
+            "Contact us for data-related requests.",
+            "Some data may be retained for legal obligations.",
+          ],
+        },
+      ],
+    },
+    cookies: {
+      title: "Cookie Policy",
+      subtitle:
+        "We use cookies for functionality, analytics, and a better experience.",
+      sections: [
+        {
+          title: "1) What cookies are",
+          body: "Cookies are small files stored in your browser to remember preferences and settings.",
+          bullets: [],
+        },
+        {
+          title: "2) Types of cookies",
+          body: "We may use essential, preference, and analytics cookies.",
+          bullets: [
+            "Essential: login, settings.",
+            "Preferences: dark/light theme, language.",
+            "Analytics: anonymized stats (if enabled).",
+          ],
+        },
+        {
+          title: "3) How to control them",
+          body: "You can manage cookies from your browser settings.",
+          bullets: [
+            "You can delete cookies.",
+            "You can block cookies (some features may break).",
+          ],
+        },
+      ],
+    },
+    legal: {
+      templateNote:
+        "Note: this is an informational template and not legal advice.",
+    },
+
     // 🔹 EXTINDE OBIECTUL PROFILE EXISTENT
     profile: {
       // Păstrează ce ai deja
@@ -825,6 +981,19 @@ const en = {
     viewAllStories: "View All Stories",
 
     footerText: "VelvetTales. All rights reserved.",
+    footerDisclaimer: "18+ content. All stories are fiction.",
+    footerLinksTitle: "Links",
+    footerAllStories: "All stories",
+    footerPlans: "Plans",
+    footerContact: "Contact",
+    footerLegalTitle: "Legal",
+    footerTerms: "Terms",
+    footerPrivacy: "Privacy",
+    footerCookies: "Cookies",
+    footerFollow: "Follow us",
+    footerContactLink: "Contact us",
+    footerRights: "All rights reserved.",
+    footerMadeForReaders: "Made for real readers.",
     allStoriesTitle: "All Stories",
     noStoriesFound: "No stories found...",
     usingLocalData: "Using local data.",

@@ -20,6 +20,8 @@ export default function SignUpForm({ onClose, onSwitchToSignIn }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const LOGO_SRC = "/android-chrome-192x192.png"; // <- schimbă aici dacă vrei alt fișier (ex: "/brand-icon.png")
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -34,7 +36,6 @@ export default function SignUpForm({ onClose, onSwitchToSignIn }) {
     e.preventDefault();
     setError("");
 
-    // Validări client-side
     if (formData.password !== formData.confirmPassword) {
       setError(t("signUp.passwordMismatch", "Passwords don't match"));
       return;
@@ -62,7 +63,6 @@ export default function SignUpForm({ onClose, onSwitchToSignIn }) {
       );
 
       if (error) {
-        // Erori comune de la Supabase
         if (error.message.includes("already registered")) {
           setError(t("signUp.emailExists", "This email is already registered"));
         } else if (error.message.includes("Invalid email")) {
@@ -72,7 +72,6 @@ export default function SignUpForm({ onClose, onSwitchToSignIn }) {
         }
       } else {
         setSuccess(true);
-        // Redirect după 3 secunde
         setTimeout(() => {
           if (onClose) {
             onClose();
@@ -111,6 +110,22 @@ export default function SignUpForm({ onClose, onSwitchToSignIn }) {
           <XCircle size={24} />
         </button>
       )}
+
+      {/* ✅ Brand Icon */}
+      <div className="flex justify-center mb-4">
+        <div
+          className={`rounded-full p-1 ring-1 ${
+            darkMode ? "bg-white/10 ring-white/10" : "bg-gray-50 ring-black/10"
+          }`}
+        >
+          <img
+            src={LOGO_SRC}
+            alt="VelvetTales"
+            className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-contain"
+            loading="lazy"
+          />
+        </div>
+      </div>
 
       {/* Title */}
       <h2

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Search as SearchIcon } from "lucide-react";
-import logo from "../../assets/logo/velvetlogo-rb.svg";
+import logo from "../../assets/logo/v-logo4.1rb.svg";
 
 import NavLinks from "./navlinks";
 import SearchBar from "./Hsearchbar";
@@ -18,7 +18,7 @@ import { SearchContext } from "../../context/searchcontext";
 export default function Header() {
   const { darkMode } = useContext(ThemeContext);
   const { setQuery } = useContext(SearchContext);
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const location = useLocation();
 
   const [menuOpen, setMenuOpen] = useState(false);
