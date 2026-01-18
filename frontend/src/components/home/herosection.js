@@ -1,11 +1,14 @@
 // src/components/home/herosection.js
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../context/themecontext";
 import Button from "../buttons/Button";
-import girlReading from "../../assets/images/girl-reading.png";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Sparkles } from "lucide-react";
+
+// ✅ Imagini separate pentru light/dark
+import heroLight from "../../assets/images/hero-light.png";
+import heroDark from "../../assets/images/hero-dark.png";
 
 export default function HeroSection() {
   const navigate = useNavigate();
@@ -17,6 +20,12 @@ export default function HeroSection() {
   useEffect(() => {
     setTimeout(() => setHeroVisible(true), 100);
   }, []);
+
+  // ✅ Alege imaginea în funcție de theme
+  const heroImage = useMemo(
+    () => (darkMode ? heroDark : heroLight),
+    [darkMode]
+  );
 
   return (
     <section className="py-12 md:py-16 px-4 md:px-6">
@@ -31,9 +40,11 @@ export default function HeroSection() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src={girlReading}
+            src={heroImage}
             alt={t("hero.alt")}
             className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+            loading="eager"
+            decoding="async"
           />
         </div>
 
@@ -56,7 +67,7 @@ export default function HeroSection() {
             ${
               darkMode
                 ? "bg-gradient-to-t from-gray-900/70 via-transparent to-transparent"
-                : "bg-gradient-to-t from-indigo-900/40 via-transparent to-transparent"
+                : "bg-gradient-to-t from-indigo-950/70 via-transparent to-transparent"
             }
           `}
         />
@@ -102,7 +113,7 @@ export default function HeroSection() {
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 -translate-y-8"
               }
-              text-white drop-shadow-2xl
+              text-indigo-300 drop-shadow-2xl
             `}
           >
             {t("hero.title")}
@@ -119,7 +130,11 @@ export default function HeroSection() {
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
               }
-              ${darkMode ? "text-gray-200" : "text-white drop-shadow-lg"}
+              ${
+                darkMode
+                  ? "text-indigo-200"
+                  : "text-white drop-shadow-[0_0_18px_rgba(255,255,255,0.35)] drop-shadow-[0_10px_30px_rgba(79,70,229,0.35)]"
+              }
             `}
           >
             {t("hero.subtitle")}
